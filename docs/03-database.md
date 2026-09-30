@@ -140,6 +140,7 @@ content_reports(id UUID PK, item_id, kind, comment, created_at, resolved)
 | `vocab.facets` | recog, recall | + listen |
 | `day_start_hour` | 4 | 0–6 |
 | `reminder_time` | 20:00 | |
+| `update.online_check` | true | true/false |
 
 ## นโยบาย
 - **Migration:** Drift schema version, สำรอง `user.db` ก่อน migrate ทุกครั้ง, มีทดสอบ migration ทุกเวอร์ชัน
