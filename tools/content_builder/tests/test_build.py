@@ -80,7 +80,7 @@ class BuildTest(unittest.TestCase):
     def test_words_and_levels(self):
         self.assertEqual(self.report.words, 5)
         self.assertEqual(self.q("SELECT jlpt_level FROM words WHERE id='w:2000001'"), [(5,)])
-        self.assertEqual(self.report.duplicates_across_levels, [2000001])
+        self.assertEqual(self.report.duplicate_list_entries, [1000005, 2000001])
 
     def test_order_prefers_frequent_words(self):
         order = [r[0] for r in self.q("SELECT id FROM words WHERE jlpt_level=5 ORDER BY order_in_level")]
@@ -100,6 +100,12 @@ class BuildTest(unittest.TestCase):
         self.assertEqual(self.q("SELECT COUNT(*) FROM word_forms WHERE word_id='w:1000002' "
                                 "AND kind='kanji' AND is_primary=1"), [(0,)])
         self.assertEqual(json.loads(self.q("SELECT tags FROM words WHERE id='w:1000002'")[0][0]), ["uk", "common"])
+
+    def test_list_readings_kept_and_primary_is_most_common(self):
+        self.assertEqual(json.loads(self.q("SELECT list_readings FROM words WHERE id='w:1000005'")[0][0]),
+                         ["あかい", "アカイ"])
+        self.assertEqual(self.q("SELECT text FROM word_forms WHERE word_id='w:1000005' AND kind='kana' "
+                                "AND is_primary=1"), [("あかい",)])
 
     def test_search_only_reading_not_accepted(self):
         rows = dict(self.q("SELECT text, accept_as_answer FROM word_forms WHERE word_id='w:1000005' AND kind='kana'"))

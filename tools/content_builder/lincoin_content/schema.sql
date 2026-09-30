@@ -24,7 +24,8 @@ CREATE TABLE words (
   freq_rank INTEGER NOT NULL,    -- best JMdict nfXX bucket, 99 = none
   source_id TEXT NOT NULL REFERENCES sources(id),
   level_source_id TEXT NOT NULL REFERENCES sources(id),
-  list_definition TEXT           -- definition from the JLPT list (reference only)
+  list_definition TEXT,          -- definition from the JLPT list (reference only)
+  list_readings TEXT NOT NULL    -- JSON: readings the JLPT list teaches (primary first in practice)
 );
 
 CREATE TABLE word_forms (

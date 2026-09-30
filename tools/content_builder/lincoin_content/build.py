@@ -32,9 +32,10 @@ class BuildReport:
     kanji_words: int = 0
     kana: int = 0
     missing_in_jmdict: list[dict] = field(default_factory=list)
-    duplicates_across_levels: list[int] = field(default_factory=list)
+    duplicate_list_entries: list[int] = field(default_factory=list)
     primary_form_fallbacks: list[dict] = field(default_factory=list)
     skipped_sentences_without_author: int = 0
+    words_without_examples: list[int] = field(default_factory=list)
 
     def to_json(self) -> dict:
         return self.__dict__
@@ -42,6 +43,10 @@ class BuildReport:
 
 def _j(v) -> str:
     return json.dumps(v, ensure_ascii=False)
+
+
+def _nf(pri: list[str]) -> int:
+    return min((int(p[2:]) for p in pri if p.startswith("nf") and p[2:].isdigit()), default=99)
 
 
 def _pick_primary(entry: jmdict.Entry, item: readers.JlptItem, report: BuildReport):
@@ -73,10 +78,13 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
 
     # 1. JLPT items; a word listed at several levels keeps the easiest one.
     items: dict[int, readers.JlptItem] = {}
+    list_readings: dict[int, list[str]] = {}
     for lv in levels:
         for it in readers.read_jlpt(cache.path("jlpt_jmdict_match", lv), int(lv[1])):
+            if it.kana not in list_readings.setdefault(it.seq, []):
+                list_readings[it.seq].append(it.kana)
             if it.seq in items:
-                report.duplicates_across_levels.append(it.seq)
+                report.duplicate_list_entries.append(it.seq)
                 if it.level <= items[it.seq].level:
                     continue
             items[it.seq] = it
@@ -98,6 +106,15 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
         seqs.sort(key=lambda s: (entries[s].freq_rank(), not entries[s].common, items[s].index))
         order.update({s: i for i, s in enumerate(seqs)})
 
+    # A word listed with several readings (e.g. 四 し/よん) teaches the most
+    # frequent one first; every listed reading stays accepted.
+    for seq in order:
+        taught = list_readings.get(seq, [])
+        if len(taught) > 1:
+            rank = {r.text: (not r.common, _nf(r.pri), i) for i, r in enumerate(entries[seq].readings)}
+            best = min(taught, key=lambda k: rank.get(k, (True, 99, 99)))
+            items[seq] = readers.JlptItem(seq, best, items[seq].kanji, items[seq].definition,
+                                          items[seq].level, items[seq].index)
     primaries = {seq: _pick_primary(entries[seq], items[seq], report) for seq in order}
 
     # 4. Furigana for kanji forms.
@@ -152,9 +169,10 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
         wid = f"w:{seq}"
         primary_k, primary_r = primaries[seq]
         tags = (["uk"] if e.usually_kana else []) + (["common"] if e.common else [])
-        db.execute("INSERT INTO words VALUES (?,?,?,?,?,?,?,?,?,?)",
+        db.execute("INSERT INTO words VALUES (?,?,?,?,?,?,?,?,?,?,?)",
                    (wid, it.level, order[seq], _j(e.senses[0].pos if e.senses else []), _j(tags),
-                    int(e.common), e.freq_rank(), "jmdict", "jlpt_jmdict_match", it.definition))
+                    int(e.common), e.freq_rank(), "jmdict", "jlpt_jmdict_match", it.definition,
+                    _j(list_readings.get(seq, [it.kana]))))
         report.words += 1
         if primary_k:
             report.kanji_words += 1
@@ -177,6 +195,7 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
                         _j(s.stagk + s.stagr), "; ".join(s.glosses), None, None, "missing", 0))
             report.senses += 1
 
+    report.words_without_examples = sorted(s for s in order if not word_examples.get(s)) if with_examples else []
     seen_examples = set()
     for seq, rows in word_examples.items():
         if seq not in order:
@@ -233,6 +252,7 @@ def _examples(cache, entries, order, primaries, spelling_counts, report):
     cc0 = readers.read_cc0_ids(cache.path("tatoeba", "cc0"), set(jpn) | set(eng))
 
     out = {}
+    no_author: set[int] = set()
     for seq, hs in accepted.items():
         verified = {h.sentence_id for h in hs if h.verified}
         cands = []
@@ -241,12 +261,15 @@ def _examples(cache, entries, order, primaries, spelling_counts, report):
             if ja is None:
                 continue
             if not ja.author:
-                report.skipped_sentences_without_author += 1
+                no_author.add(sid)
                 continue
             en = next((eng[t] for t in sorted(links.get(sid, [])) if t in eng and eng[t].author), None)
             if en is None:
                 continue
             cands.append((ja, en, sid in verified))
-        cands.sort(key=lambda c: (not c[2], len(c[0].text) > PREFERRED_EXAMPLE_LEN, len(c[0].text), c[0].id))
+        # Short sentences first (beginner-friendly), then ones Tatoeba marks as
+        # good examples of the word, then shorter.
+        cands.sort(key=lambda c: (len(c[0].text) > PREFERRED_EXAMPLE_LEN, not c[2], len(c[0].text), c[0].id))
         out[seq] = cands[:MAX_EXAMPLES]
+    report.skipped_sentences_without_author = len(no_author)
     return out, cc0
