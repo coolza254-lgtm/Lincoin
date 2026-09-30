@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from . import jmdict, readers
+from . import translations
 from .kana import kana_rows
 from .sources import Cache, Source, load_sources
 
@@ -36,6 +37,7 @@ class BuildReport:
     primary_form_fallbacks: list[dict] = field(default_factory=list)
     skipped_sentences_without_author: int = 0
     words_without_examples: list[int] = field(default_factory=list)
+    translations: dict = field(default_factory=dict)
 
     def to_json(self) -> dict:
         return self.__dict__
@@ -72,7 +74,8 @@ def _pick_primary(entry: jmdict.Entry, item: readers.JlptItem, report: BuildRepo
 
 
 def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True,
-          sources: dict[str, Source] | None = None) -> BuildReport:
+          sources: dict[str, Source] | None = None,
+          translations_root: Path | None = translations.ROOT) -> BuildReport:
     sources = sources or load_sources()
     report = BuildReport(levels=levels)
 
@@ -214,6 +217,8 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
                             "tatoeba"))
                 report.examples += 1
             db.execute("INSERT INTO word_examples VALUES (?,?,?,?)", (f"w:{seq}", eid, rank, int(verified)))
+
+    report.translations = translations.apply(db, translations_root) if translations_root else {}
 
     for k in kana_rows():
         db.execute("INSERT INTO kana VALUES (?,?,?,?,?,?,?,?)",

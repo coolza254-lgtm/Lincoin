@@ -63,7 +63,7 @@ class BuildTest(unittest.TestCase):
         cls.tmp = Path(tempfile.mkdtemp())
         cls.cache = make_cache(cls.tmp)
         cls.out = cls.tmp / "content.db"
-        cls.report = build(cls.cache, cls.out, ["n5", "n4"])
+        cls.report = build(cls.cache, cls.out, ["n5", "n4"], translations_root=FIX / "translations")
         cls.db = sqlite3.connect(cls.out)
 
     @classmethod
@@ -94,7 +94,7 @@ class BuildTest(unittest.TestCase):
         self.assertEqual(rows[0][2], "to meet; to encounter")
         self.assertEqual(rows[1][2], "to have an accident & such")
         self.assertEqual(json.loads(rows[1][3]), ["会う"])
-        self.assertEqual(rows[0][4], "missing")
+        self.assertEqual(rows[1][4], "missing")
 
     def test_kana_word_has_no_primary_kanji(self):
         self.assertEqual(self.q("SELECT COUNT(*) FROM word_forms WHERE word_id='w:1000002' "
@@ -141,6 +141,25 @@ class BuildTest(unittest.TestCase):
         for s in load_sources().values():
             self.assertIn(s.attribution, md)
 
+    def test_translations_applied_and_stale_flagged(self):
+        rows = {r[0]: r[1:] for r in self.q("SELECT id, gloss_th, th_status FROM senses "
+                                             "WHERE id IN ('w:2000001:1', 'w:1198180:1')")}
+        self.assertEqual(rows["w:2000001:1"], ("ห้องสมุด", "auto_checked"))
+        self.assertEqual(rows["w:1198180:1"], ("พบ", "flagged"))
+        self.assertEqual(self.q("SELECT th FROM examples WHERE id='ex:100'"), [("อ่านหนังสือที่ห้องสมุด",)])
+        self.assertEqual(self.report.translations["senses_stale"], 1)
+
+    def test_translation_rows_are_validated(self):
+        from lincoin_content.translations import load
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            (tmp / "senses").mkdir()
+            (tmp / "senses" / "x.jsonl").write_text('{"id": "a", "en": "x", "th": "not thai", "status": "draft"}\n')
+            with self.assertRaises(ValueError):
+                load("senses", tmp)
+        finally:
+            shutil.rmtree(tmp)
+
     def test_kana_table(self):
         self.assertEqual(self.q("SELECT COUNT(*) FROM kana"), [(208,)])
         self.assertEqual(self.q("SELECT char, romaji FROM kana WHERE id='k:kata.kya'"), [("キャ", "kya")])
@@ -155,7 +174,7 @@ class FailureTest(unittest.TestCase):
             bad.write_text((FIX / "n5.csv").read_text() + "9999999,なし,無し,none\n", encoding="utf-8")
             cache = make_cache(tmp, n5=bad)
             out = tmp / "c.db"
-            report = build(cache, out, ["n5"], with_examples=False)
+            report = build(cache, out, ["n5"], with_examples=False, translations_root=None)
             errors = check(out, report)
             self.assertTrue(any("not found in JMdict" in e for e in errors), errors)
         finally:

@@ -11,6 +11,9 @@ on:
         description: "JLPT levels, comma separated (n5,n4,...)"
         default: "n5"
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -46,3 +49,19 @@ jobs:
             tools/content_builder/build/
             tools/content_builder/.cache/manifest.json
           if-no-files-found: warn
+      # The latest build is kept on the `content-build` branch (single commit,
+      # replaced each time) so tools and reviewers can fetch it with git.
+      - name: Publish build to content-build branch
+        if: success() && github.ref != 'refs/heads/content-build'
+        run: |
+          set -e
+          out=$(mktemp -d)
+          cp build/content.db build/report.json build/CREDITS.md .cache/manifest.json "$out"/
+          cd "$out"
+          git init -q -b content-build
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          printf 'Built from %s (%s) for levels %s\n' "$GITHUB_SHA" "$GITHUB_REF_NAME" "$LEVELS" > SOURCE.txt
+          git add -A
+          git commit -q -m "content build $LEVELS from ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" content-build

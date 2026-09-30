@@ -21,7 +21,7 @@ HERE = Path(__file__).resolve().parent.parent
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="lincoin_content")
-    p.add_argument("command", choices=["fetch", "build"])
+    p.add_argument("command", choices=["fetch", "build", "worksheet"])
     p.add_argument("--levels", default="n5", help="comma list, e.g. n5,n4")
     p.add_argument("--cache", default=str(HERE / ".cache"))
     p.add_argument("--out", default=str(HERE / "build" / "content.db"))
@@ -44,6 +44,18 @@ def main(argv=None) -> int:
             path = cache.fetch(sources[sid], key)
             rec = cache.record(sid, key)
             print(f"fetched {sid}/{key}: {path.name} {rec['bytes']:,} bytes sha256={rec['sha256'][:12]}")
+        return 0
+
+    if a.command == "worksheet":
+        from .translations import export_worksheet
+        for lv in levels:
+            senses, examples = export_worksheet(Path(a.out), int(lv[1]))
+            d = HERE / "build" / "worksheet"
+            d.mkdir(parents=True, exist_ok=True)
+            for name, rows in (("senses", senses), ("examples", examples)):
+                (d / f"{lv}_{name}.jsonl").write_text(
+                    "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows), encoding="utf-8")
+            print(f"{lv}: {len(senses)} senses, {len(examples)} examples → {d}")
         return 0
 
     out = Path(a.out)
