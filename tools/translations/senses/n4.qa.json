@@ -1,0 +1,38 @@
+{
+  "translated": 1779,
+  "auto_checked": 1779,
+  "flagged": [],
+  "missing": [],
+  "unknown_ids": [],
+  "same_source_different_thai": {
+    "interest": [
+      "ความสนใจ",
+      "ดอกเบี้ย"
+    ],
+    "translation": [
+      "การแปล",
+      "การแปล (โปรแกรม)"
+    ],
+    "it's been a long time; long time no see": [
+      "ไม่ได้เจอกันนาน",
+      "ไม่ได้เจอกันนานเลย"
+    ],
+    "I; me": [
+      "ฉัน",
+      "ผม (สรรพนามผู้ชาย)"
+    ],
+    "you": [
+      "คุณ",
+      "หนู, เธอ (เรียกเด็กผู้ชาย)"
+    ],
+    "to eat; to drink": [
+      "ทาน, ดื่ม",
+      "ทาน, รับประทาน, ดื่ม",
+      "รับประทาน, ดื่ม"
+    ],
+    "to get someone to do something": [
+      "ให้ (คนอื่น) ทำ〜ให้",
+      "ได้รับการ〜ให้"
+    ]
+  }
+}
