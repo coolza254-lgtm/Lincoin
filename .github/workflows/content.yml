@@ -1,0 +1,48 @@
+name: Content build
+
+on:
+  push:
+    paths:
+      - "tools/content_builder/**"
+      - ".github/workflows/content.yml"
+  workflow_dispatch:
+    inputs:
+      levels:
+        description: "JLPT levels, comma separated (n5,n4,...)"
+        default: "n5"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools/content_builder
+    env:
+      LEVELS: ${{ github.event.inputs.levels || 'n5' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Fetch sources
+        run: python -m lincoin_content fetch --levels "$LEVELS"
+      - name: Build content.db
+        run: python -m lincoin_content build --levels "$LEVELS"
+      - name: Report
+        if: always()
+        run: |
+          test -f build/report.json && cat build/report.json || true
+          test -f build/CREDITS.md && cat build/CREDITS.md || true
+      - name: Sample of built content
+        if: success()
+        run: python tools/sample.py build/content.db
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: content-${{ env.LEVELS }}
+          path: |
+            tools/content_builder/build/
+            tools/content_builder/.cache/manifest.json
+          if-no-files-found: warn

@@ -3,3 +3,6 @@ build/
 *.iml
 .idea/
 .DS_Store
+tools/content_builder/.cache/
+tools/content_builder/build/
+__pycache__/

@@ -1,0 +1,79 @@
+{
+  "_comment": "Every dataset the builder may use. Licences checked 2026-09-30 (see docs/02). A source without licence and attribution fails the build.",
+  "sources": [
+    {
+      "id": "jmdict",
+      "name": "JMdict (English)",
+      "homepage": "https://www.edrdg.org/jmdict/j_jmdict.html",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://www.edrdg.org/edrdg/licence.html",
+      "attribution": "This app uses the JMdict dictionary file. This file is the property of the Electronic Dictionary Research and Development Group, and is used in conformance with the Group's licence.",
+      "files": {
+        "jmdict": "http://ftp.edrdg.org/pub/Nihongo/JMdict_e.gz"
+      }
+    },
+    {
+      "id": "jmdict_furigana",
+      "name": "JmdictFurigana (Doublevil)",
+      "homepage": "https://github.com/Doublevil/JmdictFurigana",
+      "license": "CC BY-SA 4.0 (same licence as JMdict)",
+      "license_url": "https://github.com/Doublevil/JmdictFurigana#licence",
+      "attribution": "Furigana alignment from JmdictFurigana by Doublevil, distributed under the same licence as JMdict.",
+      "files": {
+        "furigana": [
+          "https://github.com/Doublevil/JmdictFurigana/releases/latest/download/JmdictFurigana.json.gz",
+          "https://github.com/Doublevil/JmdictFurigana/releases/latest/download/JmdictFurigana.json"
+        ]
+      }
+    },
+    {
+      "id": "jlpt_tanos",
+      "name": "JLPT vocabulary lists (Jonathan Waller, tanos.co.uk)",
+      "homepage": "https://www.tanos.co.uk/jlpt/",
+      "license": "CC BY",
+      "license_url": "https://www.tanos.co.uk/jlpt/",
+      "attribution": "JLPT level lists by Jonathan Waller (tanos.co.uk), used under Creative Commons BY. JLPT levels are unofficial estimates.",
+      "files": {}
+    },
+    {
+      "id": "jlpt_jmdict_match",
+      "name": "yomitan-jlpt-vocab (stephenmk)",
+      "homepage": "https://github.com/stephenmk/yomitan-jlpt-vocab",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://github.com/stephenmk/yomitan-jlpt-vocab/blob/b062d4e38c4bdd0950ae1d4ec55f04b176182e03/LICENSE.txt",
+      "attribution": "Matching of Jonathan Waller's JLPT lists to JMdict entries by stephenmk (yomitan-jlpt-vocab), CC BY-SA 4.0.",
+      "version": "b062d4e38c4bdd0950ae1d4ec55f04b176182e03",
+      "files": {
+        "n5": "https://raw.githubusercontent.com/stephenmk/yomitan-jlpt-vocab/b062d4e38c4bdd0950ae1d4ec55f04b176182e03/original_data/n5.csv",
+        "n4": "https://raw.githubusercontent.com/stephenmk/yomitan-jlpt-vocab/b062d4e38c4bdd0950ae1d4ec55f04b176182e03/original_data/n4.csv",
+        "n3": "https://raw.githubusercontent.com/stephenmk/yomitan-jlpt-vocab/b062d4e38c4bdd0950ae1d4ec55f04b176182e03/original_data/n3.csv",
+        "n2": "https://raw.githubusercontent.com/stephenmk/yomitan-jlpt-vocab/b062d4e38c4bdd0950ae1d4ec55f04b176182e03/original_data/n2.csv",
+        "n1": "https://raw.githubusercontent.com/stephenmk/yomitan-jlpt-vocab/b062d4e38c4bdd0950ae1d4ec55f04b176182e03/original_data/n1.csv"
+      }
+    },
+    {
+      "id": "tatoeba",
+      "name": "Tatoeba",
+      "homepage": "https://tatoeba.org",
+      "license": "CC BY 2.0 FR (some sentences CC0 1.0)",
+      "license_url": "https://tatoeba.org/en/terms_of_use",
+      "attribution": "Example sentences from Tatoeba (https://tatoeba.org), released under CC BY 2.0 FR. The author of each sentence is shown with it.",
+      "files": {
+        "jpn_sentences": "https://downloads.tatoeba.org/exports/per_language/jpn/jpn_sentences_detailed.tsv.bz2",
+        "eng_sentences": "https://downloads.tatoeba.org/exports/per_language/eng/eng_sentences_detailed.tsv.bz2",
+        "jpn_eng_links": "https://downloads.tatoeba.org/exports/per_language/jpn/jpn-eng_links.tsv.bz2",
+        "jpn_indices": "https://downloads.tatoeba.org/exports/jpn_indices.tar.bz2",
+        "cc0": "https://downloads.tatoeba.org/exports/sentences_CC0.tar.bz2"
+      }
+    },
+    {
+      "id": "lincoin",
+      "name": "Lincoin",
+      "homepage": "https://github.com/coolza254-lgtm/Lincoin",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attribution": "Kana table, Thai translations and explanations written for Lincoin.",
+      "files": {}
+    }
+  ]
+}

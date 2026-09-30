@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JMdict [
+<!ELEMENT JMdict (entry*)>
+<!ENTITY n "noun (common) (futsuumeishi)">
+<!ENTITY v5u "Godan verb with 'u' ending">
+<!ENTITY vi "intransitive verb">
+<!ENTITY vs-i "suru verb - included">
+<!ENTITY uk "word usually written using kana alone">
+<!ENTITY adj-i "adjective (keiyoushi)">
+<!ENTITY hon "honorific or respectful (sonkeigo) language">
+<!ENTITY sk "search-only kana form">
+<!ENTITY oK "word containing out-dated kanji or kanji usage">
+]>
+<!-- JMdict created: 2026-09-29 -->
+<JMdict>
+<entry>
+<ent_seq>1198180</ent_seq>
+<k_ele><keb>会う</keb><ke_pri>ichi1</ke_pri><ke_pri>news1</ke_pri><ke_pri>nf04</ke_pri></k_ele>
+<k_ele><keb>逢う</keb></k_ele>
+<r_ele><reb>あう</reb><re_pri>ichi1</re_pri></r_ele>
+<sense><pos>&v5u;</pos><pos>&vi;</pos><gloss>to meet</gloss><gloss>to encounter</gloss></sense>
+<sense><stagk>会う</stagk><gloss>to have an accident &amp; such</gloss></sense>
+</entry>
+<entry>
+<ent_seq>2000001</ent_seq>
+<k_ele><keb>図書館</keb><ke_pri>ichi1</ke_pri><ke_pri>nf02</ke_pri></k_ele>
+<r_ele><reb>としょかん</reb><re_pri>ichi1</re_pri></r_ele>
+<sense><pos>&n;</pos><gloss>library</gloss></sense>
+</entry>
+<entry>
+<ent_seq>1000002</ent_seq>
+<k_ele><keb>為る</keb><ke_inf>&oK;</ke_inf></k_ele>
+<r_ele><reb>する</reb><re_pri>spec1</re_pri></r_ele>
+<sense><pos>&vs-i;</pos><misc>&uk;</misc><gloss>to do</gloss></sense>
+</entry>
+<entry>
+<ent_seq>1000003</ent_seq>
+<k_ele><keb>方</keb><ke_pri>ichi1</ke_pri></k_ele>
+<r_ele><reb>かた</reb><re_pri>ichi1</re_pri></r_ele>
+<sense><pos>&n;</pos><misc>&hon;</misc><gloss>person</gloss></sense>
+</entry>
+<entry>
+<ent_seq>1000004</ent_seq>
+<k_ele><keb>方</keb></k_ele>
+<r_ele><reb>ほう</reb></r_ele>
+<sense><pos>&n;</pos><gloss>direction</gloss></sense>
+</entry>
+<entry>
+<ent_seq>1000005</ent_seq>
+<k_ele><keb>赤い</keb><ke_pri>ichi1</ke_pri></k_ele>
+<r_ele><reb>あかい</reb></r_ele>
+<r_ele><reb>アカイ</reb><re_inf>&sk;</re_inf></r_ele>
+<sense><pos>&adj-i;</pos><gloss>red</gloss></sense>
+</entry>
+</JMdict>
