@@ -30,163 +30,172 @@ class SettingsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(t.settings)),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(
-          LcTokens.spacingLg,
-          0,
-          LcTokens.spacingLg,
-          LcTokens.spacingXxl,
+      body: SafeArea(
+        top: false,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(
+            LcTokens.spacingLg,
+            0,
+            LcTokens.spacingLg,
+            LcTokens.spacingXxl,
+          ),
+          children: [
+            SectionLabel(t.sectionStudy),
+            card([
+              _SliderTile(
+                title: t.targetRetention,
+                help: t.targetRetentionHelp,
+                value: s.vocabRetention,
+                min: 0.80,
+                max: 0.95,
+                divisions: 15,
+                label: '${(s.vocabRetention * 100).round()}%',
+                onChanged: (v) => set.update(
+                  (x) => x.copyWith(vocabRetention: (v * 100).round() / 100),
+                ),
+              ),
+              const Divider(indent: 16, endIndent: 16),
+              _SliderTile(
+                title: t.newPerDay,
+                help: t.newPerDayHelp,
+                value: s.vocabNewPerDay.toDouble(),
+                min: 0,
+                max: AppSettings.newPerDayMax.toDouble(),
+                divisions: AppSettings.newPerDayMax,
+                label: '${s.vocabNewPerDay}',
+                onChanged: (v) =>
+                    set.update((x) => x.copyWith(vocabNewPerDay: v.round())),
+              ),
+              const Divider(indent: 16, endIndent: 16),
+              const Divider(indent: 16, endIndent: 16),
+              _SliderTile(
+                title: t.targetRetentionGrammar,
+                help: t.targetRetentionHelp,
+                value: s.grammarRetention,
+                min: 0.80,
+                max: 0.95,
+                divisions: 15,
+                label: '${(s.grammarRetention * 100).round()}%',
+                onChanged: (v) => set.update(
+                  (x) => x.copyWith(grammarRetention: (v * 100).round() / 100),
+                ),
+              ),
+              const Divider(indent: 16, endIndent: 16),
+              _SliderTile(
+                title: t.newPerDayGrammar,
+                help: t.newPerDayGrammarHelp,
+                value: s.grammarNewPerDay.toDouble(),
+                min: 0,
+                max: AppSettings.grammarNewPerDayMax.toDouble(),
+                divisions: AppSettings.grammarNewPerDayMax,
+                label: '${s.grammarNewPerDay}',
+                onChanged: (v) =>
+                    set.update((x) => x.copyWith(grammarNewPerDay: v.round())),
+              ),
+              const Divider(indent: 16, endIndent: 16),
+              SwitchListTile(
+                title: Text(t.includeKana),
+                subtitle: Text(t.includeKanaHelp),
+                value: s.includeKana,
+                onChanged: (v) => set.update((x) => x.copyWith(includeKana: v)),
+              ),
+              ListTile(
+                title: Text(t.furiganaMode),
+                subtitle: Text(switch (s.furigana) {
+                  FuriganaMode.always => t.furiganaAlways,
+                  FuriganaMode.hideMastered => t.furiganaHideMastered,
+                  FuriganaMode.never => t.furiganaNever,
+                }),
+                onTap: () async {
+                  final v = await _choose<FuriganaMode>(
+                    context,
+                    t.furiganaMode,
+                    {
+                      FuriganaMode.always: t.furiganaAlways,
+                      FuriganaMode.hideMastered: t.furiganaHideMastered,
+                      FuriganaMode.never: t.furiganaNever,
+                    },
+                    s.furigana,
+                  );
+                  if (v != null) set.update((x) => x.copyWith(furigana: v));
+                },
+              ),
+              ListTile(
+                title: Text(t.dayStart),
+                subtitle: Text(t.dayStartHelp(s.dayStartHour)),
+                onTap: () async {
+                  final v = await _choose<int>(context, t.dayStart, {
+                    for (var h = 0; h <= 6; h++) h: '0$h:00',
+                  }, s.dayStartHour);
+                  if (v != null) set.update((x) => x.copyWith(dayStartHour: v));
+                },
+              ),
+            ]),
+            SectionLabel(t.sectionLook),
+            card([
+              Padding(
+                padding: const EdgeInsets.all(LcTokens.spacingLg),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(t.theme, style: tt.bodyLarge),
+                    const SizedBox(height: LcTokens.spacingMd),
+                    Wrap(
+                      spacing: LcTokens.spacingMd,
+                      runSpacing: LcTokens.spacingMd,
+                      children: [
+                        for (final p in LcTokens.themes.values)
+                          _ThemeSwatch(
+                            palette: p,
+                            selected: p.id == s.theme,
+                            onTap: () =>
+                                set.update((x) => x.copyWith(theme: p.id)),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SwitchListTile(
+                title: Text(t.reduceMotion),
+                value: s.reduceMotion,
+                onChanged: (v) =>
+                    set.update((x) => x.copyWith(reduceMotion: v)),
+              ),
+            ]),
+            SectionLabel(t.sectionApp),
+            card([
+              ListTile(
+                leading: Badge(
+                  isLabelVisible: updateDot,
+                  backgroundColor: context.lc.accent,
+                  child: const Icon(Icons.system_update_rounded),
+                ),
+                title: Text(t.updates),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const UpdatesScreen()),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.save_alt_rounded),
+                title: Text(t.backup),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const BackupScreen())),
+              ),
+              ListTile(
+                leading: const Icon(Icons.favorite_border_rounded),
+                title: Text(t.credits),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const CreditsScreen()),
+                ),
+              ),
+            ]),
+          ],
         ),
-        children: [
-          SectionLabel(t.sectionStudy),
-          card([
-            _SliderTile(
-              title: t.targetRetention,
-              help: t.targetRetentionHelp,
-              value: s.vocabRetention,
-              min: 0.80,
-              max: 0.95,
-              divisions: 15,
-              label: '${(s.vocabRetention * 100).round()}%',
-              onChanged: (v) => set.update(
-                (x) => x.copyWith(vocabRetention: (v * 100).round() / 100),
-              ),
-            ),
-            const Divider(indent: 16, endIndent: 16),
-            _SliderTile(
-              title: t.newPerDay,
-              help: t.newPerDayHelp,
-              value: s.vocabNewPerDay.toDouble(),
-              min: 0,
-              max: AppSettings.newPerDayMax.toDouble(),
-              divisions: AppSettings.newPerDayMax,
-              label: '${s.vocabNewPerDay}',
-              onChanged: (v) =>
-                  set.update((x) => x.copyWith(vocabNewPerDay: v.round())),
-            ),
-            const Divider(indent: 16, endIndent: 16),
-            const Divider(indent: 16, endIndent: 16),
-            _SliderTile(
-              title: t.targetRetentionGrammar,
-              help: t.targetRetentionHelp,
-              value: s.grammarRetention,
-              min: 0.80,
-              max: 0.95,
-              divisions: 15,
-              label: '${(s.grammarRetention * 100).round()}%',
-              onChanged: (v) => set.update(
-                (x) => x.copyWith(grammarRetention: (v * 100).round() / 100),
-              ),
-            ),
-            const Divider(indent: 16, endIndent: 16),
-            _SliderTile(
-              title: t.newPerDayGrammar,
-              help: t.newPerDayGrammarHelp,
-              value: s.grammarNewPerDay.toDouble(),
-              min: 0,
-              max: AppSettings.grammarNewPerDayMax.toDouble(),
-              divisions: AppSettings.grammarNewPerDayMax,
-              label: '${s.grammarNewPerDay}',
-              onChanged: (v) =>
-                  set.update((x) => x.copyWith(grammarNewPerDay: v.round())),
-            ),
-            const Divider(indent: 16, endIndent: 16),
-            SwitchListTile(
-              title: Text(t.includeKana),
-              subtitle: Text(t.includeKanaHelp),
-              value: s.includeKana,
-              onChanged: (v) => set.update((x) => x.copyWith(includeKana: v)),
-            ),
-            ListTile(
-              title: Text(t.furiganaMode),
-              subtitle: Text(switch (s.furigana) {
-                FuriganaMode.always => t.furiganaAlways,
-                FuriganaMode.hideMastered => t.furiganaHideMastered,
-                FuriganaMode.never => t.furiganaNever,
-              }),
-              onTap: () async {
-                final v = await _choose<FuriganaMode>(context, t.furiganaMode, {
-                  FuriganaMode.always: t.furiganaAlways,
-                  FuriganaMode.hideMastered: t.furiganaHideMastered,
-                  FuriganaMode.never: t.furiganaNever,
-                }, s.furigana);
-                if (v != null) set.update((x) => x.copyWith(furigana: v));
-              },
-            ),
-            ListTile(
-              title: Text(t.dayStart),
-              subtitle: Text(t.dayStartHelp(s.dayStartHour)),
-              onTap: () async {
-                final v = await _choose<int>(context, t.dayStart, {
-                  for (var h = 0; h <= 6; h++) h: '0$h:00',
-                }, s.dayStartHour);
-                if (v != null) set.update((x) => x.copyWith(dayStartHour: v));
-              },
-            ),
-          ]),
-          SectionLabel(t.sectionLook),
-          card([
-            Padding(
-              padding: const EdgeInsets.all(LcTokens.spacingLg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(t.theme, style: tt.bodyLarge),
-                  const SizedBox(height: LcTokens.spacingMd),
-                  Wrap(
-                    spacing: LcTokens.spacingMd,
-                    runSpacing: LcTokens.spacingMd,
-                    children: [
-                      for (final p in LcTokens.themes.values)
-                        _ThemeSwatch(
-                          palette: p,
-                          selected: p.id == s.theme,
-                          onTap: () =>
-                              set.update((x) => x.copyWith(theme: p.id)),
-                        ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SwitchListTile(
-              title: Text(t.reduceMotion),
-              value: s.reduceMotion,
-              onChanged: (v) => set.update((x) => x.copyWith(reduceMotion: v)),
-            ),
-          ]),
-          SectionLabel(t.sectionApp),
-          card([
-            ListTile(
-              leading: Badge(
-                isLabelVisible: updateDot,
-                backgroundColor: context.lc.accent,
-                child: const Icon(Icons.system_update_rounded),
-              ),
-              title: Text(t.updates),
-              trailing: const Icon(Icons.chevron_right_rounded),
-              onTap: () => Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (_) => const UpdatesScreen())),
-            ),
-            ListTile(
-              leading: const Icon(Icons.save_alt_rounded),
-              title: Text(t.backup),
-              trailing: const Icon(Icons.chevron_right_rounded),
-              onTap: () => Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (_) => const BackupScreen())),
-            ),
-            ListTile(
-              leading: const Icon(Icons.favorite_border_rounded),
-              title: Text(t.credits),
-              trailing: const Icon(Icons.chevron_right_rounded),
-              onTap: () => Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (_) => const CreditsScreen())),
-            ),
-          ]),
-        ],
       ),
     );
   }

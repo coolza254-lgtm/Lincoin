@@ -22,6 +22,9 @@ sealed class StudyItem {
 
   /// 'vocab' or 'grammar'; each deck has its own schedule and settings.
   String get deck => vocabDeck;
+
+  /// Card id of each facet (built once; the queue looks them up often).
+  late final List<String> cardIds = [for (final f in facets) cardIdFor(id, f)];
 }
 
 class KanaStudy extends StudyItem {
@@ -102,13 +105,27 @@ class Catalog {
     );
   }
 
-  Map<String, int> itemsPerLevel([String deck = vocabDeck]) {
-    final m = <String, int>{};
-    for (final i in path.where((i) => i.deck == deck)) {
-      m[i.level] = (m[i.level] ?? 0) + 1;
+  late final Map<String, List<StudyItem>> _byDeck = () {
+    final m = <String, List<StudyItem>>{};
+    for (final i in path) {
+      m.putIfAbsent(i.deck, () => []).add(i);
     }
     return m;
-  }
+  }();
+
+  /// Items of one deck in path order.
+  List<StudyItem> itemsOf(String deck) => _byDeck[deck] ?? const [];
+
+  final Map<String, Map<String, int>> _perLevel = {};
+
+  Map<String, int> itemsPerLevel([String deck = vocabDeck]) =>
+      _perLevel.putIfAbsent(deck, () {
+        final m = <String, int>{};
+        for (final i in itemsOf(deck)) {
+          m[i.level] = (m[i.level] ?? 0) + 1;
+        }
+        return Map.unmodifiable(m);
+      });
 
   late final List<DistractorCandidate> meaningPool = [
     for (final i in path)
@@ -127,9 +144,15 @@ class Catalog {
         DistractorCandidate(i.id, i.kana.romaji, i.kana.script),
   ];
 
+  late final Map<String, List<WordStudy>> _byMeaning = () {
+    final m = <String, List<WordStudy>>{};
+    for (final i in path) {
+      if (i is WordStudy) m.putIfAbsent(i.word.shortMeaning, () => []).add(i);
+    }
+    return m;
+  }();
+
   /// Words sharing [meaning] (for tolerating a synonym typed in recall).
-  List<WordStudy> wordsWithMeaning(String meaning) => [
-    for (final i in path)
-      if (i is WordStudy && i.word.shortMeaning == meaning) i,
-  ];
+  List<WordStudy> wordsWithMeaning(String meaning) =>
+      _byMeaning[meaning] ?? const [];
 }

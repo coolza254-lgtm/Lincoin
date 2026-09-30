@@ -907,4 +907,29 @@ class AppLocalizationsTh extends AppLocalizations {
   String todaySummary(int n) {
     return 'วันนี้ตอบไปแล้ว $n ข้อ';
   }
+
+  @override
+  String streakDays(int n) {
+    return '$n วันติด';
+  }
+
+  @override
+  String get streakHelp => 'จำนวนวันที่เรียนหรือฝึกติดต่อกัน';
+
+  @override
+  String get streakKeep => 'เรียนวันนี้เพื่อรักษาสถิติ';
+
+  @override
+  String get todayNotYet => 'วันนี้ยังไม่ได้เรียน';
+
+  @override
+  String rewardDeleted(String title) {
+    return 'ลบ $title แล้ว';
+  }
+
+  @override
+  String get undo => 'เลิกทำ';
+
+  @override
+  String get pressBackAgain => 'กดย้อนกลับอีกครั้งเพื่อออก';
 }

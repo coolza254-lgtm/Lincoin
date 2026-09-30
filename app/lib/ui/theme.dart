@@ -17,8 +17,36 @@ class LcColors extends ThemeExtension<LcColors> {
   LcColors copyWith({LcPalette? p, bool? reduceMotion}) =>
       LcColors(p ?? this.p, reduceMotion: reduceMotion ?? this.reduceMotion);
 
+  /// Blends every colour, so switching theme fades instead of jumping.
   @override
-  LcColors lerp(LcColors? other, double t) => t < 0.5 ? this : (other ?? this);
+  LcColors lerp(LcColors? other, double t) {
+    if (other == null || identical(other.p, p)) return other ?? this;
+    final a = p, b = other.p;
+    Color c(Color x, Color y) => Color.lerp(x, y, t)!;
+    return LcColors(
+      LcPalette(
+        id: t < 0.5 ? a.id : b.id,
+        name: t < 0.5 ? a.name : b.name,
+        dark: t < 0.5 ? a.dark : b.dark,
+        bg: c(a.bg, b.bg),
+        surface: c(a.surface, b.surface),
+        ink: c(a.ink, b.ink),
+        muted: c(a.muted, b.muted),
+        line: c(a.line, b.line),
+        track: c(a.track, b.track),
+        accent: c(a.accent, b.accent),
+        onAccent: c(a.onAccent, b.onAccent),
+        accentSoft: c(a.accentSoft, b.accentSoft),
+        coin: c(a.coin, b.coin),
+        coinSoft: c(a.coinSoft, b.coinSoft),
+        good: c(a.good, b.good),
+        goodSoft: c(a.goodSoft, b.goodSoft),
+        warn: c(a.warn, b.warn),
+        warnSoft: c(a.warnSoft, b.warnSoft),
+      ),
+      reduceMotion: t < 0.5 ? reduceMotion : other.reduceMotion,
+    );
+  }
 }
 
 extension LcContext on BuildContext {

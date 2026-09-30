@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:lincoin_core/lincoin_core.dart';
-import 'package:sqlite3/sqlite3.dart' show Row;
+import 'package:sqlite3/sqlite3.dart' show Row, SqliteException;
 
 import 'user_db.dart';
 
@@ -71,6 +72,30 @@ class ReviewRecordInput {
   });
 }
 
+/// Aggregated review-log numbers (see [StudyRepo.reviewSummary]).
+class ReviewSummary {
+  final int totalReviews;
+
+  /// study day → (answers, passed) from the requested first day on.
+  final Map<int, (int, int)> byDay;
+  final int retentionSample30;
+  final int retentionPassed30;
+  final List<CalibrationBin> calibration;
+  final double? logLoss;
+
+  const ReviewSummary({
+    required this.totalReviews,
+    required this.byDay,
+    required this.retentionSample30,
+    required this.retentionPassed30,
+    required this.calibration,
+    required this.logLoss,
+  });
+
+  double? get trueRetention30 =>
+      retentionSample30 == 0 ? null : retentionPassed30 / retentionSample30;
+}
+
 class StudyRepo {
   final UserDb u;
   StudyRepo(this.u);
@@ -80,40 +105,57 @@ class StudyRepo {
       ? null
       : DateTime.fromMillisecondsSinceEpoch(ms as int, isUtc: true);
 
-  Map<String, StoredCard> cards({String? deck}) {
-    final rows = deck == null
-        ? u.db.select('SELECT * FROM cards')
-        : u.db.select('SELECT * FROM cards WHERE deck = ?', [deck]);
-    return {for (final r in rows) r['id'] as String: _card(r)};
-  }
+  static const _cardColumns =
+      'id, item_id, deck, facet, status, step_index, stability, difficulty, '
+      'due_at, last_review_at, last_rating, reps, lapses, suspended, '
+      'is_leech, introduced_day, first_mastered_at';
+
+  static final _status = {for (final s in CardStatus.values) s.name: s};
+  static final _facet = {for (final f in Facet.values) f.name: f};
+  static final _rating = {for (final r in Rating.values) r.value: r};
+
+  /// All cards (of [deck]), read once until the next write: the queue,
+  /// coverage, stats and practice all start from this map. Read-only.
+  Map<String, StoredCard> cards({String? deck}) =>
+      u.memo('cards:${deck ?? '*'}', () {
+        final rows = deck == null
+            ? u.db.select('SELECT $_cardColumns FROM cards')
+            : u.db.select('SELECT $_cardColumns FROM cards WHERE deck = ?', [
+                deck,
+              ]);
+        return Map.unmodifiable({
+          for (final r in rows) r.columnAt(0) as String: _card(r),
+        });
+      });
 
   StoredCard? card(String id) {
-    final rows = u.db.select('SELECT * FROM cards WHERE id = ?', [id]);
+    final rows = u.db.select('SELECT $_cardColumns FROM cards WHERE id = ?', [
+      id,
+    ]);
     return rows.isEmpty ? null : _card(rows.first);
   }
 
+  /// Columns in [_cardColumns] order (by index: this runs for every card).
   StoredCard _card(Row r) => StoredCard(
-    id: r['id'] as String,
-    itemId: r['item_id'] as String,
-    deck: r['deck'] as String,
-    facet: Facet.tryParse(r['facet'] as String) ?? Facet.recog,
+    id: r.columnAt(0) as String,
+    itemId: r.columnAt(1) as String,
+    deck: r.columnAt(2) as String,
+    facet: _facet[r.columnAt(3)] ?? Facet.recog,
     state: CardState(
-      status: CardStatus.values.byName(r['status'] as String),
-      step: r['step_index'] as int?,
-      stability: (r['stability'] as num?)?.toDouble(),
-      difficulty: (r['difficulty'] as num?)?.toDouble(),
-      due: _dt(r['due_at']),
-      lastReview: _dt(r['last_review_at']),
-      lastRating: r['last_rating'] == null
-          ? null
-          : Rating.fromValue(r['last_rating'] as int),
-      reps: r['reps'] as int,
-      lapses: r['lapses'] as int,
+      status: _status[r.columnAt(4)]!,
+      step: r.columnAt(5) as int?,
+      stability: (r.columnAt(6) as num?)?.toDouble(),
+      difficulty: (r.columnAt(7) as num?)?.toDouble(),
+      due: _dt(r.columnAt(8)),
+      lastReview: _dt(r.columnAt(9)),
+      lastRating: _rating[r.columnAt(10)],
+      reps: r.columnAt(11) as int,
+      lapses: r.columnAt(12) as int,
     ),
-    suspended: (r['suspended'] as int) == 1,
-    isLeech: (r['is_leech'] as int) == 1,
-    introducedDay: r['introduced_day'] as int,
-    firstMasteredAt: _dt(r['first_mastered_at']),
+    suspended: r.columnAt(13) == 1,
+    isLeech: r.columnAt(14) == 1,
+    introducedDay: r.columnAt(15) as int,
+    firstMasteredAt: _dt(r.columnAt(16)),
   );
 
   /// Records that a new card was shown to the learner (introduction screen
@@ -264,36 +306,127 @@ class StudyRepo {
     return [
       for (final r in u.db.select(sql, args))
         ReviewRecord(
-          cardId: r['card_id'] as String,
-          deck: r['deck'] as String,
-          tsUtc: _dt(r['ts_utc'])!,
-          studyDay: r['study_day'] as int,
-          statusBefore: CardStatus.values.byName(r['status_before'] as String),
-          rating: Rating.fromValue(r['rating'] as int),
-          rPredicted: (r['r_predicted'] as num?)?.toDouble(),
-          responseMs: r['response_ms'] as int,
+          cardId: r.columnAt(0) as String,
+          deck: r.columnAt(1) as String,
+          tsUtc: _dt(r.columnAt(2))!,
+          studyDay: r.columnAt(3) as int,
+          statusBefore: _status[r.columnAt(4)]!,
+          rating: _rating[r.columnAt(5)]!,
+          rPredicted: (r.columnAt(6) as num?)?.toDouble(),
+          responseMs: r.columnAt(7) as int,
         ),
     ];
   }
 
-  /// Recent correct, unassisted answers per question type, to seed the
-  /// grader's personal response-time median.
+  /// Review-log numbers for the stats screen, aggregated by SQLite so the
+  /// cost stays small however long the log grows. Same rules as [Metrics]
+  /// (trueRetention, calibration, logLoss); a test keeps them in step.
+  ReviewSummary reviewSummary({
+    required String deck,
+    required int fromDay14,
+    required int fromDay30,
+    double binWidth = 0.1,
+  }) {
+    final db = u.db;
+    final total =
+        db
+                .select('SELECT count(*) FROM review_log WHERE deck = ?', [
+                  deck,
+                ])
+                .first
+                .columnAt(0)
+            as int;
+    final byDay = <int, (int, int)>{
+      for (final r in db.select(
+        'SELECT study_day, count(*), SUM(rating <> 1) FROM review_log '
+        'WHERE deck = ? AND study_day >= ? GROUP BY study_day',
+        [deck, fromDay14],
+      ))
+        r.columnAt(0) as int: (r.columnAt(1) as int, r.columnAt(2) as int),
+    };
+    final ret = db.select(
+      'SELECT count(*), COALESCE(SUM(rating <> 1), 0) FROM review_log '
+      "WHERE deck = ? AND status_before = 'review' AND study_day >= ?",
+      [deck, fromDay30],
+    ).first;
+    const reviewed =
+        "deck = ? AND status_before = 'review' AND r_predicted IS NOT NULL";
+    final bins = (1 / binWidth).round();
+    final calibration = [
+      for (final r in db.select(
+        'SELECT MIN(CAST(r_predicted / ? AS INTEGER), ?) AS b, count(*), '
+        'SUM(r_predicted), SUM(rating <> 1) FROM review_log '
+        'WHERE $reviewed GROUP BY b ORDER BY b',
+        [binWidth, bins - 1, deck],
+      ))
+        CalibrationBin(
+          (r.columnAt(0) as int) * binWidth,
+          ((r.columnAt(0) as int) + 1) * binWidth,
+          r.columnAt(1) as int,
+          (r.columnAt(2) as num).toDouble() / (r.columnAt(1) as int),
+          (r.columnAt(3) as int) / (r.columnAt(1) as int),
+        ),
+    ];
+    return ReviewSummary(
+      totalReviews: total,
+      byDay: byDay,
+      retentionSample30: ret.columnAt(0) as int,
+      retentionPassed30: ret.columnAt(1) as int,
+      calibration: calibration,
+      logLoss: _logLoss(reviewed, deck),
+    );
+  }
+
+  double? _logLoss(String where, String deck) {
+    const eps = 1e-6;
+    try {
+      final r = u.db.select(
+        'SELECT SUM(CASE WHEN rating <> 1 THEN -ln(p) ELSE -ln(1 - p) END), '
+        'count(*) FROM (SELECT rating, MAX(MIN(r_predicted, ${1 - eps}), '
+        '$eps) AS p FROM review_log WHERE $where)',
+        [deck],
+      ).first;
+      final n = r.columnAt(1) as int;
+      return n == 0 ? null : (r.columnAt(0) as num).toDouble() / n;
+    } on SqliteException {
+      // SQLite built without math functions: sum in Dart instead.
+      var n = 0;
+      var sum = 0.0;
+      for (final r in u.db.select(
+        'SELECT rating, r_predicted FROM review_log WHERE $where',
+        [deck],
+      )) {
+        final q = (r.columnAt(1) as num).toDouble().clamp(eps, 1 - eps);
+        sum += r.columnAt(0) != 1 ? -math.log(q) : -math.log(1 - q);
+        n++;
+      }
+      return n == 0 ? null : sum / n;
+    }
+  }
+
   ResponseTimeTracker responseTimes({int perType = 200}) {
     final t = ResponseTimeTracker(window: perType);
-    final rows = u.db.select(
-      'SELECT question_type, response_ms FROM ('
-      '  SELECT question_type, response_ms, ts_utc, ROW_NUMBER() OVER '
-      '  (PARTITION BY question_type ORDER BY ts_utc DESC) AS n '
-      '  FROM review_log WHERE is_correct = 1 AND used_hint = 0 '
-      '  AND marked_guess = 0 AND gave_up = 0'
-      ') WHERE n <= ? ORDER BY ts_utc',
-      [perType],
-    );
-    for (final r in rows) {
-      t.add(
-        r['question_type'] as String,
-        AnswerEvent(isCorrect: true, responseMs: r['response_ms'] as int),
+    // One indexed query per question type (idx_review_type_ts) instead of
+    // ranking the whole log.
+    final types = [
+      for (final r in u.db.select(
+        'SELECT DISTINCT question_type FROM review_log',
+      ))
+        r.columnAt(0) as String,
+    ];
+    for (final type in types) {
+      final rows = u.db.select(
+        'SELECT response_ms FROM review_log WHERE question_type = ? '
+        'AND is_correct = 1 AND used_hint = 0 AND marked_guess = 0 '
+        'AND gave_up = 0 ORDER BY ts_utc DESC LIMIT ?',
+        [type, perType],
       );
+      for (final r in rows.reversed) {
+        t.add(
+          type,
+          AnswerEvent(isCorrect: true, responseMs: r.columnAt(0) as int),
+        );
+      }
     }
     return t;
   }

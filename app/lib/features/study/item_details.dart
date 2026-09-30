@@ -19,11 +19,15 @@ class ItemDetails extends ConsumerWidget {
 
   /// Grammar feedback: the sentence that was asked.
   final GrammarExample? example;
+
+  /// Leave out the big headword (the question above already shows it).
+  final bool hideHeadword;
   const ItemDetails({
     super.key,
     required this.item,
     this.showFurigana = true,
     this.example,
+    this.hideHeadword = false,
   });
 
   @override
@@ -57,14 +61,16 @@ class ItemDetails extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Center(
-          child: Furigana(
-            w.headwordFurigana,
-            size: LcTokens.jpAnswerSize,
-            showReading: showFurigana,
+        if (!hideHeadword) ...[
+          Center(
+            child: Furigana(
+              w.headwordFurigana,
+              size: LcTokens.jpAnswerSize,
+              showReading: showFurigana,
+            ),
           ),
-        ),
-        const SizedBox(height: LcTokens.spacingXs),
+          const SizedBox(height: LcTokens.spacingXs),
+        ],
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

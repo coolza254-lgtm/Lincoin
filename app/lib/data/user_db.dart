@@ -13,7 +13,7 @@ class UserDb {
 
   UserDb._(this.db, this.path);
 
-  static const int schemaVersion = 1;
+  static const int schemaVersion = 2;
   static const _uuid = Uuid();
 
   static String newId() => _uuid.v4();
@@ -36,6 +36,24 @@ class UserDb {
 
   void close() => db.close();
 
+  /// Rows changed on this connection so far; moves on every write.
+  int get changes =>
+      db.select('SELECT total_changes()').first.columnAt(0) as int;
+
+  final Map<String, (int, Object?)> _memo = {};
+
+  /// [compute] once per [key] until the next write to the database, so
+  /// read models that share a query (queue, coverage, stats) share one read.
+  /// Callers must not modify the returned value.
+  T memo<T>(String key, T Function() compute) {
+    final now = changes;
+    final hit = _memo[key];
+    if (hit != null && hit.$1 == now) return hit.$2 as T;
+    final v = compute();
+    _memo[key] = (now, v);
+    return v;
+  }
+
   /// Runs [body] in a transaction; rolls back if it throws.
   T tx<T>(T Function() body) {
     db.execute('BEGIN IMMEDIATE');
@@ -51,7 +69,12 @@ class UserDb {
 
   void _migrate() {
     db.execute('PRAGMA foreign_keys = ON');
-    if (path != null) db.execute('PRAGMA journal_mode = WAL');
+    if (path != null) {
+      db.execute('PRAGMA journal_mode = WAL');
+      // With WAL this cannot corrupt the database; a power cut may only
+      // lose the last answers. Saves a disk flush on every answer.
+      db.execute('PRAGMA synchronous = NORMAL');
+    }
     var v = version;
     if (v > schemaVersion) {
       throw StateError(
@@ -206,6 +229,13 @@ class UserDb {
         id TEXT PRIMARY KEY, item_id TEXT NOT NULL, kind TEXT NOT NULL,
         comment TEXT, content_version TEXT, created_at INTEGER NOT NULL,
         resolved INTEGER NOT NULL DEFAULT 0)''',
+    ],
+    // 1 → 2: indexes for the stats, response-time and practice queries
+    [
+      'CREATE INDEX idx_review_deck_day ON review_log(deck, study_day)',
+      'CREATE INDEX idx_review_type_ts ON review_log(question_type, ts_utc)',
+      'CREATE INDEX idx_practice_day ON practice_log(study_day)',
+      'CREATE INDEX idx_sessions_day ON sessions(study_day)',
     ],
   ];
 }

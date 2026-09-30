@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/catalog.dart';
 import '../../l10n/app_localizations.dart';
 import '../../services/challenge_service.dart';
+import '../../services/study_service.dart';
 import '../../state/providers.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
@@ -69,7 +71,6 @@ class _DrillScreenState extends ConsumerState<DrillScreen> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-    final c = context.lc;
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) async {
@@ -96,19 +97,10 @@ class _DrillScreenState extends ConsumerState<DrillScreen> {
                           onPressed: () => Navigator.of(context).maybePop(),
                         ),
                         Expanded(
-                          child: LcProgressBar(
-                            ctl.progress,
-                            color: widget.config.timeLimit != null
-                                ? c.coin
-                                : null,
-                          ),
+                          child: widget.config.timeLimit != null
+                              ? _TimeLeft(ctl)
+                              : LcProgressBar(ctl.progress),
                         ),
-                        const SizedBox(width: LcTokens.spacingMd),
-                        if (widget.config.timeLimit != null)
-                          Text(
-                            '${ctl.remaining.inSeconds}s',
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
                         if (ch != null) ...[
                           const SizedBox(width: LcTokens.spacingSm),
                           LcPill(
@@ -152,72 +144,119 @@ class _QuestionArea extends StatelessWidget {
     final c = context.lc;
     final q = ctl.question!;
     final feedback = ctl.phase == DrillPhase.feedback;
+    final practice = !ctl.config.isChallenge;
     final ok = ctl.lastCorrect ?? false;
+    // Practice explains every answer; challenges only show typed answers
+    // (the highlighted option is enough while the clock runs).
+    final banner = feedback && (practice || q.isTyped);
     return Column(
       children: [
         Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(LcTokens.spacingXl),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (feedback && !ctl.config.isChallenge ||
-                    feedback && q.isTyped)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: LcTokens.spacingLg),
-                    child: Container(
-                      padding: const EdgeInsets.all(LcTokens.spacingLg),
-                      decoration: BoxDecoration(
-                        color: ok ? c.goodSoft : c.warnSoft,
-                        borderRadius: BorderRadius.circular(
-                          LcTokens.radiusCard,
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            ok
-                                ? Icons.check_circle_rounded
-                                : Icons.replay_circle_filled_rounded,
-                            color: ok ? c.good : c.warn,
-                          ),
-                          const SizedBox(width: LcTokens.spacingMd),
-                          Expanded(
-                            child: Text(
-                              ok ? t.correct : t.notYet,
-                              style: tt.titleMedium?.copyWith(
-                                color: ok ? c.good : c.warn,
+          child: AnimatedSwitcher(
+            duration: context.motionFast,
+            child: SingleChildScrollView(
+              key: ValueKey(ctl.index),
+              padding: const EdgeInsets.all(LcTokens.spacingXl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Reveal(
+                    shown: banner,
+                    child: !banner
+                        ? const SizedBox.shrink()
+                        : Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: LcTokens.spacingLg,
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.all(LcTokens.spacingLg),
+                              decoration: BoxDecoration(
+                                color: ok ? c.goodSoft : c.warnSoft,
+                                borderRadius: BorderRadius.circular(
+                                  LcTokens.radiusCard,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  PopIn(
+                                    child: Icon(
+                                      ok
+                                          ? Icons.check_circle_rounded
+                                          : Icons.replay_circle_filled_rounded,
+                                      color: ok ? c.good : c.warn,
+                                    ),
+                                  ),
+                                  const SizedBox(width: LcTokens.spacingMd),
+                                  Expanded(
+                                    child: Text(
+                                      ok ? t.correct : t.notYet,
+                                      style: tt.titleMedium?.copyWith(
+                                        color: ok ? c.good : c.warn,
+                                      ),
+                                    ),
+                                  ),
+                                  if (ctl.combo >= 3 && ok)
+                                    PopIn(
+                                      child: LcPill(
+                                        t.combo(ctl.combo),
+                                        bg: c.coinSoft,
+                                        fg: c.coin,
+                                      ),
+                                    ),
+                                  if (ctl.lastCoins > 0) ...[
+                                    const SizedBox(width: LcTokens.spacingSm),
+                                    PopIn(
+                                      child: CoinChip(
+                                        ctl.lastCoins,
+                                        signed: true,
+                                      ),
+                                    ),
+                                  ],
+                                ],
                               ),
                             ),
                           ),
-                          if (ctl.combo >= 3 && ok)
-                            LcPill(
-                              t.combo(ctl.combo),
-                              bg: c.coinSoft,
-                              fg: c.coin,
-                            ),
-                          if (ctl.lastCoins > 0) ...[
-                            const SizedBox(width: LcTokens.spacingSm),
-                            CoinChip(ctl.lastCoins, signed: true),
-                          ],
-                        ],
-                      ),
-                    ),
                   ),
-                if (feedback && !ctl.config.isChallenge)
-                  LcCard(child: ItemDetails(item: ctl.current!.item))
-                else if (feedback && q.isTyped)
-                  _Answer(ctl.current!.item)
-                else
                   QuestionBody(
-                    key: ValueKey(ctl.index),
+                    key: const ValueKey('question'),
                     question: q,
-                    revealChosen: feedback ? (ctl.chosen ?? -1) : null,
+                    revealChosen: feedback && q.choices != null
+                        ? (ctl.chosen ?? -1)
+                        : null,
+                    collapseOthers: practice,
+                    revealTyped: feedback && q.isTyped ? ok : null,
                     onChoose: ctl.choose,
                     onSubmit: ctl.submitTyped,
                     synonymHint: ctl.synonymHint,
                   ),
-              ],
+                  Reveal(
+                    shown: feedback,
+                    child: !feedback
+                        ? const SizedBox.shrink()
+                        : practice
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                              top: LcTokens.spacingSm,
+                            ),
+                            child: LcCard(
+                              child: ItemDetails(
+                                item: ctl.current!.item,
+                                hideHeadword:
+                                    q.form == QuestionForm.meaningChoice,
+                              ),
+                            ),
+                          )
+                        : q.isTyped
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                              top: LcTokens.spacingLg,
+                            ),
+                            child: _Answer(ctl.current!.item),
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -228,7 +267,7 @@ class _QuestionArea extends StatelessWidget {
             LcTokens.spacingXl,
             LcTokens.spacingLg,
           ),
-          child: feedback && !ctl.config.isChallenge
+          child: feedback && practice
               ? SizedBox(
                   width: double.infinity,
                   child: FilledButton(
@@ -248,6 +287,91 @@ class _QuestionArea extends StatelessWidget {
               : const SizedBox(height: 48),
         ),
       ],
+    );
+  }
+}
+
+/// Time left in a timed round: a bar that drains smoothly and the seconds.
+/// Animates by itself, so the rest of the screen does not rebuild per tick.
+class _TimeLeft extends StatefulWidget {
+  final DrillController ctl;
+  const _TimeLeft(this.ctl);
+
+  @override
+  State<_TimeLeft> createState() => _TimeLeftState();
+}
+
+class _TimeLeftState extends State<_TimeLeft>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _a;
+
+  @override
+  void initState() {
+    super.initState();
+    // Only a frame clock: the value shown is read from the round's own
+    // stopwatch, so it stays right after the app was in the background.
+    _a = AnimationController(vsync: this, duration: const Duration(seconds: 1))
+      ..repeat();
+  }
+
+  @override
+  void didUpdateWidget(_TimeLeft old) {
+    super.didUpdateWidget(old);
+    if (widget.ctl.phase == DrillPhase.done) _a.stop();
+  }
+
+  @override
+  void dispose() {
+    _a.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.lc;
+    final limit = widget.ctl.config.timeLimit!;
+    return AnimatedBuilder(
+      animation: _a,
+      builder: (context, _) {
+        final used = widget.ctl.elapsedFraction;
+        final left = (limit.inMilliseconds * (1 - used) / 1000).ceil();
+        final urgent = left <= 10;
+        return Row(
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(LcTokens.radiusPill),
+                child: SizedBox(
+                  height: 10,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      ColoredBox(color: c.track),
+                      FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: 1 - used,
+                        child: ColoredBox(color: urgent ? c.warn : c.coin),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: LcTokens.spacingMd),
+            SizedBox(
+              width: 40,
+              child: Text(
+                '${left}s',
+                textAlign: TextAlign.right,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: urgent ? c.warn : null,
+                  fontFeatures: const [FontFeature.tabularFigures()],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

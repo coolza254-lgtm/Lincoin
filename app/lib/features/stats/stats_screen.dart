@@ -41,6 +41,7 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
     final minutes7 = (s.activeMsTotal7 / 60000).round();
     return SafeArea(
       child: ListView(
+        key: const PageStorageKey('stats'),
         padding: const EdgeInsets.fromLTRB(
           LcTokens.spacingXl,
           LcTokens.spacingMd,

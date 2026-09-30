@@ -227,3 +227,35 @@ final todaySummaryProvider = Provider<TodaySummary>((ref) {
     ),
   );
 });
+
+/// Days in a row with any study or practice. While today is still open the
+/// streak counts up to yesterday; [today] says whether today already counts.
+class Streak {
+  final int days;
+  final bool today;
+  const Streak(this.days, this.today);
+}
+
+final streakProvider = Provider<Streak>((ref) {
+  ref.watch(dataVersionProvider);
+  final svc = ref.watch(studyServiceProvider);
+  if (svc == null) return const Streak(0, false);
+  final today = svc.studyDay();
+  final from = today - 800;
+  final days = {
+    for (final r in svc.db.db.select(
+      'SELECT study_day FROM review_log WHERE study_day >= ? '
+      'UNION SELECT study_day FROM practice_log WHERE study_day >= ?',
+      [from, from],
+    ))
+      r.columnAt(0) as int,
+  };
+  final studiedToday = days.contains(today);
+  var d = studiedToday ? today : today - 1;
+  var n = 0;
+  while (days.contains(d)) {
+    n++;
+    d--;
+  }
+  return Streak(n, studiedToday);
+});

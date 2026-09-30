@@ -35,20 +35,23 @@ class KanaItem {
 class Sense {
   final String id;
   final int ord;
-  final List<String> pos;
+  final String? _posJson;
   final String en;
   final String? th;
   final String? noteTh;
   final String status;
-  const Sense(
+  Sense(
     this.id,
     this.ord,
-    this.pos,
+    this._posJson,
     this.en,
     this.th,
     this.noteTh,
     this.status,
   );
+
+  /// Parsed on first use: most senses are never shown in a session.
+  late final List<String> pos = ContentDb._list(_posJson);
 
   /// Thai gloss, or the English original while untranslated.
   String get display => (th?.isNotEmpty ?? false) ? th! : en;
@@ -57,18 +60,22 @@ class Sense {
 class WordForm {
   final String kind;
   final String text;
-  final List<FuriganaPart>? furigana;
+  final String? _furiganaJson;
   final bool isPrimary;
   final bool acceptAsAnswer;
-  final List<String> info;
-  const WordForm(
+  final String? _infoJson;
+  WordForm(
     this.kind,
     this.text,
-    this.furigana,
+    this._furiganaJson,
     this.isPrimary,
     this.acceptAsAnswer,
-    this.info,
+    this._infoJson,
   );
+
+  // Parsed on first use: only words on screen need their ruby.
+  late final List<FuriganaPart>? furigana = ContentDb._furigana(_furiganaJson);
+  late final List<String> info = ContentDb._list(_infoJson);
 }
 
 class WordItem {
@@ -81,7 +88,7 @@ class WordItem {
   final List<Sense> senses;
   final List<String> listReadings;
 
-  const WordItem({
+  WordItem({
     required this.id,
     required this.level,
     required this.order,
@@ -92,28 +99,26 @@ class WordItem {
     required this.listReadings,
   });
 
-  /// Usually written in kana (JMdict `uk` on the first sense).
-  bool get usuallyKana => tags.contains('uk');
+  // The getters below run for every question and distractor, so each is
+  // worked out once per word.
 
-  WordForm? get primaryKanji =>
+  /// Usually written in kana (JMdict `uk` on the first sense).
+  late final bool usuallyKana = tags.contains('uk');
+
+  late final WordForm? primaryKanji =
       forms.where((f) => f.kind == 'kanji' && f.isPrimary).firstOrNull ??
       forms.where((f) => f.kind == 'kanji').firstOrNull;
 
   /// The reading taught first (from the JLPT list when it names one).
-  String get reading {
-    if (listReadings.isNotEmpty) return listReadings.first;
-    return forms
-            .where((f) => f.kind == 'kana' && f.isPrimary)
-            .firstOrNull
-            ?.text ??
-        forms.firstWhere((f) => f.kind == 'kana').text;
-  }
+  late final String reading = listReadings.isNotEmpty
+      ? listReadings.first
+      : forms.where((f) => f.kind == 'kana' && f.isPrimary).firstOrNull?.text ??
+            forms.firstWhere((f) => f.kind == 'kana').text;
 
   /// How the word is shown as a question.
-  String get headword {
-    final k = primaryKanji;
-    return (k == null || usuallyKana) ? reading : k.text;
-  }
+  late final String headword = (primaryKanji == null || usuallyKana)
+      ? reading
+      : primaryKanji!.text;
 
   List<FuriganaPart> get headwordFurigana {
     final k = primaryKanji;
@@ -122,14 +127,14 @@ class WordItem {
   }
 
   /// Readings accepted for a typed answer.
-  List<String> get acceptedReadings => {
+  late final List<String> acceptedReadings = {
     ...listReadings,
     for (final f in forms)
       if (f.kind == 'kana' && f.acceptAsAnswer) f.text,
   }.toList();
 
   /// Short meaning used in questions: the first sense.
-  String get shortMeaning => senses.isEmpty ? '' : senses.first.display;
+  late final String shortMeaning = senses.isEmpty ? '' : senses.first.display;
 }
 
 class ExampleSentence {
@@ -300,15 +305,15 @@ class ContentDb {
       'accept_as_answer FROM word_forms ORDER BY word_id, kind, ord',
     )) {
       forms
-          .putIfAbsent(r['word_id'] as String, () => [])
+          .putIfAbsent(r.columnAt(0) as String, () => [])
           .add(
             WordForm(
-              r['kind'] as String,
-              r['text'] as String,
-              _furigana(r['furigana_json'] as String?),
-              (r['is_primary'] as int) == 1,
-              (r['accept_as_answer'] as int) == 1,
-              _list(r['info'] as String?),
+              r.columnAt(1) as String,
+              r.columnAt(2) as String,
+              r.columnAt(3) as String?,
+              r.columnAt(5) == 1,
+              r.columnAt(6) == 1,
+              r.columnAt(4) as String?,
             ),
           );
     }
@@ -318,16 +323,16 @@ class ContentDb {
       'FROM senses ORDER BY word_id, ord',
     )) {
       senses
-          .putIfAbsent(r['word_id'] as String, () => [])
+          .putIfAbsent(r.columnAt(1) as String, () => [])
           .add(
             Sense(
-              r['id'] as String,
-              r['ord'] as int,
-              _list(r['pos'] as String?),
-              r['gloss_en'] as String,
-              r['gloss_th'] as String?,
-              r['note_th'] as String?,
-              r['th_status'] as String,
+              r.columnAt(0) as String,
+              r.columnAt(2) as int,
+              r.columnAt(3) as String?,
+              r.columnAt(4) as String,
+              r.columnAt(5) as String?,
+              r.columnAt(6) as String?,
+              r.columnAt(7) as String,
             ),
           );
     }

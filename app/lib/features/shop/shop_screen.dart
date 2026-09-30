@@ -41,6 +41,7 @@ class ShopScreen extends ConsumerWidget {
     final data = ref.watch(shopDataProvider);
     return SafeArea(
       child: ListView(
+        key: const PageStorageKey('shop'),
         padding: const EdgeInsets.fromLTRB(
           LcTokens.spacingXl,
           LcTokens.spacingMd,
@@ -229,6 +230,7 @@ Future<void> editReward(BuildContext context, WidgetRef ref, Reward? r) async {
   final action = await showModalBottomSheet<String>(
     context: context,
     isScrollControlled: true,
+    useSafeArea: true,
     builder: (ctx) => Padding(
       padding: EdgeInsets.fromLTRB(
         LcTokens.spacingXl,
@@ -337,6 +339,21 @@ Future<void> editReward(BuildContext context, WidgetRef ref, Reward? r) async {
   final shop = ref.read(shopRepoProvider);
   if (action == 'delete' && r != null) {
     shop.remove(r.id);
+    if (context.mounted) {
+      final messenger = ScaffoldMessenger.of(context);
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(t.rewardDeleted(r.title)),
+          action: SnackBarAction(
+            label: t.undo,
+            onPressed: () {
+              shop.save(r, DateTime.now().toUtc());
+              ref.read(dataVersionProvider.notifier).bump();
+            },
+          ),
+        ),
+      );
+    }
   } else if (action == 'save') {
     final cd = int.tryParse(cooldown.text);
     shop.save(

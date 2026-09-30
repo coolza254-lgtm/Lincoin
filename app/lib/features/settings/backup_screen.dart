@@ -105,58 +105,63 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
     final backups = ref.watch(backupServiceProvider).list();
     return Scaffold(
       appBar: AppBar(title: Text(t.backup)),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(
-          LcTokens.spacingLg,
-          LcTokens.spacingSm,
-          LcTokens.spacingLg,
-          LcTokens.spacingXxl,
-        ),
-        children: [
-          Text(t.backupHelp, style: tt.bodyMedium),
-          const SizedBox(height: LcTokens.spacingLg),
-          FilledButton.icon(
-            icon: const Icon(Icons.ios_share_rounded),
-            label: Text(t.exportBackup),
-            onPressed: _busy ? null : _export,
+      body: SafeArea(
+        top: false,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(
+            LcTokens.spacingLg,
+            LcTokens.spacingSm,
+            LcTokens.spacingLg,
+            LcTokens.spacingXxl,
           ),
-          const SizedBox(height: LcTokens.spacingMd),
-          OutlinedButton.icon(
-            icon: const Icon(Icons.restore_rounded),
-            label: Text(t.importBackup),
-            onPressed: _busy ? null : _import,
-          ),
-          SectionLabel(t.autoBackups),
-          if (backups.isEmpty)
-            Text(t.noBackups, style: tt.bodySmall)
-          else
-            LcCard(
-              padding: const EdgeInsets.symmetric(vertical: LcTokens.spacingSm),
-              child: Column(
-                children: [
-                  for (final b in backups)
-                    ListTile(
-                      title: Text(_fmt(b.createdUtc.toLocal())),
-                      subtitle: Text(
-                        '${_reason(t, b.reason)} · '
-                        '${formatBytes(b.file.lengthSync())}',
-                      ),
-                      trailing: TextButton(
-                        onPressed: () async {
-                          if (await _confirm(
-                            t.restoreConfirmTitle,
-                            t.restoreConfirmBody,
-                          )) {
-                            _restore(b.file.path);
-                          }
-                        },
-                        child: Text(t.restore),
-                      ),
-                    ),
-                ],
-              ),
+          children: [
+            Text(t.backupHelp, style: tt.bodyMedium),
+            const SizedBox(height: LcTokens.spacingLg),
+            FilledButton.icon(
+              icon: const Icon(Icons.ios_share_rounded),
+              label: Text(t.exportBackup),
+              onPressed: _busy ? null : _export,
             ),
-        ],
+            const SizedBox(height: LcTokens.spacingMd),
+            OutlinedButton.icon(
+              icon: const Icon(Icons.restore_rounded),
+              label: Text(t.importBackup),
+              onPressed: _busy ? null : _import,
+            ),
+            SectionLabel(t.autoBackups),
+            if (backups.isEmpty)
+              Text(t.noBackups, style: tt.bodySmall)
+            else
+              LcCard(
+                padding: const EdgeInsets.symmetric(
+                  vertical: LcTokens.spacingSm,
+                ),
+                child: Column(
+                  children: [
+                    for (final b in backups)
+                      ListTile(
+                        title: Text(_fmt(b.createdUtc.toLocal())),
+                        subtitle: Text(
+                          '${_reason(t, b.reason)} · '
+                          '${formatBytes(b.file.lengthSync())}',
+                        ),
+                        trailing: TextButton(
+                          onPressed: () async {
+                            if (await _confirm(
+                              t.restoreConfirmTitle,
+                              t.restoreConfirmBody,
+                            )) {
+                              _restore(b.file.path);
+                            }
+                          },
+                          child: Text(t.restore),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

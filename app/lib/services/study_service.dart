@@ -185,17 +185,25 @@ class StudyService {
   /// recognition card was introduced.
   List<QueueCard> _queueCards(Map<String, StoredCard> stored) {
     final out = <QueueCard>[];
-    for (final item in catalog.path.where((i) => i.deck == deck)) {
+    // Items never started are taken strictly in path order and can never be
+    // buried (nothing of theirs was seen), so the first newPerDay of them
+    // are all the queue can use; the rest of the path is skipped.
+    var freshLeft = _newPerDay;
+    for (final item in catalog.itemsOf(deck)) {
+      final ids = item.cardIds;
       if (item is KanaStudy && !settings.includeKana) {
         // Kana already started keep their schedule.
-        final id = cardIdFor(item.id, Facet.kana);
-        final s = stored[id];
+        final s = stored[ids.first];
         if (s != null && !s.state.isNew) out.add(_fromStored(s, item, 0));
         continue;
       }
-      for (var f = 0; f < item.facets.length; f++) {
+      if (!ids.any(stored.containsKey)) {
+        if (freshLeft <= 0) continue;
+        freshLeft--;
+      }
+      for (var f = 0; f < ids.length; f++) {
         final facet = item.facets[f];
-        final id = cardIdFor(item.id, facet);
+        final id = ids[f];
         final s = stored[id];
         final order = item.pathOrder * 4 + f;
         if (s != null) {

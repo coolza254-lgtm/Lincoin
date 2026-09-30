@@ -111,6 +111,28 @@ class CoinChip extends StatelessWidget {
       s.replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},');
 }
 
+/// [CoinChip] that counts up from zero, for end-of-round summaries.
+class CountUpCoins extends StatelessWidget {
+  final int amount;
+  final bool large;
+  final bool signed;
+  const CountUpCoins(
+    this.amount, {
+    super.key,
+    this.large = false,
+    this.signed = false,
+  });
+
+  @override
+  Widget build(BuildContext context) => TweenAnimationBuilder<double>(
+    tween: Tween(begin: context.reduceMotion ? 1 : 0, end: 1),
+    duration: const Duration(milliseconds: 900),
+    curve: Curves.easeOutCubic,
+    builder: (context, v, _) =>
+        CoinChip((amount * v).round(), large: large, signed: signed),
+  );
+}
+
 class CoinMark extends StatelessWidget {
   final double size;
   const CoinMark({super.key, this.size = 16});
@@ -345,4 +367,39 @@ class EmptyState extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Grows and fades [child] in when [shown] (e.g. the result around an answered question).
+class Reveal extends StatelessWidget {
+  final bool shown;
+  final Widget child;
+  const Reveal({super.key, required this.shown, required this.child});
+
+  @override
+  Widget build(BuildContext context) => AnimatedSize(
+    duration: context.motionNormal,
+    curve: Curves.easeOutCubic,
+    alignment: Alignment.topCenter,
+    child: AnimatedOpacity(
+      duration: context.motionNormal,
+      curve: Curves.easeOut,
+      opacity: shown ? 1 : 0,
+      child: child,
+    ),
+  );
+}
+
+/// Scales its child in with a small overshoot.
+class PopIn extends StatelessWidget {
+  final Widget child;
+  const PopIn({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) => TweenAnimationBuilder<double>(
+    tween: Tween(begin: context.reduceMotion ? 1 : 0.6, end: 1),
+    duration: context.motionNormal * 1.6,
+    curve: Curves.elasticOut,
+    builder: (context, v, child) => Transform.scale(scale: v, child: child),
+    child: child,
+  );
 }

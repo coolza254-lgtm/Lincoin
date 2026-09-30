@@ -204,14 +204,17 @@ class GrammarPointScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(title: Text(point.titleJa)),
-    body: ListView(
-      padding: const EdgeInsets.fromLTRB(
-        LcTokens.spacingXl,
-        0,
-        LcTokens.spacingXl,
-        LcTokens.spacingXxl,
+    body: SafeArea(
+      top: false,
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(
+          LcTokens.spacingXl,
+          0,
+          LcTokens.spacingXl,
+          LcTokens.spacingXxl,
+        ),
+        children: [LcCard(child: GrammarLesson(point: point, maxExamples: 6))],
       ),
-      children: [LcCard(child: GrammarLesson(point: point, maxExamples: 6))],
     ),
   );
 }

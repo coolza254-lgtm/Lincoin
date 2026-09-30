@@ -22,9 +22,17 @@ class QuestionBody extends StatefulWidget {
   final bool hintShown;
   final bool synonymHint;
 
-  /// After answering (quick feedback in drills): highlights the right
-  /// option and the one chosen.
+  /// After answering: highlights the right option and the one chosen
+  /// (-1 = none chosen, e.g. "don't know").
   final int? revealChosen;
+
+  /// With [revealChosen]: fold away the options that were neither right
+  /// nor chosen, so the explanation below fits on screen.
+  final bool collapseOthers;
+
+  /// After a typed answer: whether it was right (locks and colours the
+  /// field). Null while the question is open.
+  final bool? revealTyped;
 
   const QuestionBody({
     super.key,
@@ -35,6 +43,8 @@ class QuestionBody extends StatefulWidget {
     this.hintShown = false,
     this.synonymHint = false,
     this.revealChosen,
+    this.collapseOthers = false,
+    this.revealTyped,
   });
 
   @override
@@ -82,7 +92,7 @@ class _QuestionBodyState extends State<QuestionBody> {
         Wrap(
           spacing: LcTokens.spacingSm,
           children: [
-            for (final p in posLabels(w.word.pos))
+            for (final p in posLabels(w.word.pos, max: 2))
               LcPill(p, bg: c.track, fg: c.muted),
           ],
         ),
@@ -109,7 +119,12 @@ class _QuestionBodyState extends State<QuestionBody> {
         t.qCloze,
         Column(
           children: [
-            ClozeSentence(q.example!, blank: true, size: 26),
+            // Filled in (highlighted) once answered.
+            ClozeSentence(
+              q.example!,
+              blank: widget.revealChosen == null,
+              size: 26,
+            ),
             const SizedBox(height: LcTokens.spacingMd),
             Text(
               q.example!.sentence.th ?? '',
@@ -128,6 +143,10 @@ class _QuestionBodyState extends State<QuestionBody> {
     final hint = widget.hintShown && item is WordStudy
         ? item.word.reading.characters.first
         : null;
+    final revealed = widget.revealTyped != null;
+    final typedColor = !revealed
+        ? null
+        : (widget.revealTyped! ? c.good : c.warn);
 
     return Column(
       children: [
@@ -137,35 +156,59 @@ class _QuestionBodyState extends State<QuestionBody> {
         const SizedBox(height: LcTokens.spacingXxl),
         if (q.choices != null)
           for (final (i, o) in q.choices!.options.indexed)
-            Padding(
-              padding: const EdgeInsets.only(bottom: LcTokens.spacingMd),
-              child: _Option(
-                text: o,
-                japanese: q.form.japaneseOptions,
-                state: widget.revealChosen == null
-                    ? _OptionState.idle
-                    : i == q.choices!.correctIndex
-                    ? _OptionState.right
-                    : i == widget.revealChosen
-                    ? _OptionState.wrong
-                    : _OptionState.dim,
-                onPressed: widget.revealChosen == null
-                    ? () => widget.onChoose(i)
-                    : null,
+            _collapsible(
+              context,
+              hidden:
+                  widget.collapseOthers &&
+                  widget.revealChosen != null &&
+                  i != q.choices!.correctIndex &&
+                  i != widget.revealChosen,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: LcTokens.spacingMd),
+                child: _Option(
+                  text: o,
+                  japanese: q.form.japaneseOptions,
+                  state: widget.revealChosen == null
+                      ? _OptionState.idle
+                      : i == q.choices!.correctIndex
+                      ? _OptionState.right
+                      : i == widget.revealChosen
+                      ? _OptionState.wrong
+                      : _OptionState.dim,
+                  onPressed: widget.revealChosen == null
+                      ? () => widget.onChoose(i)
+                      : null,
+                ),
               ),
             )
+        // Gave up without typing: nothing to show in the field.
+        else if (revealed && _input.text.isEmpty)
+          const SizedBox.shrink()
         else ...[
           TextField(
             controller: _input,
             focusNode: _focus,
+            readOnly: revealed,
             autocorrect: false,
             enableSuggestions: false,
             textInputAction: TextInputAction.done,
-            style: jpStyle(24, 500, c.ink),
+            style: jpStyle(24, 500, typedColor ?? c.ink),
             textAlign: TextAlign.center,
             // Empty on purpose: no example text that could hint at the answer.
-            decoration: const InputDecoration(),
-            onSubmitted: widget.onSubmit,
+            decoration: typedColor == null
+                ? const InputDecoration()
+                : InputDecoration(
+                    fillColor: widget.revealTyped! ? c.goodSoft : c.warnSoft,
+                    enabledBorder: _border(typedColor),
+                    focusedBorder: _border(typedColor),
+                    suffixIcon: Icon(
+                      widget.revealTyped!
+                          ? Icons.check_circle_rounded
+                          : Icons.cancel_rounded,
+                      color: typedColor,
+                    ),
+                  ),
+            onSubmitted: revealed ? null : widget.onSubmit,
           ),
           const SizedBox(height: LcTokens.spacingSm),
           if (q.form == QuestionForm.readingType && _input.text.isNotEmpty)
@@ -189,20 +232,49 @@ class _QuestionBodyState extends State<QuestionBody> {
                 icon: Icons.info_outline_rounded,
               ),
             ),
-          const SizedBox(height: LcTokens.spacingLg),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: _input.text.trim().isEmpty
-                  ? null
-                  : () => widget.onSubmit(_input.text),
-              child: Text(t.checkAnswer),
+          if (!revealed) ...[
+            const SizedBox(height: LcTokens.spacingLg),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: _input.text.trim().isEmpty
+                    ? null
+                    : () => widget.onSubmit(_input.text),
+                child: Text(t.checkAnswer),
+              ),
             ),
-          ),
+          ],
         ],
       ],
     );
   }
+
+  OutlineInputBorder _border(Color color) => OutlineInputBorder(
+    borderRadius: BorderRadius.circular(LcTokens.radiusControl),
+    borderSide: BorderSide(color: color, width: 2),
+  );
+
+  /// Folds [child] to nothing (animated) when [hidden].
+  Widget _collapsible(
+    BuildContext context, {
+    required bool hidden,
+    required Widget child,
+  }) => TweenAnimationBuilder<double>(
+    tween: Tween(end: hidden ? 0 : 1),
+    duration: context.motionNormal,
+    curve: Curves.easeOutCubic,
+    child: child,
+    builder: (context, v, child) => IgnorePointer(
+      ignoring: hidden,
+      child: ClipRect(
+        child: Align(
+          alignment: Alignment.topCenter,
+          heightFactor: v,
+          child: Opacity(opacity: v, child: child),
+        ),
+      ),
+    ),
+  );
 }
 
 enum _OptionState { idle, right, wrong, dim }

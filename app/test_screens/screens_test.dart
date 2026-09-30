@@ -205,8 +205,23 @@ void main() {
     await tester.tap(find.text('เริ่มเรียน').first);
     await tester.pumpAndSettle();
     var intro = false, choice = false, typed = false, feedback = false;
-    for (var i = 0; i < 60 && !(intro && choice && typed && feedback); i++) {
-      if (find.text('จำแล้ว ไปต่อ').evaluate().isNotEmpty) {
+    var typedFeedback = false;
+    for (
+      var i = 0;
+      i < 80 && !(intro && choice && typed && feedback && typedFeedback);
+      i++
+    ) {
+      if (find.text('ต่อไป').evaluate().isNotEmpty) {
+        final isTyped = find.text('พิมพ์คำอ่าน').evaluate().isNotEmpty;
+        if (isTyped && !typedFeedback) {
+          await snap('7b-typed-feedback');
+          typedFeedback = true;
+        } else if (!isTyped && !feedback) {
+          await snap('8-feedback');
+          feedback = true;
+        }
+        await tester.tap(find.text('ต่อไป'));
+      } else if (find.text('จำแล้ว ไปต่อ').evaluate().isNotEmpty) {
         if (!intro) await snap('5-intro');
         intro = true;
         await tester.tap(find.text('จำแล้ว ไปต่อ'));
@@ -218,11 +233,7 @@ void main() {
         await tester.enterText(find.byType(TextField), 'tabe');
         if (!typed) await snap('7-typed');
         typed = true;
-        await tester.tap(find.text('ไม่รู้'));
-      } else if (find.text('ต่อไป').evaluate().isNotEmpty) {
-        if (!feedback) await snap('8-feedback');
-        feedback = true;
-        await tester.tap(find.text('ต่อไป'));
+        await tester.testTextInput.receiveAction(TextInputAction.done);
       } else {
         break;
       }
@@ -241,10 +252,10 @@ void main() {
       i < 6 && find.text('เติมคำในช่องว่าง').evaluate().isEmpty;
       i++
     ) {
-      if (find.text('จำแล้ว ไปต่อ').evaluate().isNotEmpty) {
-        await tester.tap(find.text('จำแล้ว ไปต่อ'));
-      } else if (find.text('ต่อไป').evaluate().isNotEmpty) {
+      if (find.text('ต่อไป').evaluate().isNotEmpty) {
         await tester.tap(find.text('ต่อไป'));
+      } else if (find.text('จำแล้ว ไปต่อ').evaluate().isNotEmpty) {
+        await tester.tap(find.text('จำแล้ว ไปต่อ'));
       }
       await tester.pumpAndSettle();
     }

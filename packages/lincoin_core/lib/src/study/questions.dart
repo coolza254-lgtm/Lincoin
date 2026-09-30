@@ -64,21 +64,30 @@ ChoiceSet buildChoices({
   required String seedKey,
   int optionCount = 4,
 }) {
-  int rank(DistractorCandidate c) => fnv1a32('$seedKey|${c.itemId}');
-  final seen = {correct};
-  final same = <DistractorCandidate>[];
-  final other = <DistractorCandidate>[];
+  // Each candidate is hashed once (the pool can hold thousands of words and
+  // this runs for every question), then ordered by that rank.
+  final same = <(int, DistractorCandidate)>[];
+  final other = <(int, DistractorCandidate)>[];
   for (final c in pool) {
     if (c.itemId == correctItemId || c.text.isEmpty) continue;
-    (c.group == group ? same : other).add(c);
+    final r = (fnv1a32('$seedKey|${c.itemId}'), c);
+    (c.group == group ? same : other).add(r);
   }
-  same.sort((a, b) => rank(a).compareTo(rank(b)));
-  other.sort((a, b) => rank(a).compareTo(rank(b)));
+  int byRank((int, DistractorCandidate) a, (int, DistractorCandidate) b) =>
+      a.$1.compareTo(b.$1);
+  final seen = {correct};
   final picked = <String>[];
-  for (final c in [...same, ...other]) {
-    if (picked.length >= optionCount - 1) break;
-    if (seen.add(c.text)) picked.add(c.text);
+  void take(List<(int, DistractorCandidate)> list) {
+    if (picked.length >= optionCount - 1) return;
+    list.sort(byRank);
+    for (final (_, c) in list) {
+      if (picked.length >= optionCount - 1) break;
+      if (seen.add(c.text)) picked.add(c.text);
+    }
   }
+
+  take(same);
+  take(other);
   final slot = fnv1a32('$seedKey|slot') % (picked.length + 1);
   final options = [...picked]..insert(slot, correct);
   return ChoiceSet(options, slot);

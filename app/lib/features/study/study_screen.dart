@@ -54,14 +54,23 @@ class StudyScreen extends ConsumerWidget {
               Expanded(
                 child: AnimatedSwitcher(
                   duration: context.motionNormal,
+                  switchInCurve: Curves.easeOutCubic,
+                  switchOutCurve: Curves.easeInCubic,
+                  transitionBuilder: _slideFade,
                   child: KeyedSubtree(
-                    key: ValueKey(
-                      '${s.phase}-${s.question?.cardId}-${s.answered}',
-                    ),
+                    // A question and its feedback share one subtree: the
+                    // answer is revealed in place, not on a new page.
+                    key: ValueKey(switch (s.phase) {
+                      SessionPhase.intro => 'intro-${s.question?.cardId}',
+                      SessionPhase.done => 'done',
+                      _ =>
+                        'q-${s.question?.cardId}-'
+                            '${s.answered - (s.phase == SessionPhase.feedback ? 1 : 0)}',
+                    }),
                     child: switch (s.phase) {
                       SessionPhase.intro => _Intro(s, deck),
-                      SessionPhase.question => _QuestionView(s, deck),
-                      SessionPhase.feedback => _Feedback(s, deck),
+                      SessionPhase.question ||
+                      SessionPhase.feedback => _QuestionView(s, deck),
                       SessionPhase.done => _Done(s, deck),
                     },
                   ),
@@ -74,6 +83,15 @@ class StudyScreen extends ConsumerWidget {
     );
   }
 }
+
+/// New content slides in slightly from the right while the old one fades.
+Widget _slideFade(Widget child, Animation<double> a) => FadeTransition(
+  opacity: a,
+  child: SlideTransition(
+    position: Tween(begin: const Offset(0.06, 0), end: Offset.zero).animate(a),
+    child: child,
+  ),
+);
 
 /// Scrollable body with a fixed action area at the bottom.
 class _Frame extends StatelessWidget {
@@ -169,118 +187,84 @@ class _QuestionView extends ConsumerWidget {
     final t = AppLocalizations.of(context);
     final q = s.question!;
     final ctl = ref.read(sessionProvider(deck).notifier);
-    return _Frame(
-      body: QuestionBody(
-        question: q,
-        showFurigana: _showFurigana(ref, q),
-        hintShown: s.hintShown,
-        synonymHint: s.synonymHint,
-        onChoose: ctl.chooseOption,
-        onSubmit: ctl.submitTyped,
-      ),
-      actions: [
-        Row(
-          children: [
-            FilterChip(
-              label: Text(t.guessing),
-              selected: s.guessing,
-              onSelected: (_) => ctl.toggleGuess(),
-              tooltip: t.guessingHelp,
-            ),
-            const Spacer(),
-            if (q.form == QuestionForm.readingType && !s.hintShown)
-              TextButton(onPressed: ctl.showHint, child: Text(t.hint)),
-            TextButton(onPressed: ctl.dontKnow, child: Text(t.dontKnow)),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class _Feedback extends ConsumerWidget {
-  final SessionState s;
-  final String deck;
-  const _Feedback(this.s, this.deck);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final t = AppLocalizations.of(context);
-    final tt = Theme.of(context).textTheme;
-    final c = context.lc;
-    final q = s.question!;
-    final ok = s.correct ?? false;
-    final r = s.result!;
-    final yourAnswer =
-        s.typedAnswer ??
-        (s.chosenIndex != null ? q.choices!.options[s.chosenIndex!] : null);
+    final fb = s.phase == SessionPhase.feedback;
     return _Frame(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            padding: const EdgeInsets.all(LcTokens.spacingLg),
-            decoration: BoxDecoration(
-              color: ok ? c.goodSoft : c.warnSoft,
-              borderRadius: BorderRadius.circular(LcTokens.radiusCard),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  ok
-                      ? Icons.check_circle_rounded
-                      : Icons.replay_circle_filled_rounded,
-                  color: ok ? c.good : c.warn,
-                  size: 32,
-                ),
-                const SizedBox(width: LcTokens.spacingMd),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          // Fixed slots, so the question keeps its state (typed text, focus)
+          // when the result appears around it.
+          Reveal(
+            shown: fb,
+            child: fb ? _ResultBanner(s) : const SizedBox.shrink(),
+          ),
+          QuestionBody(
+            key: const ValueKey('question'),
+            question: q,
+            showFurigana: _showFurigana(ref, q),
+            hintShown: s.hintShown,
+            synonymHint: s.synonymHint,
+            onChoose: ctl.chooseOption,
+            onSubmit: ctl.submitTyped,
+            revealChosen: fb && q.choices != null
+                ? (s.chosenIndex ?? -1)
+                : null,
+            collapseOthers: true,
+            revealTyped: fb && q.isTyped ? (s.correct ?? false) : null,
+          ),
+          Reveal(
+            shown: fb,
+            child: fb
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        ok ? t.correct : t.notYet,
-                        style: tt.titleLarge?.copyWith(
-                          color: ok ? c.good : c.warn,
+                      const SizedBox(height: LcTokens.spacingSm),
+                      LcCard(
+                        large: true,
+                        child: ItemDetails(
+                          item: q.item,
+                          example: q.example,
+                          hideHeadword: q.form == QuestionForm.meaningChoice,
                         ),
                       ),
-                      if (!ok && yourAnswer != null)
-                        Text(t.yourAnswer(yourAnswer), style: tt.bodyMedium),
-                      if (!ok && yourAnswer == null)
-                        Text(t.willReviewSoon, style: tt.bodyMedium),
-                      if (r.graduated) Text(t.graduated, style: tt.bodyMedium),
-                      if (r.mastered) Text(t.masteredNow, style: tt.bodyMedium),
-                      if (r.leech) Text(t.leechNote, style: tt.bodySmall),
+                      if (q.item is WordStudy)
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton.icon(
+                            icon: const Icon(Icons.flag_outlined, size: 18),
+                            label: Text(t.reportTranslation),
+                            onPressed: () => _report(context, ref, q.item.id),
+                          ),
+                        ),
                     ],
-                  ),
-                ),
-                if (r.coinTotal > 0) CoinChip(r.coinTotal, signed: true),
-              ],
-            ),
+                  )
+                : const SizedBox.shrink(),
           ),
-          const SizedBox(height: LcTokens.spacingLg),
-          LcCard(
-            large: true,
-            child: ItemDetails(item: q.item, example: q.example),
-          ),
-          const SizedBox(height: LcTokens.spacingSm),
-          if (q.item is WordStudy)
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                icon: const Icon(Icons.flag_outlined, size: 18),
-                label: Text(t.reportTranslation),
-                onPressed: () => _report(context, ref, q.item.id),
-              ),
-            ),
         ],
       ),
       actions: [
-        FilledButton(
-          autofocus: true,
-          onPressed: ref.read(sessionProvider(deck).notifier).next,
-          child: Text(t.next),
-        ),
+        if (fb)
+          FilledButton(
+            // Takes focus from the answer field, which closes the keyboard.
+            autofocus: true,
+            onPressed: ctl.next,
+            child: Text(t.next),
+          )
+        else
+          Row(
+            children: [
+              FilterChip(
+                label: Text(t.guessing),
+                selected: s.guessing,
+                onSelected: (_) => ctl.toggleGuess(),
+                tooltip: t.guessingHelp,
+              ),
+              const Spacer(),
+              if (q.form == QuestionForm.readingType && !s.hintShown)
+                TextButton(onPressed: ctl.showHint, child: Text(t.hint)),
+              TextButton(onPressed: ctl.dontKnow, child: Text(t.dontKnow)),
+            ],
+          ),
       ],
     );
   }
@@ -329,6 +313,69 @@ class _Feedback extends ConsumerWidget {
   }
 }
 
+/// Right / not yet, what happens next, and the Lincoin earned.
+class _ResultBanner extends StatelessWidget {
+  final SessionState s;
+  const _ResultBanner(this.s);
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+    final tt = Theme.of(context).textTheme;
+    final c = context.lc;
+    final ok = s.correct ?? false;
+    final r = s.result!;
+    final gaveUp = s.typedAnswer == null && s.chosenIndex == null;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: LcTokens.spacingLg),
+      child: Semantics(
+        liveRegion: true,
+        child: Container(
+          padding: const EdgeInsets.all(LcTokens.spacingLg),
+          decoration: BoxDecoration(
+            color: ok ? c.goodSoft : c.warnSoft,
+            borderRadius: BorderRadius.circular(LcTokens.radiusCard),
+          ),
+          child: Row(
+            children: [
+              PopIn(
+                child: Icon(
+                  ok
+                      ? Icons.check_circle_rounded
+                      : Icons.replay_circle_filled_rounded,
+                  color: ok ? c.good : c.warn,
+                  size: 32,
+                ),
+              ),
+              const SizedBox(width: LcTokens.spacingMd),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ok ? t.correct : t.notYet,
+                      style: tt.titleLarge?.copyWith(
+                        color: ok ? c.good : c.warn,
+                      ),
+                    ),
+                    if (!ok && gaveUp)
+                      Text(t.willReviewSoon, style: tt.bodyMedium),
+                    if (r.graduated) Text(t.graduated, style: tt.bodyMedium),
+                    if (r.mastered) Text(t.masteredNow, style: tt.bodyMedium),
+                    if (r.leech) Text(t.leechNote, style: tt.bodySmall),
+                  ],
+                ),
+              ),
+              if (r.coinTotal > 0)
+                PopIn(child: CoinChip(r.coinTotal, signed: true)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _Done extends ConsumerWidget {
   final SessionState s;
   final String deck;
@@ -346,12 +393,14 @@ class _Done extends ConsumerWidget {
       body: Column(
         children: [
           const SizedBox(height: LcTokens.spacingXxl),
-          Icon(
-            s.answered == 0
-                ? Icons.check_circle_outline_rounded
-                : Icons.celebration_rounded,
-            size: 64,
-            color: c.accent,
+          PopIn(
+            child: Icon(
+              s.answered == 0
+                  ? Icons.check_circle_outline_rounded
+                  : Icons.celebration_rounded,
+              size: 64,
+              color: c.accent,
+            ),
           ),
           const SizedBox(height: LcTokens.spacingLg),
           Text(
@@ -369,7 +418,7 @@ class _Done extends ConsumerWidget {
                   StatTile('$acc%', t.accuracyLabel),
                   Column(
                     children: [
-                      CoinChip(s.coins, large: true),
+                      CountUpCoins(s.coins, large: true),
                       const SizedBox(height: 4),
                       Text(t.coinsEarned, style: tt.bodySmall),
                     ],

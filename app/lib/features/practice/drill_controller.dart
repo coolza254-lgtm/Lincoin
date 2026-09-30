@@ -108,20 +108,23 @@ class DrillController extends ChangeNotifier {
       study.studyDay(now),
     );
     _roundTimer.start();
-    if (config.timeLimit != null) {
-      _ticker = Timer.periodic(const Duration(milliseconds: 200), (_) {
-        if (remaining <= Duration.zero) {
-          _finish();
-        } else {
-          notifyListeners();
-        }
-      });
-    }
+    // The screen animates the clock itself; this only ends the round.
+    if (config.timeLimit != null) _ticker = Timer(config.timeLimit!, _finish);
     _next();
   }
 
   int get total =>
       config.timeLimit != null || config.stopOnWrong ? 0 : _items.length;
+
+  /// Share of the time limit already used (0 without a limit).
+  double get elapsedFraction {
+    final limit = config.timeLimit;
+    if (limit == null) return 0;
+    return (_roundTimer.elapsedMilliseconds / limit.inMilliseconds).clamp(
+      0.0,
+      1.0,
+    );
+  }
 
   Duration get remaining {
     final limit = config.timeLimit;
@@ -207,6 +210,7 @@ class DrillController extends ChangeNotifier {
       HapticFeedback.lightImpact();
     } else {
       combo = 0;
+      HapticFeedback.mediumImpact();
     }
     final a = practice.record(
       q: question!,

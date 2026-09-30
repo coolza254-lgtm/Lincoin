@@ -37,144 +37,153 @@ class UpdatesScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(t.updates)),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(
-          LcTokens.spacingLg,
-          LcTokens.spacingSm,
-          LcTokens.spacingLg,
-          LcTokens.spacingXxl,
-        ),
-        children: [
-          LcCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _kv(context, t.appVersion, '${app.name} (${app.code})'),
-                _kv(context, t.contentVersion, catalog?.info.version ?? t.none),
-                _kv(
-                  context,
-                  t.lastChecked,
-                  u.lastCheckedUtc == null
-                      ? t.never
-                      : _fmt(u.lastCheckedUtc!.toLocal()),
-                ),
-              ],
-            ),
+      body: SafeArea(
+        top: false,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(
+            LcTokens.spacingLg,
+            LcTokens.spacingSm,
+            LcTokens.spacingLg,
+            LcTokens.spacingXxl,
           ),
-          const SizedBox(height: LcTokens.spacingLg),
-          if (u.busy) ...[
+          children: [
             LcCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(u.busyLabel ?? '', style: tt.bodyLarge),
-                  const SizedBox(height: LcTokens.spacingSm),
-                  LinearProgressIndicator(value: u.progress),
+                  _kv(context, t.appVersion, '${app.name} (${app.code})'),
+                  _kv(
+                    context,
+                    t.contentVersion,
+                    catalog?.info.version ?? t.none,
+                  ),
+                  _kv(
+                    context,
+                    t.lastChecked,
+                    u.lastCheckedUtc == null
+                        ? t.never
+                        : _fmt(u.lastCheckedUtc!.toLocal()),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: LcTokens.spacingLg),
-          ],
-          FilledButton.icon(
-            icon: const Icon(Icons.cloud_download_outlined),
-            label: Text(t.checkForUpdates),
-            onPressed: u.busy || !settings.onlineUpdateCheck
-                ? null
-                : () async {
-                    final err = await ctl.check();
-                    if (err != null) await show(UpdateOutcome(false, err));
-                  },
-          ),
-          const SizedBox(height: LcTokens.spacingMd),
-          OutlinedButton.icon(
-            icon: const Icon(Icons.folder_open_rounded),
-            label: Text(t.updateFromFile),
-            onPressed: u.busy ? null : () => _fromFile(context, ref),
-          ),
-          const SizedBox(height: LcTokens.spacingSm),
-          Text(t.updateFromFileHelp, style: tt.bodySmall),
-          if (u.error != null) ...[
-            const SizedBox(height: LcTokens.spacingLg),
-            LcPill(
-              u.error!,
-              bg: c.warnSoft,
-              fg: c.warn,
-              icon: Icons.wifi_off_rounded,
-            ),
-          ],
-          if (check != null) ...[
-            const SizedBox(height: LcTokens.spacingLg),
-            if (!check.hasAny && !check.contentNeedsNewerApp)
+            if (u.busy) ...[
               LcCard(
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.check_circle_rounded, color: c.good),
-                    const SizedBox(width: LcTokens.spacingMd),
-                    Expanded(child: Text(t.upToDate, style: tt.bodyLarge)),
+                    Text(u.busyLabel ?? '', style: tt.bodyLarge),
+                    const SizedBox(height: LcTokens.spacingSm),
+                    LinearProgressIndicator(value: u.progress),
                   ],
                 ),
               ),
-            if (check.appUpdate != null)
-              _ReleaseCard(
-                title: t.newAppVersion(check.appUpdate!.versionName),
-                size: check.appUpdate!.sizeBytes,
-                changes: check.appUpdate!.changelogTh,
-                button: t.updateApp,
-                onPressed: u.busy
-                    ? null
-                    : () async => show(await ctl.installApp(check.appUpdate!)),
-              ),
-            if (check.contentUpdate != null)
-              _ReleaseCard(
-                title: t.newContentVersion(check.contentUpdate!.version),
-                size: check.contentUpdate!.sizeBytes,
-                changes: check.contentUpdate!.changelogTh,
-                button: t.updateContent,
-                onPressed: u.busy
-                    ? null
-                    : () async =>
-                          show(await ctl.installContent(check.contentUpdate!)),
-              ),
-            if (check.contentNeedsNewerApp)
-              Padding(
-                padding: const EdgeInsets.only(top: LcTokens.spacingMd),
-                child: Text(t.contentNeedsNewerApp, style: tt.bodySmall),
-              ),
-          ],
-          SectionLabel(t.options),
-          LcCard(
-            padding: const EdgeInsets.symmetric(vertical: LcTokens.spacingSm),
-            child: Column(
-              children: [
-                SwitchListTile(
-                  title: Text(t.onlineCheck),
-                  subtitle: Text(t.onlineCheckHelp),
-                  value: settings.onlineUpdateCheck,
-                  onChanged: (v) => ref
-                      .read(settingsProvider.notifier)
-                      .update((x) => x.copyWith(onlineUpdateCheck: v)),
-                ),
-                if (prevContent != null)
-                  ListTile(
-                    leading: const Icon(Icons.undo_rounded),
-                    title: Text(t.rollbackContent(prevContent)),
-                    onTap: u.busy
-                        ? null
-                        : () async {
-                            final ok = await _confirm(
-                              context,
-                              t.rollbackContent(prevContent),
-                              t.rollbackHelp,
-                            );
-                            if (ok) await show(ctl.rollbackContent());
-                          },
-                  ),
-              ],
+              const SizedBox(height: LcTokens.spacingLg),
+            ],
+            FilledButton.icon(
+              icon: const Icon(Icons.cloud_download_outlined),
+              label: Text(t.checkForUpdates),
+              onPressed: u.busy || !settings.onlineUpdateCheck
+                  ? null
+                  : () async {
+                      final err = await ctl.check();
+                      if (err != null) await show(UpdateOutcome(false, err));
+                    },
             ),
-          ),
-          const SizedBox(height: LcTokens.spacingMd),
-          Text(t.updateSafety, style: tt.bodySmall),
-        ],
+            const SizedBox(height: LcTokens.spacingMd),
+            OutlinedButton.icon(
+              icon: const Icon(Icons.folder_open_rounded),
+              label: Text(t.updateFromFile),
+              onPressed: u.busy ? null : () => _fromFile(context, ref),
+            ),
+            const SizedBox(height: LcTokens.spacingSm),
+            Text(t.updateFromFileHelp, style: tt.bodySmall),
+            if (u.error != null) ...[
+              const SizedBox(height: LcTokens.spacingLg),
+              LcPill(
+                u.error!,
+                bg: c.warnSoft,
+                fg: c.warn,
+                icon: Icons.wifi_off_rounded,
+              ),
+            ],
+            if (check != null) ...[
+              const SizedBox(height: LcTokens.spacingLg),
+              if (!check.hasAny && !check.contentNeedsNewerApp)
+                LcCard(
+                  child: Row(
+                    children: [
+                      Icon(Icons.check_circle_rounded, color: c.good),
+                      const SizedBox(width: LcTokens.spacingMd),
+                      Expanded(child: Text(t.upToDate, style: tt.bodyLarge)),
+                    ],
+                  ),
+                ),
+              if (check.appUpdate != null)
+                _ReleaseCard(
+                  title: t.newAppVersion(check.appUpdate!.versionName),
+                  size: check.appUpdate!.sizeBytes,
+                  changes: check.appUpdate!.changelogTh,
+                  button: t.updateApp,
+                  onPressed: u.busy
+                      ? null
+                      : () async =>
+                            show(await ctl.installApp(check.appUpdate!)),
+                ),
+              if (check.contentUpdate != null)
+                _ReleaseCard(
+                  title: t.newContentVersion(check.contentUpdate!.version),
+                  size: check.contentUpdate!.sizeBytes,
+                  changes: check.contentUpdate!.changelogTh,
+                  button: t.updateContent,
+                  onPressed: u.busy
+                      ? null
+                      : () async => show(
+                          await ctl.installContent(check.contentUpdate!),
+                        ),
+                ),
+              if (check.contentNeedsNewerApp)
+                Padding(
+                  padding: const EdgeInsets.only(top: LcTokens.spacingMd),
+                  child: Text(t.contentNeedsNewerApp, style: tt.bodySmall),
+                ),
+            ],
+            SectionLabel(t.options),
+            LcCard(
+              padding: const EdgeInsets.symmetric(vertical: LcTokens.spacingSm),
+              child: Column(
+                children: [
+                  SwitchListTile(
+                    title: Text(t.onlineCheck),
+                    subtitle: Text(t.onlineCheckHelp),
+                    value: settings.onlineUpdateCheck,
+                    onChanged: (v) => ref
+                        .read(settingsProvider.notifier)
+                        .update((x) => x.copyWith(onlineUpdateCheck: v)),
+                  ),
+                  if (prevContent != null)
+                    ListTile(
+                      leading: const Icon(Icons.undo_rounded),
+                      title: Text(t.rollbackContent(prevContent)),
+                      onTap: u.busy
+                          ? null
+                          : () async {
+                              final ok = await _confirm(
+                                context,
+                                t.rollbackContent(prevContent),
+                                t.rollbackHelp,
+                              );
+                              if (ok) await show(ctl.rollbackContent());
+                            },
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(height: LcTokens.spacingMd),
+            Text(t.updateSafety, style: tt.bodySmall),
+          ],
+        ),
       ),
     );
   }

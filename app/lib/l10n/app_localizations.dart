@@ -1665,6 +1665,48 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'วันนี้ตอบไปแล้ว {n} ข้อ'**
   String todaySummary(int n);
+
+  /// No description provided for @streakDays.
+  ///
+  /// In th, this message translates to:
+  /// **'{n} วันติด'**
+  String streakDays(int n);
+
+  /// No description provided for @streakHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'จำนวนวันที่เรียนหรือฝึกติดต่อกัน'**
+  String get streakHelp;
+
+  /// No description provided for @streakKeep.
+  ///
+  /// In th, this message translates to:
+  /// **'เรียนวันนี้เพื่อรักษาสถิติ'**
+  String get streakKeep;
+
+  /// No description provided for @todayNotYet.
+  ///
+  /// In th, this message translates to:
+  /// **'วันนี้ยังไม่ได้เรียน'**
+  String get todayNotYet;
+
+  /// No description provided for @rewardDeleted.
+  ///
+  /// In th, this message translates to:
+  /// **'ลบ {title} แล้ว'**
+  String rewardDeleted(String title);
+
+  /// No description provided for @undo.
+  ///
+  /// In th, this message translates to:
+  /// **'เลิกทำ'**
+  String get undo;
+
+  /// No description provided for @pressBackAgain.
+  ///
+  /// In th, this message translates to:
+  /// **'กดย้อนกลับอีกครั้งเพื่อออก'**
+  String get pressBackAgain;
 }
 
 class _AppLocalizationsDelegate

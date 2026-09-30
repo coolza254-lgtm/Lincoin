@@ -95,25 +95,21 @@ class StatsService {
           ),
     ];
 
-    final log = s.repo.reviewRecords(deck: s.deck);
-    final recent = log.where((r) => r.studyDay > today - 30).toList();
-    final reviewSample = recent
-        .where((r) => r.statusBefore == CardStatus.review)
-        .length;
-
+    final log = s.repo.reviewSummary(
+      deck: s.deck,
+      fromDay14: today - 13,
+      fromDay30: today - 29,
+    );
     final active = s.repo.activeMsByDay(fromDay: today - 13);
-    final days = <DayCount>[];
-    for (var d = today - 13; d <= today; d++) {
-      final rows = log.where((r) => r.studyDay == d);
-      days.add(
+    final days = [
+      for (var d = today - 13; d <= today; d++)
         DayCount(
           d,
-          rows.length,
-          rows.where((r) => r.rating.isPass).length,
+          log.byDay[d]?.$1 ?? 0,
+          log.byDay[d]?.$2 ?? 0,
           active[d] ?? 0,
         ),
-      );
-    }
+    ];
     final active7 = days.skip(7).fold(0, (a, d) => a + d.activeMs);
 
     final forecast = List.filled(7, 0);
@@ -127,23 +123,24 @@ class StatsService {
       forecast[d < 0 ? 0 : d.clamp(0, 6)] += d > 6 ? 0 : 1;
     }
 
-    final cal = metrics.calibration(log, binWidth: 0.1);
     return StatsData(
       levels: levels,
       expectedKnown: levels.fold(0.0, (a, l) => a + l.expectedKnown),
       itemsStarted: levels.fold(0, (a, l) => a + l.started),
       masteredItems: levels.fold(0, (a, l) => a + l.mastered),
-      trueRetention30: metrics.trueRetention(recent),
-      retentionSample30: reviewSample,
-      targetRetention: s.config.vocab.desiredRetention,
+      trueRetention30: log.trueRetention30,
+      retentionSample30: log.retentionSample30,
+      targetRetention:
+          (s.deck == grammarDeck ? s.config.grammar : s.config.vocab)
+              .desiredRetention,
       last14Days: days,
       activeMsTotal7: active7,
       forecast7: forecast,
-      calibration: cal,
-      calibrationSample: cal.fold(0, (a, b) => a + b.count),
-      logLoss: metrics.logLoss(log),
+      calibration: log.calibration,
+      calibrationSample: log.calibration.fold(0, (a, b) => a + b.count),
+      logLoss: log.logLoss,
       leeches: leeches,
-      totalReviews: log.length,
+      totalReviews: log.totalReviews,
     );
   }
 }

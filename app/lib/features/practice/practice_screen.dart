@@ -102,6 +102,7 @@ class _PracticeScreenState extends ConsumerState<PracticeScreen> {
     final o = ref.watch(practiceOverviewProvider);
     return SafeArea(
       child: ListView(
+        key: const PageStorageKey('practice'),
         padding: const EdgeInsets.fromLTRB(
           LcTokens.spacingXl,
           LcTokens.spacingMd,
@@ -330,6 +331,7 @@ Future<void> showChallengeSetup(
   final record = await showModalBottomSheet<ChallengeRecord>(
     context: context,
     isScrollControlled: true,
+    useSafeArea: true,
     builder: (ctx) => StatefulBuilder(
       builder: (ctx, setState) {
         final tt = Theme.of(ctx).textTheme;

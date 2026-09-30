@@ -585,5 +585,26 @@
         "type": "int"
       }
     }
-  }
+  },
+  "streakDays": "{n} วันติด",
+  "@streakDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "streakHelp": "จำนวนวันที่เรียนหรือฝึกติดต่อกัน",
+  "streakKeep": "เรียนวันนี้เพื่อรักษาสถิติ",
+  "todayNotYet": "วันนี้ยังไม่ได้เรียน",
+  "rewardDeleted": "ลบ {title} แล้ว",
+  "@rewardDeleted": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "undo": "เลิกทำ",
+  "pressBackAgain": "กดย้อนกลับอีกครั้งเพื่อออก"
 }

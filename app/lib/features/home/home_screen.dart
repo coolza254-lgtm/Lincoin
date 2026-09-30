@@ -50,6 +50,7 @@ class HomeScreen extends ConsumerWidget {
 
     return SafeArea(
       child: ListView(
+        key: const PageStorageKey('home'),
         padding: const EdgeInsets.fromLTRB(
           LcTokens.spacingXl,
           LcTokens.spacingMd,
@@ -99,23 +100,7 @@ class HomeScreen extends ConsumerWidget {
               ),
             )
           else ...[
-            if (ref.watch(todaySummaryProvider) case final today when today.any)
-              Padding(
-                padding: const EdgeInsets.only(bottom: LcTokens.spacingLg),
-                child: Row(
-                  children: [
-                    Icon(Icons.today_rounded, size: 20, color: c.muted),
-                    const SizedBox(width: LcTokens.spacingSm),
-                    Expanded(
-                      child: Text(
-                        t.todaySummary(today.reviews + today.practice),
-                        style: tt.bodyMedium?.copyWith(color: c.muted),
-                      ),
-                    ),
-                    CoinChip(today.coins, signed: true),
-                  ],
-                ),
-              ),
+            const _TodayStrip(),
             const _DeckCard(deck: vocabDeck, large: true),
             const SizedBox(height: LcTokens.spacingLg),
             const _DeckCard(deck: grammarDeck),
@@ -153,7 +138,7 @@ class _DeckCard extends ConsumerWidget {
     final plan = ref.watch(todayPlanProvider(deck));
     final grammar = deck == grammarDeck;
     final hasItems =
-        ref.watch(catalogProvider)?.path.any((i) => i.deck == deck) ?? false;
+        ref.watch(catalogProvider)?.itemsOf(deck).isNotEmpty ?? false;
     return LcCard(
       large: large,
       child: Column(
@@ -227,6 +212,48 @@ class _DeckCard extends ConsumerWidget {
               ),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Streak and what was done today, above the decks.
+class _TodayStrip extends ConsumerWidget {
+  const _TodayStrip();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = AppLocalizations.of(context);
+    final tt = Theme.of(context).textTheme;
+    final c = context.lc;
+    final today = ref.watch(todaySummaryProvider);
+    final streak = ref.watch(streakProvider);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: LcTokens.spacingLg),
+      child: Row(
+        children: [
+          if (streak.days > 0) ...[
+            Tooltip(
+              message: streak.today ? t.streakHelp : t.streakKeep,
+              child: LcPill(
+                t.streakDays(streak.days),
+                icon: Icons.local_fire_department_rounded,
+                bg: streak.today ? c.coinSoft : c.track,
+                fg: streak.today ? c.coin : c.muted,
+              ),
+            ),
+            const SizedBox(width: LcTokens.spacingMd),
+          ],
+          Expanded(
+            child: Text(
+              today.any
+                  ? t.todaySummary(today.reviews + today.practice)
+                  : (streak.days > 0 ? t.streakKeep : t.todayNotYet),
+              style: tt.bodyMedium?.copyWith(color: c.muted),
+            ),
+          ),
+          if (today.coins > 0) CoinChip(today.coins, signed: true),
         ],
       ),
     );

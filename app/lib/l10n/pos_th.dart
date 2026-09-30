@@ -44,6 +44,18 @@ String posLabel(String code) {
   return code;
 }
 
-/// Readable labels for a word's POS list (duplicates removed).
-List<String> posLabels(Iterable<String> codes) =>
-    {for (final c in codes) posLabel(c)}.toList();
+/// Readable labels for a word's POS list: duplicates and labels implied by
+/// another one removed ("คำนาม (+する)" already says noun; transitivity of a
+/// する-noun adds little), at most [max] of them.
+List<String> posLabels(Iterable<String> codes, {int max = 3}) {
+  final all = codes.toSet();
+  final implied = {
+    if (all.contains('vs')) ...['n', 'vt', 'vi'],
+    if (all.contains('n') || all.contains('vs')) 'adj-no',
+  };
+  final out = {
+    for (final c in codes)
+      if (!implied.contains(c)) posLabel(c),
+  }.toList();
+  return out.length > max ? out.sublist(0, max) : out;
+}

@@ -15,6 +15,8 @@ import 'state/providers.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Same look on every Android version (15+ enforces it anyway).
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   _registerFontLicenses();
   try {
     final paths = AppPaths(await getApplicationSupportDirectory())..ensure();

@@ -235,7 +235,7 @@ class SessionController extends Notifier<SessionState> {
     if (result.outcome.after.inSteps) {
       _queue.requeue(q.cardId, result.outcome.after.due!);
     }
-    if (correct) HapticFeedback.lightImpact();
+    correct ? HapticFeedback.lightImpact() : HapticFeedback.mediumImpact();
     _feedbackTimer
       ..reset()
       ..start();
