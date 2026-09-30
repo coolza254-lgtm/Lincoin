@@ -174,11 +174,11 @@ void main() {
       expect(q.needsIntro, isTrue);
       expect(q.choices!.options[q.choices!.correctIndex], 'を');
       expect(q.choices!.options.toSet(), {'を', 'に', 'で', 'の'});
-      expect(q.example!.parts, ('コーヒー', 'を', '飲みます。'));
+      expect(q.example!.parts, ('水', 'を', '飲みました。'));
       g.introduce(q);
       g.answer(q, const AnswerEvent(isCorrect: true, responseMs: 5000));
       final q2 = g.question('g:n5.001#cloze');
-      expect(q2.example!.sentence.id, 'ex:3');
+      expect(q2.example!.sentence.id, 'ex:2');
       final stored = StudyRepo(db).card('g:n5.001#cloze')!;
       expect(stored.deck, grammarDeck);
       expect(StudyRepo(db).reviewRecords(deck: grammarDeck), hasLength(1));

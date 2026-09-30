@@ -142,7 +142,7 @@ void main() {
     await tester.tap(find.text('จำแล้ว ไปต่อ'));
     await tester.pumpAndSettle();
     expect(find.text('เติมคำในช่องว่าง'), findsOneWidget);
-    expect(find.text('ฉันดื่มกาแฟ'), findsOneWidget); // Thai cue
+    expect(find.text('ดื่มน้ำแล้ว'), findsOneWidget); // Thai cue
     await tester.tap(find.widgetWithText(OutlinedButton, 'を'));
     await tester.pumpAndSettle();
     expect(find.text('ถูกต้อง'), findsOneWidget);

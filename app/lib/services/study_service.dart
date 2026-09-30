@@ -315,7 +315,8 @@ class StudyService {
         return clozeQuestion(
           item as GrammarStudy,
           seedKey: '$cardId#$reps',
-          pick: reps,
+          // The lesson shows the first examples; questions start after them.
+          pick: reps + 3,
           needsIntro: needsIntro,
         );
     }

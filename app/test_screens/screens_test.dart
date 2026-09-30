@@ -61,7 +61,11 @@ void main() {
   /// Three weeks of simulated study so stats and home have data.
   void seedHistory(String theme) {
     final db = UserDb.open(paths.userDb);
-    final settings = AppSettings(theme: theme, includeKana: false);
+    final settings = AppSettings(
+      theme: theme,
+      includeKana: false,
+      grammarNewPerDay: 2,
+    );
     SettingsRepo(db).save(settings, now);
     db.setMeta('onboarded', '1');
     final content = ContentDb.openFile('${paths.content.path}/content.db');
@@ -224,6 +228,29 @@ void main() {
       }
       await tester.pumpAndSettle();
     }
+    await tester.tap(find.byTooltip('ปิด'));
+    await tester.pumpAndSettle();
+    // Grammar: lesson, cloze, feedback.
+    await tester.tap(find.text('เริ่มเรียน').last);
+    await tester.pumpAndSettle();
+    await snap('10-grammar-lesson');
+    await tester.tap(find.text('จำแล้ว ไปต่อ'));
+    await tester.pumpAndSettle();
+    for (
+      var i = 0;
+      i < 6 && find.text('เติมคำในช่องว่าง').evaluate().isEmpty;
+      i++
+    ) {
+      if (find.text('จำแล้ว ไปต่อ').evaluate().isNotEmpty) {
+        await tester.tap(find.text('จำแล้ว ไปต่อ'));
+      } else if (find.text('ต่อไป').evaluate().isNotEmpty) {
+        await tester.tap(find.text('ต่อไป'));
+      }
+      await tester.pumpAndSettle();
+    }
+    await snap('11-grammar-cloze');
+    await tester.tap(find.byType(OutlinedButton).first);
+    await snap('12-grammar-feedback');
     await tester.tap(find.byTooltip('ปิด'));
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('ตั้งค่า'));
