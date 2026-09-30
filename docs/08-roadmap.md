@@ -4,8 +4,8 @@
 
 | เฟส | ขอบเขต | เสร็จเมื่อ |
 |---|---|---|
-| 0 | คุยและเขียน UI/UX (`09-ui-ux.md`) | ตกลงแนวทางดีไซน์และ design tokens |
-| 1 | **Core engines:** Scheduler (FSRS wrapper), Grader, Economy, Metrics เป็น Dart ล้วน | ทดสอบตาม [04](04-srs-fsrs.md#ทดสอบ) ผ่าน, จำลอง 3 ปีผ่าน |
+| 0 ✅ | คุยและเขียน UI/UX (`09-ui-ux.md`), `design/tokens.json` | ตกลงแนวทางดีไซน์และ design tokens |
+| 1 ✅ | **Core engines:** Scheduler (FSRS wrapper), Grader, Economy, Metrics เป็น Dart ล้วน | ทดสอบตาม [04](04-srs-fsrs.md#ทดสอบ) ผ่าน, จำลอง 3 ปีผ่าน |
 | 2 | **Content builder:** ตรวจสัญญาอนุญาต, ดึง JMdict/Tanos/Tatoeba/JmdictFurigana, สร้าง `content.db` คานะ + N5 | ตรวจเครดิตอัตโนมัติผ่าน |
 | 3 | **คำแปลไทย N5** + ขั้นตอนตรวจคุณภาพ + audit ตัวอย่าง | ได้อัตราผิดจาก audit |
 | 4 | **แอป MVP:** โหมดท่องศัพท์ (คานะ + N5), หน้าสถิติพื้นฐาน, ลินคอย, ร้านรางวัลจริง, backup/export, หน้าเครดิต | ติดตั้ง APK ใช้จริงได้ |

@@ -1,0 +1,16 @@
+name: lincoin_core
+description: Core engines for Lincoin (scheduling, grading, economy, metrics). Pure Dart, no Flutter dependency.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  # Pinned exactly: scheduling must stay reproducible from the review log.
+  # Upgrade deliberately and bump SchedulerConfig.algoVersion when doing so.
+  fsrs: 2.0.1
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.25.0
