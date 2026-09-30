@@ -1,12 +1,75 @@
 {
   "_comment": "Corrections to JLPT list → JMdict matches. Each entry replaces a wrong sequence number with the single JMdict entry that has the reading and a gloss matching the pattern (and the POS, if given). The build fails if the pattern matches zero or several entries.",
   "overrides": [
-    {"seq": 1182880, "reading": "ボタン", "gloss": "^button", "reason": "matched 牡丹 (peony) instead of button"},
-    {"seq": 2846389, "reading": "コップ", "gloss": "\\bglass\\b|tumbler", "reason": "matched slang 'cop' instead of drinking glass"},
-    {"seq": 2216120, "reading": "これ", "gloss": "^this\\b", "pos": "pn", "reason": "matched interjection instead of pronoun 'this'"},
-    {"seq": 2216210, "reading": "それ", "gloss": "^that\\b", "pos": "pn", "reason": "matched interjection instead of pronoun 'that'"},
-    {"seq": 2847612, "reading": "あれ", "gloss": "^that\\b", "pos": "pn", "reason": "matched interjection instead of pronoun 'that'"},
-    {"seq": 2546180, "reading": "だんだん", "gloss": "gradually", "reason": "matched dialect 'thank you' instead of 'gradually'"},
-    {"seq": 2784220, "reading": "マッチ", "gloss": "match.*(light|fire)|lucifer", "reason": "matched 'match (contest)' instead of match for lighting fires"}
+    {
+      "seq": 1182880,
+      "reading": "ボタン",
+      "gloss": "^button",
+      "reason": "matched 牡丹 (peony) instead of button"
+    },
+    {
+      "seq": 2846389,
+      "reading": "コップ",
+      "gloss": "\\bglass\\b|tumbler",
+      "reason": "matched slang 'cop' instead of drinking glass"
+    },
+    {
+      "seq": 2216120,
+      "reading": "これ",
+      "gloss": "^this\\b",
+      "pos": "pn",
+      "reason": "matched interjection instead of pronoun 'this'"
+    },
+    {
+      "seq": 2216210,
+      "reading": "それ",
+      "gloss": "^that\\b",
+      "pos": "pn",
+      "reason": "matched interjection instead of pronoun 'that'"
+    },
+    {
+      "seq": 2847612,
+      "reading": "あれ",
+      "gloss": "^that\\b",
+      "pos": "pn",
+      "reason": "matched interjection instead of pronoun 'that'"
+    },
+    {
+      "seq": 2546180,
+      "reading": "だんだん",
+      "gloss": "gradually",
+      "reason": "matched dialect 'thank you' instead of 'gradually'"
+    },
+    {
+      "seq": 2784220,
+      "reading": "マッチ",
+      "gloss": "match.*(light|fire)|lucifer",
+      "reason": "matched 'match (contest)' instead of match for lighting fires"
+    },
+    {
+      "seq": 1006610,
+      "reading": "そう",
+      "gloss": "^in that way|^thus",
+      "pos": "adv",
+      "reason": "N4: matched suffix 'seeming that' instead of adverb 'so; like that'"
+    },
+    {
+      "seq": 2524270,
+      "reading": "こと",
+      "gloss": "^thing\\b",
+      "reason": "N4: matched command particle instead of 事 'thing; matter'"
+    },
+    {
+      "seq": 2607730,
+      "reading": "もし",
+      "gloss": "^if\\b",
+      "reason": "N4: matched 'excuse me!' instead of 'if'"
+    },
+    {
+      "seq": 1310460,
+      "reading": "うまい",
+      "gloss": "^delicious",
+      "reason": "N4: matched 上手い 'skilful' instead of 旨い 'delicious' (list definition)"
+    }
   ]
 }
