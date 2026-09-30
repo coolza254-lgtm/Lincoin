@@ -52,4 +52,17 @@
 <r_ele><reb>アカイ</reb><re_inf>&sk;</re_inf></r_ele>
 <sense><pos>&adj-i;</pos><gloss>red</gloss></sense>
 </entry>
+<entry>
+<ent_seq>1000006</ent_seq>
+<k_ele><keb>牡丹</keb></k_ele>
+<r_ele><reb>ぼたん</reb></r_ele>
+<r_ele><reb>ボタン</reb></r_ele>
+<sense><pos>&n;</pos><misc>&uk;</misc><gloss>tree peony</gloss></sense>
+</entry>
+<entry>
+<ent_seq>1000007</ent_seq>
+<k_ele><keb>釦</keb></k_ele>
+<r_ele><reb>ボタン</reb></r_ele>
+<sense><pos>&n;</pos><misc>&uk;</misc><gloss>button</gloss></sense>
+</entry>
 </JMdict>

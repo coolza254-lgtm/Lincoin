@@ -53,6 +53,8 @@ def check(path: Path, report=None) -> list[str]:
     if _count(db, "SELECT COUNT(*) FROM kana") < 200:
         errors.append("kana table incomplete")
 
+    if report is not None and report.override_errors:
+        errors.append(f"JLPT overrides that did not resolve to exactly one entry: {report.override_errors}")
     if report is not None and report.missing_in_jmdict:
         errors.append(f"{len(report.missing_in_jmdict)} JLPT list entries not found in JMdict "
                       f"(first: {report.missing_in_jmdict[:5]})")

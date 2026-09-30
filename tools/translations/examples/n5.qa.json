@@ -1,0 +1,36 @@
+{
+  "translated": 1114,
+  "auto_checked": 1111,
+  "flagged": [
+    {
+      "id": "ex:235685",
+      "source": "１日中歩き回って大変疲れた。",
+      "th": "เดินไปมาทั้งวัน เหนื่อยมาก",
+      "warnings": [
+        "number 1 missing"
+      ]
+    },
+    {
+      "id": "ex:235706",
+      "source": "１日おきに買い物に行く。",
+      "th": "ไปซื้อของวันเว้นวัน",
+      "warnings": [
+        "number 1 missing"
+      ]
+    },
+    {
+      "id": "ex:192929",
+      "source": "良い１日を！",
+      "th": "ขอให้วันนี้เป็นวันที่ดีนะ!",
+      "warnings": [
+        "number 1 missing"
+      ]
+    }
+  ],
+  "missing": [
+    "ex:75114",
+    "ex:74893"
+  ],
+  "unknown_ids": [],
+  "same_source_different_thai": {}
+}

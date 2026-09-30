@@ -1,0 +1,12 @@
+{
+  "_comment": "Corrections to JLPT list → JMdict matches. Each entry replaces a wrong sequence number with the single JMdict entry that has the reading and a gloss matching the pattern (and the POS, if given). The build fails if the pattern matches zero or several entries.",
+  "overrides": [
+    {"seq": 1182880, "reading": "ボタン", "gloss": "^button", "reason": "matched 牡丹 (peony) instead of button"},
+    {"seq": 2846389, "reading": "コップ", "gloss": "\\bglass\\b|tumbler", "reason": "matched slang 'cop' instead of drinking glass"},
+    {"seq": 2216120, "reading": "これ", "gloss": "^this\\b", "pos": "pn", "reason": "matched interjection instead of pronoun 'this'"},
+    {"seq": 2216210, "reading": "それ", "gloss": "^that\\b", "pos": "pn", "reason": "matched interjection instead of pronoun 'that'"},
+    {"seq": 2847612, "reading": "あれ", "gloss": "^that\\b", "pos": "pn", "reason": "matched interjection instead of pronoun 'that'"},
+    {"seq": 2546180, "reading": "だんだん", "gloss": "gradually", "reason": "matched dialect 'thank you' instead of 'gradually'"},
+    {"seq": 2784220, "reading": "マッチ", "gloss": "match.*(light|fire)|lucifer", "reason": "matched 'match (contest)' instead of match for lighting fires"}
+  ]
+}

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import datetime as _dt
 import json
+import re
 import sqlite3
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -36,8 +37,11 @@ class BuildReport:
     duplicate_list_entries: list[int] = field(default_factory=list)
     primary_form_fallbacks: list[dict] = field(default_factory=list)
     skipped_sentences_without_author: int = 0
+    skipped_unsuitable_sentences: int = 0
     words_without_examples: list[int] = field(default_factory=list)
     translations: dict = field(default_factory=dict)
+    overrides_applied: list[dict] = field(default_factory=list)
+    override_errors: list[dict] = field(default_factory=list)
 
     def to_json(self) -> dict:
         return self.__dict__
@@ -73,9 +77,33 @@ def _pick_primary(entry: jmdict.Entry, item: readers.JlptItem, report: BuildRepo
     return primary_k, primary_r
 
 
+def load_overrides(path: Path | None) -> list[dict]:
+    if path is None or not path.exists():
+        return []
+    return json.loads(path.read_text(encoding="utf-8"))["overrides"]
+
+
+OVERRIDES = Path(__file__).resolve().parent.parent / "jlpt_overrides.json"
+EXAMPLE_FILTER = Path(__file__).resolve().parent.parent / "example_filter.json"
+
+
+class ExampleFilter:
+    """Rejects sentences unsuitable for an all-ages learning app."""
+
+    def __init__(self, path: Path | None = EXAMPLE_FILTER):
+        data = json.loads(path.read_text(encoding="utf-8")) if path and path.exists() else {}
+        self.en = [re.compile(p, re.I) for p in data.get("english", [])]
+        self.ja = list(data.get("japanese", []))
+
+    def blocked(self, ja: str, en: str | None) -> bool:
+        return any(w in ja for w in self.ja) or bool(en and any(p.search(en) for p in self.en))
+
+
 def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True,
           sources: dict[str, Source] | None = None,
-          translations_root: Path | None = translations.ROOT) -> BuildReport:
+          translations_root: Path | None = translations.ROOT,
+          overrides_path: Path | None = OVERRIDES,
+          example_filter: ExampleFilter | None = None) -> BuildReport:
     sources = sources or load_sources()
     report = BuildReport(levels=levels)
 
@@ -92,9 +120,21 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
                     continue
             items[it.seq] = it
 
-    # 2. Dictionary entries.
+    # 2. Dictionary entries, applying reviewed corrections to the list matching.
     jm_path = cache.path("jmdict", "jmdict")
-    entries, spelling_counts = jmdict.read_entries(jm_path, set(items))
+    overrides = [o for o in load_overrides(overrides_path) if o["seq"] in items]
+    finders = [jmdict.Finder(o["reading"], o["gloss"], o.get("pos")) for o in overrides]
+    entries, spelling_counts, hits = jmdict.read_entries(jm_path, set(items), finders)
+    for o, found in zip(overrides, hits):
+        if len(found) != 1:
+            report.override_errors.append({"seq": o["seq"], "reading": o["reading"], "matches": found})
+            continue
+        old = items.pop(o["seq"])
+        new_seq = found[0]
+        items[new_seq] = readers.JlptItem(new_seq, old.kana, old.kanji if old.kanji else "",
+                                          old.definition, old.level, old.index)
+        list_readings[new_seq] = list_readings.pop(o["seq"], [old.kana])
+        report.overrides_applied.append({"from": o["seq"], "to": new_seq, "reason": o["reason"]})
     for seq, it in items.items():
         if seq not in entries:
             report.missing_in_jmdict.append({"seq": seq, "kanji": it.kanji, "kana": it.kana})
@@ -136,7 +176,8 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
     word_examples: dict[int, list[tuple[readers.Sentence, readers.Sentence | None, bool]]] = {}
     cc0: set[int] = set()
     if with_examples:
-        word_examples, cc0 = _examples(cache, entries, order, primaries, spelling_counts, report)
+        word_examples, cc0 = _examples(cache, entries, order, primaries, spelling_counts, report,
+                                       example_filter or ExampleFilter())
 
     # 6. Write the database.
     if out.exists():
@@ -231,7 +272,7 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
     return report
 
 
-def _examples(cache, entries, order, primaries, spelling_counts, report):
+def _examples(cache, entries, order, primaries, spelling_counts, report, flt: ExampleFilter):
     """Up to MAX_EXAMPLES Tatoeba sentences per word, with English translations
     and a named author. Hits without an explicit reading are used only when
     the spelling belongs to a single JMdict entry, to avoid homograph mix-ups."""
@@ -258,6 +299,7 @@ def _examples(cache, entries, order, primaries, spelling_counts, report):
 
     out = {}
     no_author: set[int] = set()
+    blocked: set[int] = set()
     for seq, hs in accepted.items():
         verified = {h.sentence_id for h in hs if h.verified}
         cands = []
@@ -271,10 +313,14 @@ def _examples(cache, entries, order, primaries, spelling_counts, report):
             en = next((eng[t] for t in sorted(links.get(sid, [])) if t in eng and eng[t].author), None)
             if en is None:
                 continue
+            if flt.blocked(ja.text, en.text):
+                blocked.add(sid)
+                continue
             cands.append((ja, en, sid in verified))
         # Short sentences first (beginner-friendly), then ones Tatoeba marks as
         # good examples of the word, then shorter.
         cands.sort(key=lambda c: (len(c[0].text) > PREFERRED_EXAMPLE_LEN, not c[2], len(c[0].text), c[0].id))
         out[seq] = cands[:MAX_EXAMPLES]
     report.skipped_sentences_without_author = len(no_author)
+    report.skipped_unsuitable_sentences = len(blocked)
     return out, cc0

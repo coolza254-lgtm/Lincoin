@@ -113,12 +113,36 @@ def _is_gzip(path: Path) -> bool:
         return f.read(2) == b"\x1f\x8b"
 
 
-def read_entries(path: Path, wanted: set[int] | None = None) -> tuple[dict[int, Entry], dict[str, int]]:
-    """Entries for ``wanted`` sequence numbers, plus how many entries use
-    each spelling (kanji or kana) across the whole dictionary."""
+@dataclass
+class Finder:
+    """Locates one entry by reading, gloss pattern and optional POS."""
+    reading: str
+    gloss: str
+    pos: str | None = None
+
+    def matches(self, el) -> bool:
+        if self.reading not in {(r.text or "") for r in el.findall("r_ele/reb")}:
+            return False
+        pattern = re.compile(self.gloss, re.I)
+        for s in el.findall("sense"):
+            if self.pos and self.pos not in _texts(s, "pos"):
+                continue
+            if any(pattern.search(g.text or "") for g in s.findall("gloss")):
+                return True
+        return False
+
+
+def read_entries(path: Path, wanted: set[int] | None = None,
+                 finders: list[Finder] | None = None
+                 ) -> tuple[dict[int, Entry], dict[str, int], list[list[int]]]:
+    """Entries for ``wanted`` sequence numbers, how many entries use each
+    spelling across the dictionary, and for each finder the sequence numbers
+    of matching entries (those entries are parsed and returned too)."""
     text = _strip_entities(_read_text(path))
     out: dict[int, Entry] = {}
     spelling_counts: dict[str, int] = {}
+    finders = finders or []
+    hits: list[list[int]] = [[] for _ in finders]
     for _, el in ET.iterparse(io.BytesIO(text.encode("utf-8")), events=("end",)):
         if el.tag != "entry":
             continue
@@ -126,10 +150,15 @@ def read_entries(path: Path, wanted: set[int] | None = None) -> tuple[dict[int, 
         for tag in ("k_ele/keb", "r_ele/reb"):
             for f in el.findall(tag):
                 spelling_counts[f.text] = spelling_counts.get(f.text, 0) + 1
-        if wanted is None or seq in wanted:
+        found = False
+        for i, fd in enumerate(finders):
+            if fd.matches(el):
+                hits[i].append(seq)
+                found = True
+        if found or wanted is None or seq in wanted:
             out[seq] = _parse_entry(seq, el)
         el.clear()
-    return out, spelling_counts
+    return out, spelling_counts, hits
 
 
 def _texts(el, tag) -> list[str]:

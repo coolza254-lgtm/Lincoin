@@ -63,7 +63,8 @@ class BuildTest(unittest.TestCase):
         cls.tmp = Path(tempfile.mkdtemp())
         cls.cache = make_cache(cls.tmp)
         cls.out = cls.tmp / "content.db"
-        cls.report = build(cls.cache, cls.out, ["n5", "n4"], translations_root=FIX / "translations")
+        cls.report = build(cls.cache, cls.out, ["n5", "n4"], translations_root=FIX / "translations",
+                           overrides_path=FIX / "overrides.json")
         cls.db = sqlite3.connect(cls.out)
 
     @classmethod
@@ -78,7 +79,7 @@ class BuildTest(unittest.TestCase):
         self.assertEqual(check(self.out, self.report), [])
 
     def test_words_and_levels(self):
-        self.assertEqual(self.report.words, 5)
+        self.assertEqual(self.report.words, 6)
         self.assertEqual(self.q("SELECT jlpt_level FROM words WHERE id='w:2000001'"), [(5,)])
         self.assertEqual(self.report.duplicate_list_entries, [1000005, 2000001])
 
@@ -127,6 +128,8 @@ class BuildTest(unittest.TestCase):
         # Homograph 方: explicit reading accepted, bare 方 (105) rejected.
         self.assertEqual(by_word["w:1000003"], [("ex:102", 0)])
         self.assertGreater(self.report.skipped_sentences_without_author, 0)
+        # Vulgar sentence (106) is filtered even though it is short and verified.
+        self.assertEqual(self.report.skipped_unsuitable_sentences, 1)
 
     def test_example_licences_and_authors(self):
         rows = {r[0]: r[1:] for r in self.q("SELECT id, ja_author, en_author, ja_license, en_license FROM examples")}
@@ -160,6 +163,23 @@ class BuildTest(unittest.TestCase):
         finally:
             shutil.rmtree(tmp)
 
+    def test_override_replaces_wrong_match(self):
+        self.assertEqual(self.report.overrides_applied, [{"from": 1000006, "to": 1000007, "reason": "test"}])
+        self.assertEqual(self.q("SELECT COUNT(*) FROM words WHERE id='w:1000006'"), [(0,)])
+        self.assertEqual(self.q("SELECT gloss_en FROM senses WHERE word_id='w:1000007'"), [("button",)])
+
+    def test_override_that_does_not_resolve_fails(self):
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            ov = tmp / "o.json"
+            ov.write_text('{"overrides": [{"seq": 1000006, "reading": "ボタン", "gloss": "zzz", "reason": "x"}]}')
+            cache = make_cache(tmp)
+            out = tmp / "c.db"
+            report = build(cache, out, ["n5"], with_examples=False, translations_root=None, overrides_path=ov)
+            self.assertTrue(any("overrides" in e for e in check(out, report)))
+        finally:
+            shutil.rmtree(tmp)
+
     def test_kana_table(self):
         self.assertEqual(self.q("SELECT COUNT(*) FROM kana"), [(208,)])
         self.assertEqual(self.q("SELECT char, romaji FROM kana WHERE id='k:kata.kya'"), [("キャ", "kya")])
@@ -174,7 +194,7 @@ class FailureTest(unittest.TestCase):
             bad.write_text((FIX / "n5.csv").read_text() + "9999999,なし,無し,none\n", encoding="utf-8")
             cache = make_cache(tmp, n5=bad)
             out = tmp / "c.db"
-            report = build(cache, out, ["n5"], with_examples=False, translations_root=None)
+            report = build(cache, out, ["n5"], with_examples=False, translations_root=None, overrides_path=None)
             errors = check(out, report)
             self.assertTrue(any("not found in JMdict" in e for e in errors), errors)
         finally:
@@ -202,7 +222,7 @@ class UnitTest(unittest.TestCase):
         try:
             p = tmp / "j.gz"
             p.write_bytes(gzip.compress((FIX / "JMdict_e.xml").read_bytes()))
-            entries, counts = read_entries(p, {1000003})
+            entries, counts, _ = read_entries(p, {1000003})
             self.assertEqual(list(entries), [1000003])
             self.assertEqual(counts["方"], 2)
             self.assertEqual(created_date(p), "2026-09-29")
