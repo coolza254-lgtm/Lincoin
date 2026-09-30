@@ -187,6 +187,11 @@ class UpdateService {
     if (!url.startsWith('https://')) {
       throw const UpdateException('ลิงก์ดาวน์โหลดไม่ปลอดภัย (ไม่ใช่ HTTPS)');
     }
+    // Already downloaded (e.g. the install was postponed): reuse it.
+    if (target.existsSync() &&
+        (await sha256OfFile(target)).toLowerCase() == sha256.toLowerCase()) {
+      return target;
+    }
     final part = File('${target.path}.part');
     var have = part.existsSync() ? part.lengthSync() : 0;
     final req = http.Request('GET', Uri.parse(url));

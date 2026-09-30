@@ -63,7 +63,7 @@ repo `coolza254-lgtm/Lincoin` เป็น public แอปจึงอ่าน
 2. กด "อัปเดต" → ดาวน์โหลด (ต่อจากเดิมได้ถ้าเน็ตหลุด, เตือนถ้าไม่ได้ใช้ Wi-Fi)
 3. ตรวจ `sha256` ไม่ตรง = ลบไฟล์และแจ้ง
 4. **สำรอง `user.db` อัตโนมัติ** ไปยังโฟลเดอร์สำรองของแอป (เก็บ 5 ชุดล่าสุด)
-5. เปิดตัวติดตั้งของ Android (ครั้งแรกต้องอนุญาต "ติดตั้งแอปที่ไม่รู้จัก" ให้ Lincoin) Android ตรวจลายเซ็นว่าตรงกับตัวเดิม
+5. แอปติดตั้งทับตัวเองผ่าน `PackageInstaller` session (ครั้งแรกต้องอนุญาต "ติดตั้งแอปที่ไม่รู้จัก" ให้ Lincoin) Android ตรวจลายเซ็นว่าตรงกับตัวเดิม บน Android 12+ ขอแบบไม่ต้องยืนยัน (`USER_ACTION_NOT_REQUIRED`) ถ้าระบบไม่อนุญาตจะขึ้นหน้ายืนยัน 1 ครั้ง จากนั้นแอปปิดและเปิดเวอร์ชันใหม่ (ถ้า Android บล็อกการเปิดเองจากเบื้องหลัง ให้แตะไอคอนเปิดเอง)
 6. เปิดแอปใหม่ → migration ฐานข้อมูล (สำรองอีกชั้นก่อน migrate) → แสดง "มีอะไรใหม่"
 
 ### อัปเดตเนื้อหา
@@ -113,11 +113,11 @@ Release บน repo public ถือเป็นการ **เผยแพร�
 | ส่วน | ไฟล์ | หน้าที่ |
 |---|---|---|
 | `UpdateService` | `app/lib/services/update_service.dart` | อ่าน `latest.json`, เทียบเวอร์ชัน, ดาวน์โหลดต่อจากเดิมได้ (HTTP Range), ตรวจ `sha256` |
-| `AppInstaller` | `app/lib/services/app_installer.dart` + `MainActivity.kt` | อ่านเวอร์ชันจากไฟล์ APK, ส่งให้ตัวติดตั้งของ Android ผ่าน FileProvider (`REQUEST_INSTALL_PACKAGES`) |
+| `AppInstaller` | `app/lib/services/app_installer.dart` + `MainActivity.kt`, `SelfUpdater.kt` | อ่านเวอร์ชันจากไฟล์ APK, ติดตั้งทับตัวเองด้วย PackageInstaller session (`REQUEST_INSTALL_PACKAGES`), รายงานผลกลับมาที่แอป |
 | `ContentStore` | `app/lib/services/content_store.dart` | ตรวจ schema/เครดิต/hash แล้วสลับ `content.db` แบบ atomic, เก็บเวอร์ชันก่อนหน้าไว้ย้อนกลับ |
 | content pack | `app/lib/services/content_pack.dart` | อ่านไฟล์ `.lincoin-content` (zip + manifest) |
 | `UpdateController` | `app/lib/state/update_controller.dart` | สองปุ่ม: ตรวจออนไลน์ / อัปเดตจากไฟล์, ยืนยันก่อนติดตั้งเสมอ, ตรวจเองวันละครั้ง (แค่ขึ้นจุด) |
 | `BackupService` | `app/lib/services/backup_service.dart` | สำรอง `user.db` (VACUUM INTO) ก่อนอัปเดต/กู้คืน/migrate เก็บ 5 ชุดล่าสุด |
 | `release.yml` | `.github/workflows/release.yml` | ทดสอบ, build, เซ็น, สร้าง manifest, ออก Release |
 
-ไลบรารีที่ใช้ (ตรวจแล้ว): `http`, `crypto`, `path_provider`, `package_info_plus` (BSD-3), `archive`, `file_picker`, `flutter_tts`, `flutter_riverpod`, `sqlite3`, `uuid` (MIT) ตัวติดตั้ง APK เขียนเองใน `MainActivity.kt` ไม่พึ่งไลบรารีภายนอก
+ไลบรารีที่ใช้ (ตรวจแล้ว): `http`, `crypto`, `path_provider`, `package_info_plus` (BSD-3), `archive`, `file_picker`, `flutter_tts`, `flutter_riverpod`, `sqlite3`, `uuid` (MIT) ตัวติดตั้ง APK เขียนเองใน `SelfUpdater.kt` ไม่พึ่งไลบรารีภายนอก

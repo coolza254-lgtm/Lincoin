@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import androidx.core.content.FileProvider
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -14,42 +13,68 @@ import java.io.File
 
 /**
  * Hosts the "lincoin/installer" channel used by the in-app update buttons:
- * reads an APK's version and hands it to Android's package installer.
- * Android verifies the signature matches the installed app.
+ * reads an APK's version and installs it over the running app through a
+ * PackageInstaller session (see [SelfUpdater]). Android verifies that the
+ * signature matches the installed app.
  */
 class MainActivity : FlutterActivity() {
+    private var channel: MethodChannel? = null
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "lincoin/installer")
-            .setMethodCallHandler { call, result ->
-                try {
-                    when (call.method) {
-                        "apkInfo" -> result.success(apkInfo(call.argument<String>("path")!!))
-                        "canInstall" -> result.success(
-                            Build.VERSION.SDK_INT < Build.VERSION_CODES.O ||
-                                packageManager.canRequestPackageInstalls()
-                        )
-                        "openInstallPermission" -> {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                startActivity(
-                                    Intent(
-                                        Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-                                        Uri.parse("package:$packageName")
-                                    )
-                                )
-                            }
-                            result.success(null)
-                        }
-                        "install" -> {
-                            install(File(call.argument<String>("path")!!))
-                            result.success(null)
-                        }
-                        else -> result.notImplemented()
-                    }
-                } catch (e: Exception) {
-                    result.error("installer", e.message, null)
-                }
+        val ch = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "lincoin/installer")
+        channel = ch
+        SelfUpdater.listener = { status, message ->
+            runOnUiThread {
+                channel?.invokeMethod(
+                    "installStatus",
+                    mapOf("status" to status, "message" to message)
+                )
             }
+        }
+        ch.setMethodCallHandler { call, result ->
+            try {
+                when (call.method) {
+                    "apkInfo" -> result.success(apkInfo(call.argument<String>("path")!!))
+                    "canInstall" -> result.success(
+                        Build.VERSION.SDK_INT < Build.VERSION_CODES.O ||
+                            packageManager.canRequestPackageInstalls()
+                    )
+                    "openInstallPermission" -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            startActivity(
+                                Intent(
+                                    Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                                    Uri.parse("package:$packageName")
+                                )
+                            )
+                        }
+                        result.success(null)
+                    }
+                    "install" -> {
+                        val file = File(call.argument<String>("path")!!)
+                        // Copying the APK into the session takes a moment; keep it off the UI thread.
+                        Thread {
+                            try {
+                                SelfUpdater.install(applicationContext, file)
+                                runOnUiThread { result.success(null) }
+                            } catch (e: Exception) {
+                                runOnUiThread { result.error("installer", e.message, null) }
+                            }
+                        }.start()
+                    }
+                    else -> result.notImplemented()
+                }
+            } catch (e: Exception) {
+                result.error("installer", e.message, null)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        SelfUpdater.listener = null
+        channel = null
+        super.onDestroy()
     }
 
     private fun apkInfo(path: String): Map<String, Any?>? {
@@ -72,13 +97,5 @@ class MainActivity : FlutterActivity() {
             "versionCode" to code,
             "versionName" to info.versionName
         )
-    }
-
-    private fun install(file: File) {
-        val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", file)
-        val intent = Intent(Intent.ACTION_VIEW)
-            .setDataAndType(uri, "application/vnd.android.package-archive")
-            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
     }
 }

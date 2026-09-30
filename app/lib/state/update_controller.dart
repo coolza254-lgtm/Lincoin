@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/content_db.dart';
@@ -84,6 +85,8 @@ class UpdateController extends Notifier<UpdateUiState> {
 
   @override
   UpdateUiState build() {
+    final sub = installer.events.listen(_onInstallEvent);
+    ref.onDispose(sub.cancel);
     final db = ref.read(userDbProvider);
     final last = db.meta(_lastCheckKey);
     return UpdateUiState(
@@ -175,11 +178,30 @@ class UpdateController extends Notifier<UpdateUiState> {
         'อนุญาต "ติดตั้งแอปที่ไม่รู้จัก" ให้ Lincoin แล้วกดอัปเดตอีกครั้ง (ไฟล์ดาวน์โหลดไว้แล้ว)',
       );
     }
-    await installer.install(file.path);
+    state = state.copyWith(busy: true, busyLabel: 'กำลังติดตั้ง…');
+    try {
+      await installer.install(file.path);
+    } on PlatformException catch (e) {
+      return UpdateOutcome(false, 'ติดตั้งไม่สำเร็จ: ${e.message ?? e.code}');
+    }
     return const UpdateOutcome(
       true,
-      'เปิดตัวติดตั้งแล้ว กด "อัปเดต" เพื่อยืนยัน',
+      'กำลังติดตั้ง แอปจะปิดตัวแล้วเปลี่ยนเป็นเวอร์ชันใหม่ '
+      '(ถ้า Android ถาม ให้กด "อัปเดต")',
     );
+  }
+
+  void _onInstallEvent(InstallEvent e) {
+    final msg = switch (e.status) {
+      InstallStatus.confirm || InstallStatus.success => null,
+      InstallStatus.aborted => 'ยกเลิกการอัปเดตแล้ว',
+      InstallStatus.conflict =>
+        'ติดตั้งทับไม่ได้: ไฟล์นี้เซ็นด้วยกุญแจคนละชุดกับแอปที่ติดตั้งอยู่',
+      InstallStatus.storage => 'พื้นที่ในเครื่องไม่พอสำหรับอัปเดต',
+      InstallStatus.failed =>
+        'ติดตั้งไม่สำเร็จ${e.message == null ? '' : ': ${e.message}'}',
+    };
+    if (msg != null) state = state.copyWith(error: msg);
   }
 
   Future<UpdateOutcome> installContent(ContentRelease r) async {

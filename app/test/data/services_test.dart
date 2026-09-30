@@ -191,6 +191,8 @@ void main() {
         sha256: hash,
       );
       expect(f.readAsBytesSync(), body);
+      // A finished download is reused without a new request.
+      await svc.download('https://example.org/a.apk', target, sha256: hash);
       await expectLater(
         svc.download(
           'https://example.org/a.apk',
