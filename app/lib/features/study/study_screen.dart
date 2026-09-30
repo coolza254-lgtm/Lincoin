@@ -6,13 +6,13 @@ import '../../data/catalog.dart';
 import '../../data/settings_repo.dart';
 import '../../data/study_repo.dart';
 import '../../l10n/app_localizations.dart';
-import '../../l10n/pos_th.dart';
 import '../../services/study_service.dart';
 import '../../state/providers.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
 import 'item_details.dart';
+import 'question_body.dart';
 import 'session_controller.dart';
 
 class StudyScreen extends ConsumerWidget {
@@ -143,37 +143,11 @@ class _Intro extends ConsumerWidget {
   }
 }
 
-class _QuestionView extends ConsumerStatefulWidget {
+class _QuestionView extends ConsumerWidget {
   final SessionState s;
   const _QuestionView(this.s);
 
-  @override
-  ConsumerState<_QuestionView> createState() => _QuestionViewState();
-}
-
-class _QuestionViewState extends ConsumerState<_QuestionView> {
-  final _input = TextEditingController();
-  final _focus = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    _input.addListener(() => setState(() {}));
-    if (widget.s.question!.isTyped) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _focus.requestFocus(),
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    _input.dispose();
-    _focus.dispose();
-    super.dispose();
-  }
-
-  bool _showFurigana(Question q) {
+  bool _showFurigana(WidgetRef ref, Question q) {
     final mode = ref.read(settingsProvider).furigana;
     if (mode == FuriganaMode.always) return true;
     if (mode == FuriganaMode.never) return false;
@@ -183,123 +157,20 @@ class _QuestionViewState extends ConsumerState<_QuestionView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final t = AppLocalizations.of(context);
-    final tt = Theme.of(context).textTheme;
-    final c = context.lc;
-    final s = widget.s;
     final q = s.question!;
     final ctl = ref.read(sessionProvider.notifier);
-    final item = q.item;
-
-    final Widget prompt;
-    final String label;
-    switch (q.facet) {
-      case Facet.recog || Facet.listen:
-        final w = (item as WordStudy).word;
-        label = t.qMeaning;
-        prompt = Furigana(w.headwordFurigana, showReading: _showFurigana(q));
-      case Facet.recall:
-        final w = (item as WordStudy).word;
-        label = t.qTypeReading;
-        prompt = Column(
-          children: [
-            Text(
-              w.shortMeaning,
-              style: tt.headlineMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: LcTokens.spacingSm),
-            Wrap(
-              spacing: LcTokens.spacingSm,
-              children: [
-                for (final p in posLabels(w.pos))
-                  LcPill(p, bg: c.track, fg: c.muted),
-              ],
-            ),
-          ],
-        );
-      case Facet.kana:
-        label = t.qTypeRomaji;
-        prompt = Text(
-          (item as KanaStudy).kana.char,
-          style: jpStyle(96, 700, c.ink),
-        );
-    }
-
-    final hint = s.hintShown ? _hintText(q) : null;
     return _Frame(
-      body: Column(
-        children: [
-          LcPill(label),
-          const SizedBox(height: LcTokens.spacingXxl),
-          Semantics(header: true, child: prompt),
-          const SizedBox(height: LcTokens.spacingXxl),
-          if (q.choices != null)
-            for (final (i, o) in q.choices!.options.indexed)
-              Padding(
-                padding: const EdgeInsets.only(bottom: LcTokens.spacingMd),
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(56),
-                    backgroundColor: c.surface,
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: LcTokens.spacingLg,
-                      vertical: 14,
-                    ),
-                  ),
-                  onPressed: () => ctl.chooseOption(i),
-                  child: Text(o, style: tt.bodyLarge),
-                ),
-              )
-          else ...[
-            TextField(
-              controller: _input,
-              focusNode: _focus,
-              autocorrect: false,
-              enableSuggestions: false,
-              textInputAction: TextInputAction.done,
-              style: jpStyle(24, 500, c.ink),
-              textAlign: TextAlign.center,
-              // Empty on purpose: no example text that could hint at the answer.
-              decoration: const InputDecoration(),
-              onSubmitted: (v) => ctl.submitTyped(v),
-            ),
-            const SizedBox(height: LcTokens.spacingSm),
-            if (q.facet == Facet.recall && _input.text.isNotEmpty)
-              Text(
-                normalizeReading(_input.text),
-                style: jpStyle(20, 500, c.muted),
-                semanticsLabel: t.kanaPreview,
-              ),
-            if (hint != null)
-              Padding(
-                padding: const EdgeInsets.only(top: LcTokens.spacingSm),
-                child: Text(t.hintStartsWith(hint), style: tt.bodyMedium),
-              ),
-            if (s.synonymHint)
-              Padding(
-                padding: const EdgeInsets.only(top: LcTokens.spacingSm),
-                child: LcPill(
-                  t.synonymTryAgain,
-                  bg: c.coinSoft,
-                  fg: c.coin,
-                  icon: Icons.info_outline_rounded,
-                ),
-              ),
-          ],
-        ],
+      body: QuestionBody(
+        question: q,
+        showFurigana: _showFurigana(ref, q),
+        hintShown: s.hintShown,
+        synonymHint: s.synonymHint,
+        onChoose: ctl.chooseOption,
+        onSubmit: ctl.submitTyped,
       ),
       actions: [
-        if (q.isTyped)
-          FilledButton(
-            onPressed: _input.text.trim().isEmpty
-                ? null
-                : () => ctl.submitTyped(_input.text),
-            child: Text(t.checkAnswer),
-          ),
-        const SizedBox(height: LcTokens.spacingSm),
         Row(
           children: [
             FilterChip(
@@ -309,19 +180,13 @@ class _QuestionViewState extends ConsumerState<_QuestionView> {
               tooltip: t.guessingHelp,
             ),
             const Spacer(),
-            if (q.isTyped && q.facet == Facet.recall && !s.hintShown)
+            if (q.form == QuestionForm.readingType && !s.hintShown)
               TextButton(onPressed: ctl.showHint, child: Text(t.hint)),
             TextButton(onPressed: ctl.dontKnow, child: Text(t.dontKnow)),
           ],
         ),
       ],
     );
-  }
-
-  String _hintText(Question q) {
-    final i = q.item;
-    if (i is WordStudy) return i.word.reading.characters.first;
-    return '';
   }
 }
 

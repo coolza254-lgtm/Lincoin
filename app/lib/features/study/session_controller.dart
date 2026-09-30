@@ -141,6 +141,7 @@ class SessionController extends Notifier<SessionState> {
   SessionState _finish(SessionState s) {
     _answerTimer.stop();
     final bonus = _svc.finishSession(answeredAny: s.answered > 0);
+    ref.read(challengeServiceProvider)?.settleWeekly();
     _saveSession(ended: true);
     ref.read(dataVersionProvider.notifier).bump();
     return s.copyWith(

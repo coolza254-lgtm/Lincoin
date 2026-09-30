@@ -61,6 +61,37 @@ class Question {
   });
 
   bool get isTyped => choices == null;
+
+  QuestionForm get form => QuestionForm.fromType(type);
+}
+
+/// How a question is asked; the name before the dot in [Question.type].
+enum QuestionForm {
+  /// Japanese word → choose its Thai meaning ("recog.choice").
+  meaningChoice,
+
+  /// Thai meaning → type the reading ("recall.type").
+  readingType,
+
+  /// Thai meaning → choose the Japanese word ("reverse.choice", practice).
+  wordChoice,
+
+  /// Kana → type romaji ("kana.type").
+  kanaType,
+
+  /// Kana → choose romaji ("kana.choice", practice).
+  kanaChoice;
+
+  static QuestionForm fromType(String type) => switch (type) {
+    'recall.type' => readingType,
+    'reverse.choice' => wordChoice,
+    'kana.type' => kanaType,
+    'kana.choice' => kanaChoice,
+    _ => meaningChoice,
+  };
+
+  /// Options are Japanese text (shown in the Japanese font).
+  bool get japaneseOptions => this == wordChoice;
 }
 
 enum AnswerCheck { correct, wrong, synonym }

@@ -1153,26 +1153,308 @@ abstract class AppLocalizations {
   /// No description provided for @practiceTitle.
   ///
   /// In th, this message translates to:
-  /// **'โหมดฝึก'**
+  /// **'ฝึก'**
   String get practiceTitle;
 
   /// No description provided for @practiceBody.
   ///
   /// In th, this message translates to:
-  /// **'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว ได้ลินคอยแบบลดหลั่น ไม่กระทบตารางทบทวน'**
+  /// **'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ลินคอยแบบลดหลั่นต่อวัน'**
   String get practiceBody;
 
   /// No description provided for @challengeTitle.
   ///
   /// In th, this message translates to:
-  /// **'โหมดท้าทาย'**
+  /// **'ท้าทาย'**
   String get challengeTitle;
 
   /// No description provided for @challengeBody.
   ///
   /// In th, this message translates to:
-  /// **'เดิมพันลินคอยกับเป้าหมายที่ปรับตามฝีมือ ชนะได้ถึง 6 เท่า'**
+  /// **'เดิมพันลินคอยกับเป้าหมายที่ปรับตามฝีมือคุณเอง ชนะได้คืนทุนพร้อมกำไร แพ้เสียเดิมพัน ออกกลางคันถือว่าแพ้'**
   String get challengeBody;
+
+  /// No description provided for @qChooseWord.
+  ///
+  /// In th, this message translates to:
+  /// **'เลือกคำภาษาญี่ปุ่น'**
+  String get qChooseWord;
+
+  /// No description provided for @qChooseRomaji.
+  ///
+  /// In th, this message translates to:
+  /// **'อ่านว่าอะไร'**
+  String get qChooseRomaji;
+
+  /// No description provided for @learnedItems.
+  ///
+  /// In th, this message translates to:
+  /// **'เรียนแล้ว'**
+  String get learnedItems;
+
+  /// No description provided for @weakItems.
+  ///
+  /// In th, this message translates to:
+  /// **'จุดอ่อน'**
+  String get weakItems;
+
+  /// No description provided for @recentItems.
+  ///
+  /// In th, this message translates to:
+  /// **'ใหม่ (7 วัน)'**
+  String get recentItems;
+
+  /// No description provided for @practiceRate.
+  ///
+  /// In th, this message translates to:
+  /// **'ได้จากการฝึกวันนี้ · อัตราตอนนี้ {percent}%'**
+  String practiceRate(int percent);
+
+  /// No description provided for @startPractice.
+  ///
+  /// In th, this message translates to:
+  /// **'เริ่มฝึก 10 ข้อ'**
+  String get startPractice;
+
+  /// No description provided for @practiceNeedsItems.
+  ///
+  /// In th, this message translates to:
+  /// **'เรียนอย่างน้อย 4 คำก่อน แล้วค่อยมาฝึก'**
+  String get practiceNeedsItems;
+
+  /// No description provided for @practiceDone.
+  ///
+  /// In th, this message translates to:
+  /// **'จบรอบฝึกแล้ว'**
+  String get practiceDone;
+
+  /// No description provided for @correctCount.
+  ///
+  /// In th, this message translates to:
+  /// **'ตอบถูก'**
+  String get correctCount;
+
+  /// No description provided for @bestCombo.
+  ///
+  /// In th, this message translates to:
+  /// **'คอมโบสูงสุด'**
+  String get bestCombo;
+
+  /// No description provided for @combo.
+  ///
+  /// In th, this message translates to:
+  /// **'คอมโบ {n}'**
+  String combo(int n);
+
+  /// No description provided for @done.
+  ///
+  /// In th, this message translates to:
+  /// **'เสร็จ'**
+  String get done;
+
+  /// No description provided for @challengeWon.
+  ///
+  /// In th, this message translates to:
+  /// **'ชนะ! 🎉'**
+  String get challengeWon;
+
+  /// No description provided for @challengeLost.
+  ///
+  /// In th, this message translates to:
+  /// **'รอบนี้ยังไม่ถึงเป้า'**
+  String get challengeLost;
+
+  /// No description provided for @scoreLabel.
+  ///
+  /// In th, this message translates to:
+  /// **'คะแนน (เป้า {target})'**
+  String scoreLabel(int target);
+
+  /// No description provided for @payoutLabel.
+  ///
+  /// In th, this message translates to:
+  /// **'ได้คืน (รวมทุน)'**
+  String get payoutLabel;
+
+  /// No description provided for @stakeLost.
+  ///
+  /// In th, this message translates to:
+  /// **'เสียเดิมพัน'**
+  String get stakeLost;
+
+  /// No description provided for @thresholdAdapts.
+  ///
+  /// In th, this message translates to:
+  /// **'เป้าหมายรอบต่อไปปรับตามคะแนน 20 รอบล่าสุดของคุณ ยิ่งเก่งขึ้น เป้าก็สูงขึ้น'**
+  String get thresholdAdapts;
+
+  /// No description provided for @leaveChallengeTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'ออกจากชาเลนจ์?'**
+  String get leaveChallengeTitle;
+
+  /// No description provided for @leaveChallengeBody.
+  ///
+  /// In th, this message translates to:
+  /// **'ออกตอนนี้ถือว่ายอมแพ้ และเสียเดิมพัน'**
+  String get leaveChallengeBody;
+
+  /// No description provided for @keepPlaying.
+  ///
+  /// In th, this message translates to:
+  /// **'เล่นต่อ'**
+  String get keepPlaying;
+
+  /// No description provided for @forfeit.
+  ///
+  /// In th, this message translates to:
+  /// **'ยอมแพ้'**
+  String get forfeit;
+
+  /// No description provided for @tierEasy.
+  ///
+  /// In th, this message translates to:
+  /// **'ง่าย'**
+  String get tierEasy;
+
+  /// No description provided for @tierNormal.
+  ///
+  /// In th, this message translates to:
+  /// **'ปกติ'**
+  String get tierNormal;
+
+  /// No description provided for @tierHard.
+  ///
+  /// In th, this message translates to:
+  /// **'ยาก'**
+  String get tierHard;
+
+  /// No description provided for @tierBrutal.
+  ///
+  /// In th, this message translates to:
+  /// **'โหด'**
+  String get tierBrutal;
+
+  /// No description provided for @chSpeed.
+  ///
+  /// In th, this message translates to:
+  /// **'สปีดรอบ'**
+  String get chSpeed;
+
+  /// No description provided for @chStreak.
+  ///
+  /// In th, this message translates to:
+  /// **'ไร้ที่ติ'**
+  String get chStreak;
+
+  /// No description provided for @chWeak.
+  ///
+  /// In th, this message translates to:
+  /// **'ล่าจุดอ่อน'**
+  String get chWeak;
+
+  /// No description provided for @chWeekly.
+  ///
+  /// In th, this message translates to:
+  /// **'สัปดาห์ขยัน'**
+  String get chWeekly;
+
+  /// No description provided for @chSpeedRule.
+  ///
+  /// In th, this message translates to:
+  /// **'ตอบถูกอย่างน้อย {n} ข้อใน 60 วินาที'**
+  String chSpeedRule(int n);
+
+  /// No description provided for @chStreakRule.
+  ///
+  /// In th, this message translates to:
+  /// **'ตอบถูกติดกันอย่างน้อย {n} ข้อ (ผิดครั้งแรกจบ)'**
+  String chStreakRule(int n);
+
+  /// No description provided for @chWeakRule.
+  ///
+  /// In th, this message translates to:
+  /// **'ตอบถูกอย่างน้อย {n} จาก 10 ข้อ จากคำที่อ่อน'**
+  String chWeakRule(int n);
+
+  /// No description provided for @chWeeklyRule.
+  ///
+  /// In th, this message translates to:
+  /// **'ทบทวนให้ครบทุกใบ {n} จาก 7 วัน เริ่มวันนี้'**
+  String chWeeklyRule(int n);
+
+  /// No description provided for @challengeLocked.
+  ///
+  /// In th, this message translates to:
+  /// **'เรียนให้ได้ {n} คำก่อนเพื่อปลดล็อก'**
+  String challengeLocked(int n);
+
+  /// No description provided for @challengeLockedBody.
+  ///
+  /// In th, this message translates to:
+  /// **'ตอนนี้เรียนแล้ว {count} คำ/ตัวอักษร'**
+  String challengeLockedBody(int count);
+
+  /// No description provided for @weeklyProgress.
+  ///
+  /// In th, this message translates to:
+  /// **'เคลียร์แล้ว {done}/{target} วัน · ชนะได้ {payout} ลินคอย'**
+  String weeklyProgress(int done, int target, int payout);
+
+  /// No description provided for @challengeHistory.
+  ///
+  /// In th, this message translates to:
+  /// **'ประวัติชาเลนจ์'**
+  String get challengeHistory;
+
+  /// No description provided for @historyLine.
+  ///
+  /// In th, this message translates to:
+  /// **'ได้ {score} · เป้า {target}'**
+  String historyLine(int score, int target);
+
+  /// No description provided for @toWin.
+  ///
+  /// In th, this message translates to:
+  /// **'เงื่อนไขชนะ'**
+  String get toWin;
+
+  /// No description provided for @calibratingNote.
+  ///
+  /// In th, this message translates to:
+  /// **'ยังเล่นไม่ถึง 5 รอบ ใช้เป้าเริ่มต้นไปก่อน หลังจากนั้นเป้าจะปรับตามฝีมือคุณ'**
+  String get calibratingNote;
+
+  /// No description provided for @stakeTooLow.
+  ///
+  /// In th, this message translates to:
+  /// **'ต้องมีลินคอยพอให้เดิมพันขั้นต่ำ {min} (เดิมพันได้ไม่เกิน 30% ของยอด)'**
+  String stakeTooLow(int min);
+
+  /// No description provided for @stake.
+  ///
+  /// In th, this message translates to:
+  /// **'เดิมพัน'**
+  String get stake;
+
+  /// No description provided for @stakeSummary.
+  ///
+  /// In th, this message translates to:
+  /// **'ชนะได้ {win} (รวมทุนคืน) · แพ้เสีย {stake} · สูงสุด {max}'**
+  String stakeSummary(int win, int stake, int max);
+
+  /// No description provided for @startChallenge.
+  ///
+  /// In th, this message translates to:
+  /// **'เริ่มชาเลนจ์'**
+  String get startChallenge;
+
+  /// No description provided for @weeklyStarted.
+  ///
+  /// In th, this message translates to:
+  /// **'เริ่มสัปดาห์ขยันแล้ว ทบทวนให้ครบในแต่ละวันเพื่อเก็บวัน'**
+  String get weeklyStarted;
 }
 
 class _AppLocalizationsDelegate

@@ -366,8 +366,161 @@
     }
   },
   "redeemHistory": "ประวัติการแลก",
-  "practiceTitle": "โหมดฝึก",
-  "practiceBody": "เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว ได้ลินคอยแบบลดหลั่น ไม่กระทบตารางทบทวน",
-  "challengeTitle": "โหมดท้าทาย",
-  "challengeBody": "เดิมพันลินคอยกับเป้าหมายที่ปรับตามฝีมือ ชนะได้ถึง 6 เท่า"
+  "practiceTitle": "ฝึก",
+  "practiceBody": "เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ลินคอยแบบลดหลั่นต่อวัน",
+  "challengeTitle": "ท้าทาย",
+  "challengeBody": "เดิมพันลินคอยกับเป้าหมายที่ปรับตามฝีมือคุณเอง ชนะได้คืนทุนพร้อมกำไร แพ้เสียเดิมพัน ออกกลางคันถือว่าแพ้",
+  "qChooseWord": "เลือกคำภาษาญี่ปุ่น",
+  "qChooseRomaji": "อ่านว่าอะไร",
+  "learnedItems": "เรียนแล้ว",
+  "weakItems": "จุดอ่อน",
+  "recentItems": "ใหม่ (7 วัน)",
+  "practiceRate": "ได้จากการฝึกวันนี้ · อัตราตอนนี้ {percent}%",
+  "@practiceRate": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "startPractice": "เริ่มฝึก 10 ข้อ",
+  "practiceNeedsItems": "เรียนอย่างน้อย 4 คำก่อน แล้วค่อยมาฝึก",
+  "practiceDone": "จบรอบฝึกแล้ว",
+  "correctCount": "ตอบถูก",
+  "bestCombo": "คอมโบสูงสุด",
+  "combo": "คอมโบ {n}",
+  "@combo": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "done": "เสร็จ",
+  "challengeWon": "ชนะ! 🎉",
+  "challengeLost": "รอบนี้ยังไม่ถึงเป้า",
+  "scoreLabel": "คะแนน (เป้า {target})",
+  "@scoreLabel": {
+    "placeholders": {
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "payoutLabel": "ได้คืน (รวมทุน)",
+  "stakeLost": "เสียเดิมพัน",
+  "thresholdAdapts": "เป้าหมายรอบต่อไปปรับตามคะแนน 20 รอบล่าสุดของคุณ ยิ่งเก่งขึ้น เป้าก็สูงขึ้น",
+  "leaveChallengeTitle": "ออกจากชาเลนจ์?",
+  "leaveChallengeBody": "ออกตอนนี้ถือว่ายอมแพ้ และเสียเดิมพัน",
+  "keepPlaying": "เล่นต่อ",
+  "forfeit": "ยอมแพ้",
+  "tierEasy": "ง่าย",
+  "tierNormal": "ปกติ",
+  "tierHard": "ยาก",
+  "tierBrutal": "โหด",
+  "chSpeed": "สปีดรอบ",
+  "chStreak": "ไร้ที่ติ",
+  "chWeak": "ล่าจุดอ่อน",
+  "chWeekly": "สัปดาห์ขยัน",
+  "chSpeedRule": "ตอบถูกอย่างน้อย {n} ข้อใน 60 วินาที",
+  "@chSpeedRule": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chStreakRule": "ตอบถูกติดกันอย่างน้อย {n} ข้อ (ผิดครั้งแรกจบ)",
+  "@chStreakRule": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chWeakRule": "ตอบถูกอย่างน้อย {n} จาก 10 ข้อ จากคำที่อ่อน",
+  "@chWeakRule": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chWeeklyRule": "ทบทวนให้ครบทุกใบ {n} จาก 7 วัน เริ่มวันนี้",
+  "@chWeeklyRule": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "challengeLocked": "เรียนให้ได้ {n} คำก่อนเพื่อปลดล็อก",
+  "@challengeLocked": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "challengeLockedBody": "ตอนนี้เรียนแล้ว {count} คำ/ตัวอักษร",
+  "@challengeLockedBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyProgress": "เคลียร์แล้ว {done}/{target} วัน · ชนะได้ {payout} ลินคอย",
+  "@weeklyProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      },
+      "payout": {
+        "type": "int"
+      }
+    }
+  },
+  "challengeHistory": "ประวัติชาเลนจ์",
+  "historyLine": "ได้ {score} · เป้า {target}",
+  "@historyLine": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
+  "toWin": "เงื่อนไขชนะ",
+  "calibratingNote": "ยังเล่นไม่ถึง 5 รอบ ใช้เป้าเริ่มต้นไปก่อน หลังจากนั้นเป้าจะปรับตามฝีมือคุณ",
+  "stakeTooLow": "ต้องมีลินคอยพอให้เดิมพันขั้นต่ำ {min} (เดิมพันได้ไม่เกิน 30% ของยอด)",
+  "@stakeTooLow": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "stake": "เดิมพัน",
+  "stakeSummary": "ชนะได้ {win} (รวมทุนคืน) · แพ้เสีย {stake} · สูงสุด {max}",
+  "@stakeSummary": {
+    "placeholders": {
+      "win": {
+        "type": "int"
+      },
+      "stake": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "startChallenge": "เริ่มชาเลนจ์",
+  "weeklyStarted": "เริ่มสัปดาห์ขยันแล้ว ทบทวนให้ครบในแต่ละวันเพื่อเก็บวัน"
 }

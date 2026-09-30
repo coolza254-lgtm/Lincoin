@@ -607,16 +607,186 @@ class AppLocalizationsTh extends AppLocalizations {
   String get redeemHistory => 'ประวัติการแลก';
 
   @override
-  String get practiceTitle => 'โหมดฝึก';
+  String get practiceTitle => 'ฝึก';
 
   @override
   String get practiceBody =>
-      'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว ได้ลินคอยแบบลดหลั่น ไม่กระทบตารางทบทวน';
+      'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ลินคอยแบบลดหลั่นต่อวัน';
 
   @override
-  String get challengeTitle => 'โหมดท้าทาย';
+  String get challengeTitle => 'ท้าทาย';
 
   @override
   String get challengeBody =>
-      'เดิมพันลินคอยกับเป้าหมายที่ปรับตามฝีมือ ชนะได้ถึง 6 เท่า';
+      'เดิมพันลินคอยกับเป้าหมายที่ปรับตามฝีมือคุณเอง ชนะได้คืนทุนพร้อมกำไร แพ้เสียเดิมพัน ออกกลางคันถือว่าแพ้';
+
+  @override
+  String get qChooseWord => 'เลือกคำภาษาญี่ปุ่น';
+
+  @override
+  String get qChooseRomaji => 'อ่านว่าอะไร';
+
+  @override
+  String get learnedItems => 'เรียนแล้ว';
+
+  @override
+  String get weakItems => 'จุดอ่อน';
+
+  @override
+  String get recentItems => 'ใหม่ (7 วัน)';
+
+  @override
+  String practiceRate(int percent) {
+    return 'ได้จากการฝึกวันนี้ · อัตราตอนนี้ $percent%';
+  }
+
+  @override
+  String get startPractice => 'เริ่มฝึก 10 ข้อ';
+
+  @override
+  String get practiceNeedsItems => 'เรียนอย่างน้อย 4 คำก่อน แล้วค่อยมาฝึก';
+
+  @override
+  String get practiceDone => 'จบรอบฝึกแล้ว';
+
+  @override
+  String get correctCount => 'ตอบถูก';
+
+  @override
+  String get bestCombo => 'คอมโบสูงสุด';
+
+  @override
+  String combo(int n) {
+    return 'คอมโบ $n';
+  }
+
+  @override
+  String get done => 'เสร็จ';
+
+  @override
+  String get challengeWon => 'ชนะ! 🎉';
+
+  @override
+  String get challengeLost => 'รอบนี้ยังไม่ถึงเป้า';
+
+  @override
+  String scoreLabel(int target) {
+    return 'คะแนน (เป้า $target)';
+  }
+
+  @override
+  String get payoutLabel => 'ได้คืน (รวมทุน)';
+
+  @override
+  String get stakeLost => 'เสียเดิมพัน';
+
+  @override
+  String get thresholdAdapts =>
+      'เป้าหมายรอบต่อไปปรับตามคะแนน 20 รอบล่าสุดของคุณ ยิ่งเก่งขึ้น เป้าก็สูงขึ้น';
+
+  @override
+  String get leaveChallengeTitle => 'ออกจากชาเลนจ์?';
+
+  @override
+  String get leaveChallengeBody => 'ออกตอนนี้ถือว่ายอมแพ้ และเสียเดิมพัน';
+
+  @override
+  String get keepPlaying => 'เล่นต่อ';
+
+  @override
+  String get forfeit => 'ยอมแพ้';
+
+  @override
+  String get tierEasy => 'ง่าย';
+
+  @override
+  String get tierNormal => 'ปกติ';
+
+  @override
+  String get tierHard => 'ยาก';
+
+  @override
+  String get tierBrutal => 'โหด';
+
+  @override
+  String get chSpeed => 'สปีดรอบ';
+
+  @override
+  String get chStreak => 'ไร้ที่ติ';
+
+  @override
+  String get chWeak => 'ล่าจุดอ่อน';
+
+  @override
+  String get chWeekly => 'สัปดาห์ขยัน';
+
+  @override
+  String chSpeedRule(int n) {
+    return 'ตอบถูกอย่างน้อย $n ข้อใน 60 วินาที';
+  }
+
+  @override
+  String chStreakRule(int n) {
+    return 'ตอบถูกติดกันอย่างน้อย $n ข้อ (ผิดครั้งแรกจบ)';
+  }
+
+  @override
+  String chWeakRule(int n) {
+    return 'ตอบถูกอย่างน้อย $n จาก 10 ข้อ จากคำที่อ่อน';
+  }
+
+  @override
+  String chWeeklyRule(int n) {
+    return 'ทบทวนให้ครบทุกใบ $n จาก 7 วัน เริ่มวันนี้';
+  }
+
+  @override
+  String challengeLocked(int n) {
+    return 'เรียนให้ได้ $n คำก่อนเพื่อปลดล็อก';
+  }
+
+  @override
+  String challengeLockedBody(int count) {
+    return 'ตอนนี้เรียนแล้ว $count คำ/ตัวอักษร';
+  }
+
+  @override
+  String weeklyProgress(int done, int target, int payout) {
+    return 'เคลียร์แล้ว $done/$target วัน · ชนะได้ $payout ลินคอย';
+  }
+
+  @override
+  String get challengeHistory => 'ประวัติชาเลนจ์';
+
+  @override
+  String historyLine(int score, int target) {
+    return 'ได้ $score · เป้า $target';
+  }
+
+  @override
+  String get toWin => 'เงื่อนไขชนะ';
+
+  @override
+  String get calibratingNote =>
+      'ยังเล่นไม่ถึง 5 รอบ ใช้เป้าเริ่มต้นไปก่อน หลังจากนั้นเป้าจะปรับตามฝีมือคุณ';
+
+  @override
+  String stakeTooLow(int min) {
+    return 'ต้องมีลินคอยพอให้เดิมพันขั้นต่ำ $min (เดิมพันได้ไม่เกิน 30% ของยอด)';
+  }
+
+  @override
+  String get stake => 'เดิมพัน';
+
+  @override
+  String stakeSummary(int win, int stake, int max) {
+    return 'ชนะได้ $win (รวมทุนคืน) · แพ้เสีย $stake · สูงสุด $max';
+  }
+
+  @override
+  String get startChallenge => 'เริ่มชาเลนจ์';
+
+  @override
+  String get weeklyStarted =>
+      'เริ่มสัปดาห์ขยันแล้ว ทบทวนให้ครบในแต่ละวันเพื่อเก็บวัน';
 }

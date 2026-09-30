@@ -89,6 +89,17 @@ class Catalog {
         DistractorCandidate(i.id, i.word.shortMeaning, i.group),
   ];
 
+  late final List<DistractorCandidate> headwordPool = [
+    for (final i in path)
+      if (i is WordStudy) DistractorCandidate(i.id, i.word.headword, i.group),
+  ];
+
+  late final List<DistractorCandidate> romajiPool = [
+    for (final i in path)
+      if (i is KanaStudy)
+        DistractorCandidate(i.id, i.kana.romaji, i.kana.script),
+  ];
+
   /// Words sharing [meaning] (for tolerating a synonym typed in recall).
   List<WordStudy> wordsWithMeaning(String meaning) => [
     for (final i in path)

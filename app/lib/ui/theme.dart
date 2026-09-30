@@ -216,6 +216,32 @@ ThemeData buildTheme(LcPalette p, {bool reduceMotion = false}) {
         borderRadius: BorderRadius.circular(LcTokens.radiusControl),
       ),
     ),
+    segmentedButtonTheme: SegmentedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected) ? p.accentSoft : p.surface,
+        ),
+        foregroundColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected) ? p.accent : p.muted,
+        ),
+        side: WidgetStateProperty.all(BorderSide(color: p.line, width: 1.5)),
+        textStyle: WidgetStateProperty.all(t(LcTokens.labelSize + 1, 600)),
+        minimumSize: WidgetStateProperty.all(
+          const Size(LcTokens.touchTargetMin, LcTokens.touchTargetMin),
+        ),
+      ),
+    ),
+    chipTheme: ChipThemeData(
+      backgroundColor: p.surface,
+      selectedColor: p.accentSoft,
+      checkmarkColor: p.accent,
+      side: BorderSide(color: p.line, width: 1.5),
+      labelStyle: t(LcTokens.labelSize + 1, 500),
+      secondaryLabelStyle: t(LcTokens.labelSize + 1, 600, p.accent),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(LcTokens.radiusControl),
+      ),
+    ),
     progressIndicatorTheme: ProgressIndicatorThemeData(
       color: p.accent,
       linearTrackColor: p.track,

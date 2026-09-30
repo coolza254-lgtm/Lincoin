@@ -52,9 +52,16 @@ class _AppShellState extends ConsumerState<AppShell> {
   void initState() {
     super.initState();
     // Daily online check (if enabled); only shows a dot, never installs.
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ref.read(updateControllerProvider.notifier).autoCheck(),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Skill challenges left open (app closed mid-round) are forfeited;
+      // weekly challenges are settled from the days already cleared.
+      final ch = ref.read(challengeServiceProvider);
+      if (ch != null) {
+        final n = ch.forfeitAbandoned() + ch.settleWeekly().length;
+        if (n > 0) ref.read(dataVersionProvider.notifier).bump();
+      }
+      ref.read(updateControllerProvider.notifier).autoCheck();
+    });
   }
 
   @override

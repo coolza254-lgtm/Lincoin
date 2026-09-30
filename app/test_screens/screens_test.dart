@@ -176,6 +176,25 @@ void main() {
       await snap(name);
     }
     if (theme != 'matcha') return;
+    // Challenge tab + setup sheet, then a practice round.
+    await tester.tap(find.text('ท้าทาย'));
+    await snap('4b-challenges');
+    await tester.tap(find.text('สปีดรอบ'));
+    await snap('4c-challenge-setup');
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('ฝึก').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('เริ่มฝึก 10 ข้อ'));
+    await tester.pumpAndSettle();
+    await snap('4d-drill');
+    final opt = find.byType(OutlinedButton);
+    if (opt.evaluate().isNotEmpty) {
+      await tester.tap(opt.first);
+      await snap('4e-drill-feedback');
+    }
+    await tester.tap(find.byTooltip('ปิด'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('หน้าหลัก').last);
     await tester.pumpAndSettle();
     await tester.tap(find.text('เริ่มเรียน'));

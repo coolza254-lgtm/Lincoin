@@ -8,6 +8,8 @@ import '../data/shop_repo.dart';
 import '../data/study_repo.dart';
 import '../data/user_db.dart';
 import '../services/backup_service.dart';
+import '../services/challenge_service.dart';
+import '../services/practice_service.dart';
 import '../services/content_store.dart';
 import '../services/files.dart';
 import '../services/stats_service.dart';
@@ -180,3 +182,13 @@ final shopRepoProvider = Provider((ref) => ShopRepo(ref.watch(userDbProvider)));
 final updateServiceProvider = Provider(
   (ref) => UpdateService(ref.watch(httpClientProvider)),
 );
+
+final practiceServiceProvider = Provider<PracticeService?>((ref) {
+  final s = ref.watch(studyServiceProvider);
+  return s == null ? null : PracticeService(s);
+});
+
+final challengeServiceProvider = Provider<ChallengeService?>((ref) {
+  final s = ref.watch(studyServiceProvider);
+  return s == null ? null : ChallengeService(s);
+});
