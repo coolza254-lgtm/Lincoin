@@ -8,7 +8,7 @@ import sqlite3
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from . import jmdict, readers
+from . import grammar, jmdict, readers
 from . import translations
 from .kana import kana_rows
 from .sources import Cache, Source, load_sources
@@ -42,6 +42,9 @@ class BuildReport:
     translations: dict = field(default_factory=dict)
     overrides_applied: list[dict] = field(default_factory=list)
     override_errors: list[dict] = field(default_factory=list)
+    grammar_points: int = 0
+    grammar_examples: int = 0
+    grammar_points_few_examples: list[str] = field(default_factory=list)
 
     def to_json(self) -> dict:
         return self.__dict__
@@ -103,7 +106,8 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
           sources: dict[str, Source] | None = None,
           translations_root: Path | None = translations.ROOT,
           overrides_path: Path | None = OVERRIDES,
-          example_filter: ExampleFilter | None = None) -> BuildReport:
+          example_filter: ExampleFilter | None = None,
+          grammar_root: Path = grammar.GRAMMAR_DIR) -> BuildReport:
     sources = sources or load_sources()
     report = BuildReport(levels=levels)
 
@@ -259,6 +263,50 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
                 report.examples += 1
             db.execute("INSERT INTO word_examples VALUES (?,?,?,?)", (f"w:{seq}", eid, rank, int(verified)))
 
+    # 7. Grammar points with example sentences.
+    points = [p for lv in levels for p in grammar.load_points(int(lv[1]), grammar_root)]
+    if points:
+        known = {ch for (t,) in db.execute("SELECT text FROM word_forms WHERE kind='kanji'")
+                 for ch in t}
+        known |= set("一二三四五六七八九十百千万円時分日月年人")
+        matches, sents = ({}, {})
+        if with_examples:
+            exclude: dict[str, set[int]] = {}
+            for lv in levels:
+                exclude.update(grammar.load_exclusions(int(lv[1]), grammar_root))
+            matches, sents = _grammar_examples(cache, points, known, exclude,
+                                               example_filter or ExampleFilter())
+            if sents:
+                used = {s for (s,) in db.execute("SELECT id FROM sources")}
+                if "tatoeba" not in used:
+                    t = sources["tatoeba"]
+                    files = {k: cache.record("tatoeba", k) for k in t.files if cache.has("tatoeba", k)}
+                    db.execute("INSERT INTO sources VALUES (?,?,?,?,?,?,?,?)",
+                               (t.id, t.name, t.homepage, t.license, t.license_url, t.attribution,
+                                t.version, _j(files)))
+        for p in points:
+            db.execute("INSERT INTO grammar_points VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                       (p.id, p.level, p.ord, p.title_ja, p.title_th, p.meaning_th, p.formation_th,
+                        p.notes_th, _j(p.similar), "auto_checked", "lincoin"))
+            report.grammar_points += 1
+            rows = matches.get(p.id, [])
+            if with_examples and len(rows) < 3:
+                report.grammar_points_few_examples.append(p.id)
+            for rank, m in enumerate(rows):
+                ja, en, cc0_ja, cc0_en = sents[m.sentence_id]
+                eid = f"ex:{m.sentence_id}"
+                if eid not in seen_examples:
+                    seen_examples.add(eid)
+                    db.execute("INSERT INTO examples VALUES (?,?,?,?,?,?,?,?,?,?)",
+                               (eid, ja.text, None, en.text, None, ja.author, en.author,
+                                "CC0 1.0" if cc0_ja else "CC BY 2.0 FR",
+                                "CC0 1.0" if cc0_en else "CC BY 2.0 FR", "tatoeba"))
+                    report.examples += 1
+                db.execute("INSERT INTO grammar_examples VALUES (?,?,?,?)",
+                           (p.id, eid, rank, _j({"start": m.start, "end": m.end,
+                                                  "answer": m.answer, "wrong": m.wrong})))
+                report.grammar_examples += 1
+
     report.translations = translations.apply(db, translations_root) if translations_root else {}
 
     for k in kana_rows():
@@ -324,3 +372,26 @@ def _examples(cache, entries, order, primaries, spelling_counts, report, flt: Ex
     report.skipped_sentences_without_author = len(no_author)
     report.skipped_unsuitable_sentences = len(blocked)
     return out, cc0
+
+
+def _grammar_examples(cache, points, known_kanji, exclude, flt: ExampleFilter):
+    """Scans every Japanese Tatoeba sentence that has an authored English
+    translation for the grammar patterns."""
+    jpn = {sid: s for sid, s in readers.read_sentences(cache.path("tatoeba", "jpn_sentences")).items()
+           if s.author and len(s.text) <= grammar.MAX_LEN}
+    links = readers.read_links(cache.path("tatoeba", "jpn_eng_links"), set(jpn))
+    eng_ids = {t for ts in links.values() for t in ts}
+    eng = readers.read_sentences(cache.path("tatoeba", "eng_sentences"), eng_ids)
+    usable: dict[int, tuple] = {}
+    for sid, ja in jpn.items():
+        en = next((eng[t] for t in sorted(links.get(sid, [])) if t in eng and eng[t].author), None)
+        if en is None or flt.blocked(ja.text, en.text):
+            continue
+        usable[sid] = (ja, en)
+    matches = grammar.find_examples(points, {sid: ja.text for sid, (ja, _) in usable.items()},
+                                    known_kanji, exclude)
+    wanted = {m.sentence_id for ms in matches.values() for m in ms}
+    ids = wanted | {usable[s][1].id for s in wanted}
+    cc0 = readers.read_cc0_ids(cache.path("tatoeba", "cc0"), ids)
+    sents = {s: (usable[s][0], usable[s][1], s in cc0, usable[s][1].id in cc0) for s in wanted}
+    return matches, sents
