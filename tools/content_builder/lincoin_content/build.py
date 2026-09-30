@@ -60,7 +60,12 @@ def _nf(pri: list[str]) -> int:
 
 def _pick_primary(entry: jmdict.Entry, item: readers.JlptItem, report: BuildReport):
     kanji = [k for k in entry.kanji if not set(k.info) & _IRREGULAR]
-    primary_k = next((k.text for k in entry.kanji if k.text == item.kanji), None)
+    listed = next((k for k in entry.kanji if k.text == item.kanji), None)
+    primary_k = listed.text if listed else None
+    # A list spelling JMdict marks as irregular or outdated (e.g. 落る for
+    # 落ちる) gives way to the standard form.
+    if listed is not None and set(listed.info) & _IRREGULAR and kanji:
+        primary_k = kanji[0].text
     if item.kanji and primary_k is None:
         primary_k = kanji[0].text if kanji else None
         report.primary_form_fallbacks.append(
