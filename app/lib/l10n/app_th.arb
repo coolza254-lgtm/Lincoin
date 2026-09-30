@@ -73,8 +73,6 @@
   "qMeaning": "ความหมายคืออะไร",
   "qTypeReading": "พิมพ์คำอ่าน",
   "qTypeRomaji": "พิมพ์โรมาจิ",
-  "romajiHint": "เช่น ka",
-  "readingHint": "โรมาจิหรือคานะ เช่น taberu",
   "kanaPreview": "คานะที่พิมพ์",
   "hintStartsWith": "ขึ้นต้นด้วย {kana}",
   "@hintStartsWith": {

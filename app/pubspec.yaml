@@ -4,7 +4,7 @@ publish_to: 'none'
 
 # versionName+versionCode. versionCode must increase with every release
 # (Android refuses downgrades); tools/release checks the tag matches.
-version: 0.1.0+1
+version: 0.1.1+2
 
 environment:
   sdk: ^3.13.0

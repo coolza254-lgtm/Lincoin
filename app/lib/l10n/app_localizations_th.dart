@@ -158,12 +158,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get qTypeRomaji => 'พิมพ์โรมาจิ';
 
   @override
-  String get romajiHint => 'เช่น ka';
-
-  @override
-  String get readingHint => 'โรมาจิหรือคานะ เช่น taberu';
-
-  @override
   String get kanaPreview => 'คานะที่พิมพ์';
 
   @override

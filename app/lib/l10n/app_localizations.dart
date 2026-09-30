@@ -370,18 +370,6 @@ abstract class AppLocalizations {
   /// **'พิมพ์โรมาจิ'**
   String get qTypeRomaji;
 
-  /// No description provided for @romajiHint.
-  ///
-  /// In th, this message translates to:
-  /// **'เช่น ka'**
-  String get romajiHint;
-
-  /// No description provided for @readingHint.
-  ///
-  /// In th, this message translates to:
-  /// **'โรมาจิหรือคานะ เช่น taberu'**
-  String get readingHint;
-
   /// No description provided for @kanaPreview.
   ///
   /// In th, this message translates to:

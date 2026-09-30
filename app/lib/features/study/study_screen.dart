@@ -262,9 +262,8 @@ class _QuestionViewState extends ConsumerState<_QuestionView> {
               textInputAction: TextInputAction.done,
               style: jpStyle(24, 500, c.ink),
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: q.facet == Facet.kana ? t.romajiHint : t.readingHint,
-              ),
+              // Empty on purpose: no example text that could hint at the answer.
+              decoration: const InputDecoration(),
               onSubmitted: (v) => ctl.submitTyped(v),
             ),
             const SizedBox(height: LcTokens.spacingSm),
