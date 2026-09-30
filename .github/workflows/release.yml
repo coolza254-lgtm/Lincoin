@@ -100,7 +100,7 @@ jobs:
         if: startsWith(env.TAG, 'v')
         working-directory: app
         run: |
-          flutter build apk --release
+          flutter build apk --release --target-platform android-arm,android-arm64
           cp build/app/outputs/flutter-apk/app-release.apk "../dist/lincoin-$VERSION_NAME.apk"
           rm -f android/key.properties android/release.jks
 

@@ -250,7 +250,7 @@ class SessionController extends Notifier<SessionState> {
       coins: state.coins + result.coinTotal,
       remaining: _queue.length,
     );
-    ref.read(dataVersionProvider.notifier).bump();
+    // Screens behind the session refresh once it ends, not per answer.
   }
 
   void next() {

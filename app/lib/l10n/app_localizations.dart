@@ -505,7 +505,7 @@ abstract class AppLocalizations {
   /// No description provided for @coinsEarned.
   ///
   /// In th, this message translates to:
-  /// **'ได้ลินคอย'**
+  /// **'ได้ Lincoin'**
   String get coinsEarned;
 
   /// No description provided for @bonusDailyClear.
@@ -781,7 +781,7 @@ abstract class AppLocalizations {
   /// No description provided for @backupHelp.
   ///
   /// In th, this message translates to:
-  /// **'ข้อมูลการเรียน ลินคอย และรางวัลทั้งหมดอยู่ในไฟล์เดียว ส่งออกเก็บไว้ใน Drive หรือเครื่องอื่นได้ แอปสำรองให้อัตโนมัติก่อนอัปเดตทุกครั้ง'**
+  /// **'ข้อมูลการเรียน Lincoin และรางวัลทั้งหมดอยู่ในไฟล์เดียว ส่งออกเก็บไว้ใน Drive หรือเครื่องอื่นได้ แอปสำรองให้อัตโนมัติก่อนอัปเดตทุกครั้ง'**
   String get backupHelp;
 
   /// No description provided for @exportBackup.
@@ -1021,7 +1021,7 @@ abstract class AppLocalizations {
   /// No description provided for @balance.
   ///
   /// In th, this message translates to:
-  /// **'ยอดลินคอย'**
+  /// **'ยอด Lincoin'**
   String get balance;
 
   /// No description provided for @avgPerDay.
@@ -1039,7 +1039,7 @@ abstract class AppLocalizations {
   /// No description provided for @noRewardsBody.
   ///
   /// In th, this message translates to:
-  /// **'ตั้งรางวัลให้ตัวเอง เช่น ชานม 1 แก้ว ดูหนัง 1 เรื่อง แล้วใช้ลินคอยแลก'**
+  /// **'ตั้งรางวัลให้ตัวเอง เช่น ชานม 1 แก้ว ดูหนัง 1 เรื่อง แล้วใช้ Lincoinแลก'**
   String get noRewardsBody;
 
   /// No description provided for @addReward.
@@ -1069,13 +1069,13 @@ abstract class AppLocalizations {
   /// No description provided for @price.
   ///
   /// In th, this message translates to:
-  /// **'ราคา (ลินคอย)'**
+  /// **'ราคา (Lincoin)'**
   String get price;
 
   /// No description provided for @priceHelp.
   ///
   /// In th, this message translates to:
-  /// **'ทบทวนครบทุกวันได้ราว 50–150 ลินคอย/วัน'**
+  /// **'ทบทวนครบทุกวันได้ราว 50–150 Lincoin/วัน'**
   String get priceHelp;
 
   /// No description provided for @repeatable.
@@ -1111,7 +1111,7 @@ abstract class AppLocalizations {
   /// No description provided for @needMore.
   ///
   /// In th, this message translates to:
-  /// **'อีก {amount} ลินคอย'**
+  /// **'อีก {amount} Lincoin'**
   String needMore(int amount);
 
   /// No description provided for @cooldownUntil.
@@ -1135,7 +1135,7 @@ abstract class AppLocalizations {
   /// No description provided for @redeemConfirm.
   ///
   /// In th, this message translates to:
-  /// **'ใช้ {price} ลินคอย แลกรางวัลนี้?'**
+  /// **'ใช้ {price} Lincoin แลกรางวัลนี้?'**
   String redeemConfirm(int price);
 
   /// No description provided for @redeemed.
@@ -1159,7 +1159,7 @@ abstract class AppLocalizations {
   /// No description provided for @practiceBody.
   ///
   /// In th, this message translates to:
-  /// **'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ลินคอยแบบลดหลั่นต่อวัน'**
+  /// **'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ Lincoinแบบลดหลั่นต่อวัน'**
   String get practiceBody;
 
   /// No description provided for @challengeTitle.
@@ -1171,7 +1171,7 @@ abstract class AppLocalizations {
   /// No description provided for @challengeBody.
   ///
   /// In th, this message translates to:
-  /// **'เดิมพันลินคอยกับเป้าหมายที่ปรับตามฝีมือคุณเอง ชนะได้คืนทุนพร้อมกำไร แพ้เสียเดิมพัน ออกกลางคันถือว่าแพ้'**
+  /// **'เดิมพัน Lincoinกับเป้าหมายที่ปรับตามฝีมือคุณเอง ชนะได้คืนทุนพร้อมกำไร แพ้เสียเดิมพัน ออกกลางคันถือว่าแพ้'**
   String get challengeBody;
 
   /// No description provided for @qChooseWord.
@@ -1399,7 +1399,7 @@ abstract class AppLocalizations {
   /// No description provided for @weeklyProgress.
   ///
   /// In th, this message translates to:
-  /// **'เคลียร์แล้ว {done}/{target} วัน · ชนะได้ {payout} ลินคอย'**
+  /// **'เคลียร์แล้ว {done}/{target} วัน · ชนะได้ {payout} Lincoin'**
   String weeklyProgress(int done, int target, int payout);
 
   /// No description provided for @challengeHistory.
@@ -1429,7 +1429,7 @@ abstract class AppLocalizations {
   /// No description provided for @stakeTooLow.
   ///
   /// In th, this message translates to:
-  /// **'ต้องมีลินคอยพอให้เดิมพันขั้นต่ำ {min} (เดิมพันได้ไม่เกิน 30% ของยอด)'**
+  /// **'ต้องมี Lincoinพอให้เดิมพันขั้นต่ำ {min} (เดิมพันได้ไม่เกิน 30% ของยอด)'**
   String stakeTooLow(int min);
 
   /// No description provided for @stake.

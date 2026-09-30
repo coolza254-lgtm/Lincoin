@@ -10,7 +10,7 @@
 | Mastery | `src/srs/mastery.dart` | เกณฑ์ "เชี่ยวชาญ" |
 | Grader | `src/grading/grader.dart` | ให้คะแนนจากพฤติกรรม (ถูก/ผิด, เวลาเทียบมัธยฐานของตัวเอง, คำใบ้, เดา) |
 | Kana | `src/grading/kana.dart` | แปลงโรมาจิ → คานะ, เทียบคำอ่าน |
-| Economy | `src/economy/` | บัญชีลินคอย, กฎรางวัล, โหมดท้าทาย |
+| Economy | `src/economy/` | บัญชี Lincoin, กฎรางวัล, โหมดท้าทาย |
 | Metrics | `src/metrics/metrics.dart` | ศัพท์ที่น่าจะจำได้, coverage, retention จริง, calibration, log-loss |
 | Config | `src/config/engine_config.dart` | กฎทั้งหมดเป็น JSON มีเวอร์ชัน |
 

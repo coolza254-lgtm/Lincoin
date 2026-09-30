@@ -193,7 +193,8 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
     jm_date = jmdict.created_date(jm_path)
     meta = {
         "schema_version": str(SCHEMA_VERSION),
-        "content_version": f"{_dt.date.today():%Y.%m.%d}",
+        # Date plus UTC time, so several builds on one day still increase.
+        "content_version": f"{_dt.datetime.now(_dt.timezone.utc):%Y.%m.%d.%H%M}",
         "built_at": now,
         "levels": ",".join(levels),
         "jmdict_created": jm_date or "",

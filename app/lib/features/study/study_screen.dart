@@ -27,7 +27,10 @@ class StudyScreen extends ConsumerWidget {
     final t = AppLocalizations.of(context);
     return PopScope(
       onPopInvokedWithResult: (didPop, _) {
-        if (didPop) ctl.quit();
+        if (!didPop) return;
+        ctl.quit();
+        final data = ref.read(dataVersionProvider.notifier);
+        Future.microtask(data.bump);
       },
       child: Scaffold(
         body: SafeArea(

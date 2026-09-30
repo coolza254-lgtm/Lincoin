@@ -47,6 +47,15 @@ Future<void> main() async {
 /// Copies the content.db shipped inside the APK into place on first run,
 /// or when the app brings newer content than what is installed.
 Future<void> installBundledContent(ContentStore store, Directory tmp) async {
+  // Cheap check first: the version file is tiny, the database is not.
+  try {
+    final bundled = (await rootBundle.loadString('assets/content/version.txt'))
+        .trim();
+    final installed = store.installedVersion();
+    if (installed != null && compareVersions(bundled, installed) <= 0) return;
+  } on Object {
+    // No version file (older build): fall back to opening the database.
+  }
   final ByteData data;
   try {
     data = await rootBundle.load('assets/content/content.db');

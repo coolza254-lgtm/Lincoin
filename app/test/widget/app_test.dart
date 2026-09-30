@@ -155,13 +155,13 @@ void main() {
       'ชานม',
     );
     await tester.enterText(
-      find.widgetWithText(TextFormField, 'ราคา (ลินคอย)'),
+      find.widgetWithText(TextFormField, 'ราคา (Lincoin)'),
       '120',
     );
     await tester.tap(find.text('บันทึก'));
     await tester.pumpAndSettle();
     expect(find.text('ชานม'), findsOneWidget);
-    expect(find.text('อีก 120 ลินคอย'), findsOneWidget);
+    expect(find.text('อีก 120 Lincoin'), findsOneWidget);
   });
 
   testWidgets('settings open and change a value', (tester) async {

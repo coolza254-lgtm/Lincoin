@@ -24,7 +24,7 @@
 │ Core engines (Dart ล้วน ไม่พึ่ง Flutter)      │
 │  • Scheduler (FSRS wrapper)                  │
 │  • Grader (ให้คะแนนจากพฤติกรรม)               │
-│  • Economy (ledger ลินคอย, กฎรางวัล)          │
+│  • Economy (ledger Lincoin, กฎรางวัล)          │
 │  • Metrics (คำนวณสถิติจาก log)               │
 │  • Question generator (สร้างโจทย์/ตัวลวง)     │
 ├──────────────────────────────────────────────┤

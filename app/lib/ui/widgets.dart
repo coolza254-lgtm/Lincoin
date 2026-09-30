@@ -77,7 +77,7 @@ class CoinChip extends StatelessWidget {
     final c = context.lc;
     final text = signed && amount > 0 ? '+$amount' : '$amount';
     return Semantics(
-      label: '$text ลินคอย',
+      label: '$text Lincoin',
       excludeSemantics: true,
       child: Container(
         padding: EdgeInsets.symmetric(

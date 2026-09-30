@@ -68,14 +68,19 @@ class _AppShellState extends ConsumerState<AppShell> {
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
     return Scaffold(
-      body: IndexedStack(
-        index: _tab,
-        children: const [
-          HomeScreen(),
-          PracticeScreen(),
-          StatsScreen(),
-          ShopScreen(),
-        ],
+      // Only the visible tab is built, so hidden tabs do not recompute
+      // their data after every change.
+      body: AnimatedSwitcher(
+        duration: context.motionFast,
+        child: KeyedSubtree(
+          key: ValueKey(_tab),
+          child: switch (_tab) {
+            1 => const PracticeScreen(),
+            2 => const StatsScreen(),
+            3 => const ShopScreen(),
+            _ => const HomeScreen(),
+          },
+        ),
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _tab,

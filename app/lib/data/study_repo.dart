@@ -400,7 +400,7 @@ class LedgerRepo {
     for (final e in entries) {
       if (has(e.idempotencyKey)) continue;
       if (e.delta < 0 && balance() + e.delta < 0) {
-        throw StateError('ลินคอยไม่พอ');
+        throw StateError('Lincoin ไม่พอ');
       }
       u.db.execute(
         'INSERT INTO coin_ledger(id, ts_utc, study_day, delta, reason, '

@@ -230,7 +230,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get accuracyLabel => 'ถูก';
 
   @override
-  String get coinsEarned => 'ได้ลินคอย';
+  String get coinsEarned => 'ได้ Lincoin';
 
   @override
   String get bonusDailyClear => 'โบนัสเคลียร์การ์ดวันนี้';
@@ -393,7 +393,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get backupHelp =>
-      'ข้อมูลการเรียน ลินคอย และรางวัลทั้งหมดอยู่ในไฟล์เดียว ส่งออกเก็บไว้ใน Drive หรือเครื่องอื่นได้ แอปสำรองให้อัตโนมัติก่อนอัปเดตทุกครั้ง';
+      'ข้อมูลการเรียน Lincoin และรางวัลทั้งหมดอยู่ในไฟล์เดียว ส่งออกเก็บไว้ใน Drive หรือเครื่องอื่นได้ แอปสำรองให้อัตโนมัติก่อนอัปเดตทุกครั้ง';
 
   @override
   String get exportBackup => 'ส่งออกไฟล์สำรอง';
@@ -530,7 +530,7 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get balance => 'ยอดลินคอย';
+  String get balance => 'ยอด Lincoin';
 
   @override
   String get avgPerDay => 'ได้เฉลี่ย/วัน (7 วัน)';
@@ -540,7 +540,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get noRewardsBody =>
-      'ตั้งรางวัลให้ตัวเอง เช่น ชานม 1 แก้ว ดูหนัง 1 เรื่อง แล้วใช้ลินคอยแลก';
+      'ตั้งรางวัลให้ตัวเอง เช่น ชานม 1 แก้ว ดูหนัง 1 เรื่อง แล้วใช้ Lincoinแลก';
 
   @override
   String get addReward => 'เพิ่มรางวัล';
@@ -555,10 +555,10 @@ class AppLocalizationsTh extends AppLocalizations {
   String get rewardTitle => 'ชื่อรางวัล';
 
   @override
-  String get price => 'ราคา (ลินคอย)';
+  String get price => 'ราคา (Lincoin)';
 
   @override
-  String get priceHelp => 'ทบทวนครบทุกวันได้ราว 50–150 ลินคอย/วัน';
+  String get priceHelp => 'ทบทวนครบทุกวันได้ราว 50–150 Lincoin/วัน';
 
   @override
   String get repeatable => 'แลกได้หลายครั้ง';
@@ -579,7 +579,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String needMore(int amount) {
-    return 'อีก $amount ลินคอย';
+    return 'อีก $amount Lincoin';
   }
 
   @override
@@ -595,7 +595,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String redeemConfirm(int price) {
-    return 'ใช้ $price ลินคอย แลกรางวัลนี้?';
+    return 'ใช้ $price Lincoin แลกรางวัลนี้?';
   }
 
   @override
@@ -611,14 +611,14 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get practiceBody =>
-      'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ลินคอยแบบลดหลั่นต่อวัน';
+      'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ Lincoinแบบลดหลั่นต่อวัน';
 
   @override
   String get challengeTitle => 'ท้าทาย';
 
   @override
   String get challengeBody =>
-      'เดิมพันลินคอยกับเป้าหมายที่ปรับตามฝีมือคุณเอง ชนะได้คืนทุนพร้อมกำไร แพ้เสียเดิมพัน ออกกลางคันถือว่าแพ้';
+      'เดิมพัน Lincoinกับเป้าหมายที่ปรับตามฝีมือคุณเอง ชนะได้คืนทุนพร้อมกำไร แพ้เสียเดิมพัน ออกกลางคันถือว่าแพ้';
 
   @override
   String get qChooseWord => 'เลือกคำภาษาญี่ปุ่น';
@@ -752,7 +752,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String weeklyProgress(int done, int target, int payout) {
-    return 'เคลียร์แล้ว $done/$target วัน · ชนะได้ $payout ลินคอย';
+    return 'เคลียร์แล้ว $done/$target วัน · ชนะได้ $payout Lincoin';
   }
 
   @override
@@ -772,7 +772,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String stakeTooLow(int min) {
-    return 'ต้องมีลินคอยพอให้เดิมพันขั้นต่ำ $min (เดิมพันได้ไม่เกิน 30% ของยอด)';
+    return 'ต้องมี Lincoinพอให้เดิมพันขั้นต่ำ $min (เดิมพันได้ไม่เกิน 30% ของยอด)';
   }
 
   @override

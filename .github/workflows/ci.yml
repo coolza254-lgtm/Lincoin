@@ -82,7 +82,7 @@ jobs:
           cache: true
       - name: Bundle latest content
         run: tool/fetch_content.sh
-      - run: flutter build apk --release
+      - run: flutter build apk --release --target-platform android-arm,android-arm64
       - uses: actions/upload-artifact@v4
         with:
           name: lincoin-test-apk

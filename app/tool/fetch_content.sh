@@ -11,6 +11,7 @@ python3 - "$root/app/assets/content/content.db" <<'PY'
 import sqlite3, sys
 db = sqlite3.connect(sys.argv[1])
 meta = dict(db.execute("select key, value from meta"))
+open(sys.argv[1].rsplit("/", 1)[0] + "/version.txt", "w").write(meta["content_version"] + "\n")
 print("content", meta["content_version"], "schema", meta["schema_version"],
       "words", db.execute("select count(*) from words").fetchone()[0])
 PY

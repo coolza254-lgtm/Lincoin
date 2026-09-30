@@ -49,6 +49,7 @@ app.*.map.json
 
 # Built content, fetched by tool/fetch_content.sh (not committed)
 /assets/content/*.db
+/assets/content/version.txt
 /test_screens/content.db
 /test_screens/out/
 /test_screens/failures/

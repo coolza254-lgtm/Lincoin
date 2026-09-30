@@ -221,7 +221,6 @@ class DrillController extends ChangeNotifier {
     coins += a.coinTotal;
     lastCorrect = ok;
     phase = DrillPhase.feedback;
-    if (a.coinTotal > 0) onDataChanged();
     notifyListeners();
 
     if (config.stopOnWrong && !ok) {
