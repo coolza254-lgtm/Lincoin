@@ -902,4 +902,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get letsStart => 'เริ่มเลย';
+
+  @override
+  String todaySummary(int n) {
+    return 'วันนี้ตอบไปแล้ว $n ข้อ';
+  }
 }

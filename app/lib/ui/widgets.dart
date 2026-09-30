@@ -157,10 +157,15 @@ class LcProgressBar extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             ColoredBox(color: c.track),
-            FractionallySizedBox(
-              alignment: Alignment.centerLeft,
-              widthFactor: value.clamp(0.0, 1.0),
-              child: ColoredBox(color: color ?? c.accent),
+            TweenAnimationBuilder<double>(
+              tween: Tween(end: value.clamp(0.0, 1.0)),
+              duration: context.motionNormal,
+              curve: Curves.easeOutCubic,
+              builder: (context, v, _) => FractionallySizedBox(
+                alignment: Alignment.centerLeft,
+                widthFactor: v,
+                child: ColoredBox(color: color ?? c.accent),
+              ),
             ),
           ],
         ),

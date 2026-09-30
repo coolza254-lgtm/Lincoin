@@ -201,3 +201,29 @@ final challengeServiceProvider = Provider<ChallengeService?>((ref) {
   final s = ref.watch(studyServiceProvider);
   return s == null ? null : ChallengeService(s);
 });
+
+/// What was done today (home screen summary).
+class TodaySummary {
+  final int reviews;
+  final int practice;
+  final int coins;
+  const TodaySummary(this.reviews, this.practice, this.coins);
+  bool get any => reviews > 0 || practice > 0;
+}
+
+final todaySummaryProvider = Provider<TodaySummary>((ref) {
+  ref.watch(dataVersionProvider);
+  final svc = ref.watch(studyServiceProvider);
+  if (svc == null) return const TodaySummary(0, 0, 0);
+  final day = svc.studyDay();
+  int count(String sql) =>
+      (svc.db.db.select(sql, [day]).first.columnAt(0) as num?)?.toInt() ?? 0;
+  return TodaySummary(
+    count('SELECT count(*) FROM review_log WHERE study_day = ?'),
+    count('SELECT count(*) FROM practice_log WHERE study_day = ?'),
+    count(
+      'SELECT COALESCE(SUM(delta), 0) FROM coin_ledger '
+      'WHERE study_day = ? AND delta > 0',
+    ),
+  );
+});

@@ -1659,6 +1659,12 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'เริ่มเลย'**
   String get letsStart;
+
+  /// No description provided for @todaySummary.
+  ///
+  /// In th, this message translates to:
+  /// **'วันนี้ตอบไปแล้ว {n} ข้อ'**
+  String todaySummary(int n);
 }
 
 class _AppLocalizationsDelegate

@@ -99,6 +99,23 @@ class HomeScreen extends ConsumerWidget {
               ),
             )
           else ...[
+            if (ref.watch(todaySummaryProvider) case final today when today.any)
+              Padding(
+                padding: const EdgeInsets.only(bottom: LcTokens.spacingLg),
+                child: Row(
+                  children: [
+                    Icon(Icons.today_rounded, size: 20, color: c.muted),
+                    const SizedBox(width: LcTokens.spacingSm),
+                    Expanded(
+                      child: Text(
+                        t.todaySummary(today.reviews + today.practice),
+                        style: tt.bodyMedium?.copyWith(color: c.muted),
+                      ),
+                    ),
+                    CoinChip(today.coins, signed: true),
+                  ],
+                ),
+              ),
             const _DeckCard(deck: vocabDeck, large: true),
             const SizedBox(height: LcTokens.spacingLg),
             const _DeckCard(deck: grammarDeck),

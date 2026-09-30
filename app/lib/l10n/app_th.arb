@@ -577,5 +577,13 @@
     }
   },
   "onbChangeLater": "เปลี่ยนได้ทุกเมื่อในหน้าตั้งค่า",
-  "letsStart": "เริ่มเลย"
+  "letsStart": "เริ่มเลย",
+  "todaySummary": "วันนี้ตอบไปแล้ว {n} ข้อ",
+  "@todaySummary": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  }
 }
