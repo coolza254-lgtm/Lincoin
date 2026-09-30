@@ -27,10 +27,12 @@
       ]
     }
   ],
-  "missing": [
-    "ex:75114",
-    "ex:74893"
+  "missing": [],
+  "unknown_ids": [
+    "ex:115087",
+    "ex:144177",
+    "ex:178533",
+    "ex:79636"
   ],
-  "unknown_ids": [],
   "same_source_different_thai": {}
 }

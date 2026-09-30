@@ -1357,6 +1357,8 @@
 {"id": "w:1236900:3", "en": "to preach", "th": "เทศนา; สั่งสอน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1597150:1", "en": "tobacco; cigarette; cigar", "th": "บุหรี่; ยาสูบ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1597150:2", "en": "tobacco plant (Nicotiana tabacum)", "th": "ต้นยาสูบ", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1597350:1", "en": "gradually; by degrees; little by little; more and more; increasingly", "th": "ค่อยๆ; ทีละน้อย; มากขึ้นเรื่อยๆ", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1597350:2", "en": "steps; stairs; staircase; terrace", "th": "ขั้นบันได; บันได; ขั้นระเบียง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1218380:1", "en": "dangerous; risky; hazardous; perilous; precarious", "th": "อันตราย; เสี่ยง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1218380:2", "en": "in danger; in jeopardy; critical; grave; at risk", "th": "ตกอยู่ในอันตราย; วิกฤต", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1218380:3", "en": "uncertain; unreliable; insecure; unsteady; doubtful", "th": "ไม่แน่นอน; ไม่น่าเชื่อถือ; ง่อนแง่น", "note": null, "status": "auto_checked", "v": 1}
@@ -1536,6 +1538,12 @@
 {"id": "w:1017760:1", "en": "apartment building; apartment block; apartment house", "th": "อาคารอพาร์ตเมนต์", "note": "คำย่อ", "status": "auto_checked", "v": 1}
 {"id": "w:1017760:2", "en": "apartment", "th": "ห้องอพาร์ตเมนต์", "note": "คำย่อ", "status": "auto_checked", "v": 1}
 {"id": "w:1514320:1", "en": "to walk", "th": "เดิน", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1000580:1", "en": "that; that thing", "th": "นั่น; อันโน้น", "note": "ใช้กับสิ่งที่อยู่ไกลทั้งผู้พูดและผู้ฟัง", "status": "auto_checked", "v": 1}
+{"id": "w:1000580:2", "en": "that person", "th": "คนนั้น (คนที่อยู่ไกลออกไป)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1000580:3", "en": "then; that time", "th": "ตอนนั้น (ที่ทั้งสองฝ่ายรู้กัน)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1000580:4", "en": "that place (over there)", "th": "ที่โน่น", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1000580:5", "en": "down there (i.e. one's genitals)", "th": "ที่ลับ (อวัยวะเพศ)", "note": "ภาษาพูด พูดอ้อม", "status": "auto_checked", "v": 1}
+{"id": "w:1000580:6", "en": "period; menses", "th": "ประจำเดือน", "note": "ภาษาพูด พูดอ้อม", "status": "auto_checked", "v": 1}
 {"id": "w:2820690:1", "en": "good; excellent; fine; nice; pleasant; agreeable", "th": "ดี; ยอดเยี่ยม; น่าพอใจ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:2820690:2", "en": "sufficient; enough; ready; prepared", "th": "พอแล้ว; พร้อมแล้ว", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:2820690:3", "en": "profitable (deal, business offer, etc.); beneficial", "th": "มีกำไร; เป็นประโยชน์", "note": null, "status": "auto_checked", "v": 1}
@@ -1685,12 +1693,20 @@
 {"id": "w:1004500:3", "en": "this (one)", "th": "อันนี้", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1004500:4", "en": "I; me; we; us", "th": "ฉัน; เรา (ฝ่ายนี้)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1004500:5", "en": "this person", "th": "ท่านนี้; คนนี้ (สุภาพ)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1050390:1", "en": "glass (drinking vessel); tumbler", "th": "แก้ว (แก้วน้ำ)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1050390:2", "en": "cups (suit)", "th": "ไพ่ชุดถ้วย (ในไพ่สเปน/ทาโร่)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1582920:1", "en": "this", "th": "นี้, ...นี้", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1582920:2", "en": "last (couple of years, etc.); these; past; this", "th": "(ช่วง) ที่ผ่านมานี้", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1582920:3", "en": "you (as in \"you liar\")", "th": "ไอ้... (เช่น ไอ้คนโกหก)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1050590:1", "en": "copy; photocopy", "th": "การถ่ายเอกสาร; สำเนา", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1050590:2", "en": "book jacket blurb", "th": "คำโปรยบนปกหนังสือ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1050590:3", "en": "(advertising) slogan", "th": "สโลแกนโฆษณา", "note": "คำย่อ", "status": "auto_checked", "v": 1}
+{"id": "w:1628530:1", "en": "this; this one", "th": "นี่; อันนี้", "note": "ใช้กับสิ่งที่อยู่ใกล้ผู้พูด", "status": "auto_checked", "v": 1}
+{"id": "w:1628530:2", "en": "this person", "th": "คนนี้", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1628530:3", "en": "now; this point (in time)", "th": "ตอนนี้; ณ จุดนี้", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1628530:4", "en": "here", "th": "ที่นี่", "note": "คำเก่า", "status": "auto_checked", "v": 1}
+{"id": "w:1628530:5", "en": "used to stress the subject of a sentence", "th": "ใช้เน้นประธานของประโยค", "note": "ภาษาเขียน", "status": "auto_checked", "v": 1}
+{"id": "w:1628530:6", "en": "I; me", "th": "ฉัน", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1004880:1", "en": "this sort of; this kind of; like this; such", "th": "แบบนี้; อย่างนี้", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1005110:1", "en": "come (on); come now; come along; here", "th": "มาเถอะ; เอาล่ะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1005110:2", "en": "all right; right; okay; now; here goes", "th": "เอาล่ะ; เอาละนะ", "note": null, "status": "auto_checked", "v": 1}
@@ -1781,6 +1797,10 @@
 {"id": "w:1245290:6", "en": "falsehood; lie", "th": "คำโกหก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1245290:7", "en": "somehow; vaguely", "th": "อย่างเลื่อนลอย; โดยไม่รู้ตัว (คำนำหน้า)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1245290:8", "en": "fake", "th": "ปลอม (คำนำหน้า)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1006970:1", "en": "that; it", "th": "นั่น; อันนั้น; มัน", "note": "ใช้กับสิ่งที่อยู่ใกล้ผู้ฟัง หรือสิ่งที่เพิ่งพูดถึง", "status": "auto_checked", "v": 1}
+{"id": "w:1006970:2", "en": "then; that point (in time); that time", "th": "ตอนนั้น; ณ จุดนั้น", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1006970:3", "en": "there", "th": "ที่นั่น", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1006970:4", "en": "you", "th": "คุณ", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1006980:1", "en": "and then; after that", "th": "แล้วก็; หลังจากนั้น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1406050:1", "en": "well, ...; right, ...; now, ...", "th": "เอาละ...; งั้น...", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1406050:2", "en": "so; then", "th": "ถ้าอย่างนั้น", "note": null, "status": "auto_checked", "v": 1}
@@ -2031,6 +2051,8 @@
 {"id": "w:1125150:3", "en": "post (e.g. goalpost)", "th": "เสา (เช่น เสาประตูฟุตบอล)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1125150:4", "en": "post (on a blog, social media, etc.)", "th": "โพสต์ (ในบล็อก, โซเชียล)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1125150:5", "en": "post- (e.g. post-Cold War)", "th": "หลัง... (เช่น หลังสงครามเย็น)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1123880:1", "en": "button (clothing)", "th": "กระดุม (เสื้อผ้า)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1123880:2", "en": "push-button; button", "th": "ปุ่ม (กด)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1122650:1", "en": "hotel", "th": "โรงแรม", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1522150:1", "en": "book; volume; script", "th": "หนังสือ; เล่ม; บท (ละคร)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1522150:2", "en": "this; present; current; ... in question; ... at issue", "th": "...นี้; ...ปัจจุบัน; ...ที่กล่าวถึง (คำนำหน้า)", "note": null, "status": "auto_checked", "v": 1}
@@ -2063,6 +2085,7 @@
 {"id": "w:1527110:5", "en": "unfinished; incomplete; not yet done", "th": "ยังไม่เสร็จ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1580600:1", "en": "straight (ahead); direct; upright; erect", "th": "ตรง (ไปข้างหน้า); โดยตรง; ตั้งตรง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1580600:2", "en": "straightforward; honest; frank", "th": "ตรงไปตรงมา; ซื่อสัตย์", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1128430:1", "en": "match (for lighting a fire)", "th": "ไม้ขีดไฟ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1584460:1", "en": "10,000; ten thousand", "th": "หนึ่งหมื่น; 10,000", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1584460:2", "en": "myriad", "th": "มากมายนับไม่ถ้วน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1584460:3", "en": "everything; all", "th": "ทุกสิ่ง; ทั้งหมด", "note": null, "status": "auto_checked", "v": 1}

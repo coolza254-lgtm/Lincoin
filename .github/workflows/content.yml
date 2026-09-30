@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "tools/content_builder/**"
+      - "tools/translations/**"
       - ".github/workflows/content.yml"
   workflow_dispatch:
     inputs:

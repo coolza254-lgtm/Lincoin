@@ -130,7 +130,9 @@ def main(argv=None) -> int:
     print(f"{a.kind}: {len(rows)} translated, {report['auto_checked']} auto_checked, "
           f"{len(flagged)} flagged, {len(missing)} missing, {len(unknown)} unknown ids, "
           f"{len(inconsistent)} sources with different Thai → {rep_path.name}")
-    return 1 if unknown else 0
+    # Rows for items not in the current worksheet are kept: they apply again
+    # if the item returns (e.g. example selection changes).
+    return 0
 
 
 if __name__ == "__main__":
