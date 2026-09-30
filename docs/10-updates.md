@@ -83,17 +83,25 @@ repo `coolza254-lgtm/Lincoin` เป็น public แอปจึงอ่าน
 
 ## กุญแจเซ็นแอป (สำคัญมาก)
 Android ยอมให้อัปเดตทับได้ **เฉพาะ APK ที่เซ็นด้วยกุญแจเดิม**
-- สร้างกุญแจครั้งเดียว เก็บใน GitHub Actions Secrets สำหรับ build
-- คุณต้องเก็บ **สำเนาสำรองของไฟล์กุญแจ + รหัสผ่าน** ไว้ที่ปลอดภัย (เช่น ตัวจัดการรหัสผ่าน) ห้ามใส่ใน repo
+- สร้างกุญแจครั้งเดียวด้วย `tools/release/make_signing_key.sh <ไฟล์.jks>` (ต้องมี JDK) สคริปต์พิมพ์ค่า 4 ตัวที่ต้องใส่ใน GitHub → Settings → Secrets and variables → Actions:
+  `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`
+- `release.yml` เขียน `key.properties` จาก secrets ตอน build แล้วลบทิ้ง ถ้าไม่มี secrets workflow จะหยุด (ไม่ออก release ที่เซ็นผิดกุญแจ)
+- คุณต้องเก็บ **สำเนาสำรองของไฟล์กุญแจ + รหัสผ่าน** ไว้ที่ปลอดภัย (เช่น ตัวจัดการรหัสผ่าน) ห้ามใส่ใน repo (`.gitignore` กัน `*.jks`, `key.properties` ไว้แล้ว)
 - ถ้ากุญแจหาย: อัปเดตทับไม่ได้ ต้อง export ข้อมูล → ถอนแอป → ติดตั้งใหม่ → import (ข้อมูลไม่หายถ้ามีไฟล์สำรอง)
+- APK จาก CI (`lincoin-test-apk` ในแต่ละ commit) เซ็นด้วยกุญแจชั่วคราว ใช้ลองเล่นเท่านั้น: อัปเดตทับ release จริงไม่ได้ ต้องส่งออกข้อมูลและถอนก่อนติดตั้ง release
 
 ## ขั้นตอนออกเวอร์ชัน (GitHub Actions)
-1. ติด tag `vX.Y.Z` (หรือ `content-YYYY.MM.N` สำหรับเนื้อหา)
-2. Workflow build APK แบบ release และเซ็น, รันทดสอบทั้งหมด, สร้าง `content.db` (ถ้ามี)
-3. คำนวณ `sha256`, สร้าง `latest.json` รวม changelog จากไฟล์ `CHANGELOG.md`
-4. สร้าง GitHub Release พร้อมไฟล์ทั้งหมด → แอปเห็นอัปเดตทันที
+**แอปใหม่:** แก้ `version:` ใน `app/pubspec.yaml` (เช่น `0.2.0+2`, ตัวหลัง `+` คือ `versionCode` ต้องเพิ่มทุกครั้ง) → เพิ่มหัวข้อ `## 0.2.0` ใน `CHANGELOG.md` → ติด tag `v0.2.0`
 
-`versionCode` เพิ่มขึ้นทุก release เสมอ
+**เนื้อหาอย่างเดียว:** รอ `content.yml` สร้างเนื้อหาใหม่ลง branch `content-build` → เพิ่ม `## content <เวอร์ชัน>` ใน `CHANGELOG.md` → ติด tag `content-<เวอร์ชัน>`
+
+`release.yml` จะ:
+1. ดึง `content.db` ล่าสุดจาก branch `content-build` (`app/tool/fetch_content.sh`)
+2. (tag `v*`) ตรวจว่า tag ตรงกับ `pubspec.yaml`, รัน analyze + test, build APK แบบ release และเซ็น
+3. สร้าง `content-<เวอร์ชัน>.lincoin-content` และ `latest.json` พร้อม `sha256` และ changelog (`tools/release/make_release_files.py`) ถ้าเป็น release เนื้อหาอย่างเดียว ส่วน `app` ใน `latest.json` ชี้ไป APK ของ release ก่อนหน้า
+4. สร้าง GitHub Release พร้อม `CREDITS.md` → แอปเห็นอัปเดตทันที (อ่านจาก `releases/latest/download/latest.json` ไม่ต้องใช้ API)
+
+APK ที่ติดตั้งมาจะมี `content.db` ของตอน build ติดมาด้วย ใช้ได้ทันทีแบบออฟไลน์
 
 ## ผลต่อเรื่องสัญญาอนุญาต
 Release บน repo public ถือเป็นการ **เผยแพร่** ข้อกำหนด Share-Alike จึงมีผลจริง
@@ -102,13 +110,14 @@ Release บน repo public ถือเป็นการ **เผยแพร�
 - หน้าเครดิตในแอปและไฟล์ `CREDITS.md` ใน release มาจากตาราง `sources` อัตโนมัติ
 
 ## องค์ประกอบในโค้ด
-| ส่วน | หน้าที่ |
-|---|---|
-| `UpdateService` (app) | อ่าน manifest, เทียบเวอร์ชัน, ดาวน์โหลด, ตรวจ hash |
-| `AppInstaller` (platform channel) | ส่ง APK ให้ตัวติดตั้งของ Android ผ่าน FileProvider (ต้องมี `REQUEST_INSTALL_PACKAGES`) |
-| `ContentSwapper` (app) | สลับ `content.db` แบบ atomic + ย้อนกลับ |
-| `FileUpdateImporter` (app) | ปุ่มอัปเดตจากไฟล์: อ่านไฟล์ที่เลือก ตรวจ แล้วส่งต่อให้ `ContentSwapper` หรือ `AppInstaller` |
-| `BackupService` (app) | สำรอง `user.db` ก่อนอัปเดตทุกครั้ง |
-| `release.yml` (CI) | build, เซ็น, สร้าง manifest, ออก Release |
+| ส่วน | ไฟล์ | หน้าที่ |
+|---|---|---|
+| `UpdateService` | `app/lib/services/update_service.dart` | อ่าน `latest.json`, เทียบเวอร์ชัน, ดาวน์โหลดต่อจากเดิมได้ (HTTP Range), ตรวจ `sha256` |
+| `AppInstaller` | `app/lib/services/app_installer.dart` + `MainActivity.kt` | อ่านเวอร์ชันจากไฟล์ APK, ส่งให้ตัวติดตั้งของ Android ผ่าน FileProvider (`REQUEST_INSTALL_PACKAGES`) |
+| `ContentStore` | `app/lib/services/content_store.dart` | ตรวจ schema/เครดิต/hash แล้วสลับ `content.db` แบบ atomic, เก็บเวอร์ชันก่อนหน้าไว้ย้อนกลับ |
+| content pack | `app/lib/services/content_pack.dart` | อ่านไฟล์ `.lincoin-content` (zip + manifest) |
+| `UpdateController` | `app/lib/state/update_controller.dart` | สองปุ่ม: ตรวจออนไลน์ / อัปเดตจากไฟล์, ยืนยันก่อนติดตั้งเสมอ, ตรวจเองวันละครั้ง (แค่ขึ้นจุด) |
+| `BackupService` | `app/lib/services/backup_service.dart` | สำรอง `user.db` (VACUUM INTO) ก่อนอัปเดต/กู้คืน/migrate เก็บ 5 ชุดล่าสุด |
+| `release.yml` | `.github/workflows/release.yml` | ทดสอบ, build, เซ็น, สร้าง manifest, ออก Release |
 
-ไลบรารี Flutter ที่จะใช้ (เช่น ตัวอ่านเวอร์ชันแอป/ดาวน์โหลด/เปิดตัวติดตั้ง) ต้องตรวจเวอร์ชันและสัญญาอนุญาตตอนสร้างจริงในเฟส 4
+ไลบรารีที่ใช้ (ตรวจแล้ว): `http`, `crypto`, `path_provider`, `package_info_plus` (BSD-3), `archive`, `file_picker`, `flutter_tts`, `flutter_riverpod`, `sqlite3`, `uuid` (MIT) ตัวติดตั้ง APK เขียนเองใน `MainActivity.kt` ไม่พึ่งไลบรารีภายนอก

@@ -1,0 +1,375 @@
+{
+  "@@locale": "th",
+  "tabHome": "หน้าหลัก",
+  "tabPractice": "ฝึก & ท้าทาย",
+  "tabStats": "สถิติ",
+  "tabShop": "ร้าน",
+  "settings": "ตั้งค่า",
+  "close": "ปิด",
+  "cancel": "ยกเลิก",
+  "confirm": "ยืนยัน",
+  "save": "บันทึก",
+  "delete": "ลบ",
+  "send": "ส่ง",
+  "next": "ต่อไป",
+  "none": "ไม่มี",
+  "never": "ยังไม่เคย",
+  "options": "ตัวเลือก",
+  "required": "กรุณากรอก",
+  "invalidNumber": "ตัวเลขไม่ถูกต้อง",
+  "noContentTitle": "ยังไม่มีเนื้อหา",
+  "noContentBody": "แอปนี้ยังไม่มีชุดคำศัพท์ ติดตั้งได้จากหน้าอัปเดต (ออนไลน์ หรือจากไฟล์ .lincoin-content)",
+  "goToUpdates": "ไปหน้าอัปเดต",
+  "vocabDeck": "ท่องศัพท์",
+  "grammarDeck": "ไวยากรณ์",
+  "comingInPhase": "เร็วๆ นี้ (เฟส {phase})",
+  "@comingInPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "int"
+      }
+    }
+  },
+  "dueLabel": "ต้องทบทวน",
+  "newLabel": "ใหม่",
+  "minutesLabel": "นาที (ประมาณ)",
+  "newPausedBacklog": "พักคำใหม่ไว้ก่อน เพราะการ์ดค้างเยอะ",
+  "startStudy": "เริ่มเรียน",
+  "allDoneToday": "วันนี้ครบแล้ว 🎉",
+  "coverageTitle": "ความครอบคลุม",
+  "coverageHelp": "สัดส่วนของคำในแต่ละระดับที่น่าจะจำได้ตอนนี้ (คำนวณจากความน่าจะเป็นที่จะจำได้ของแต่ละคำ)",
+  "levelKana": "คานะ",
+  "newKana": "ตัวอักษรใหม่",
+  "newWord": "คำใหม่",
+  "introHint": "ดูให้คุ้นตา แล้วจะมีคำถามเกี่ยวกับคำนี้ในอีกไม่กี่ข้อ",
+  "gotIt": "จำแล้ว ไปต่อ",
+  "hiragana": "ฮิรางานะ",
+  "katakana": "คาตาคานะ",
+  "untranslated": "(ยังไม่มีคำแปลไทย แสดงต้นฉบับภาษาอังกฤษ)",
+  "moreMeanings": "และอีก {count} ความหมาย",
+  "@moreMeanings": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exampleCredit": "ประโยค Tatoeba #{number} โดย {author} · {license}",
+  "@exampleCredit": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      },
+      "author": {
+        "type": "String"
+      },
+      "license": {
+        "type": "String"
+      }
+    }
+  },
+  "listen": "ฟังเสียง",
+  "noJapaneseVoice": "เครื่องนี้ยังไม่มีเสียงภาษาญี่ปุ่น ติดตั้งได้ที่ ตั้งค่า Android → การแปลงข้อความเป็นเสียง",
+  "qMeaning": "ความหมายคืออะไร",
+  "qTypeReading": "พิมพ์คำอ่าน",
+  "qTypeRomaji": "พิมพ์โรมาจิ",
+  "romajiHint": "เช่น ka",
+  "readingHint": "โรมาจิหรือคานะ เช่น taberu",
+  "kanaPreview": "คานะที่พิมพ์",
+  "hintStartsWith": "ขึ้นต้นด้วย {kana}",
+  "@hintStartsWith": {
+    "placeholders": {
+      "kana": {
+        "type": "String"
+      }
+    }
+  },
+  "synonymTryAgain": "คำนี้ความหมายเดียวกัน แต่เราต้องการอีกคำ ลองอีกครั้ง",
+  "checkAnswer": "ตรวจคำตอบ",
+  "guessing": "ตอบแบบเดา",
+  "guessingHelp": "เลือกไว้ถ้าไม่แน่ใจ การ์ดจะกลับมาเร็วขึ้น และไม่นับว่าจำได้",
+  "hint": "คำใบ้",
+  "dontKnow": "ไม่รู้",
+  "correct": "ถูกต้อง",
+  "notYet": "ยังไม่ถูก",
+  "yourAnswer": "คำตอบของคุณ: {answer}",
+  "@yourAnswer": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "willReviewSoon": "ไม่เป็นไร คำนี้จะกลับมาให้ทบทวนเร็วๆ นี้",
+  "graduated": "จำคำนี้ได้แล้ว จะเว้นช่วงทบทวนให้นานขึ้น",
+  "masteredNow": "คำนี้อยู่ในระดับเชี่ยวชาญแล้ว",
+  "leechNote": "คำนี้ลืมบ่อย ลองดูประโยคตัวอย่างหรือจำวิธีอื่นดู",
+  "reportTranslation": "รายงานคำแปล",
+  "reportHint": "คำแปลผิดอย่างไร หรือควรเป็นอะไร (ไม่บังคับ)",
+  "reportSaved": "บันทึกแล้ว ขอบคุณครับ",
+  "nothingToStudy": "ไม่มีการ์ดให้เรียนตอนนี้",
+  "sessionDone": "จบรอบนี้แล้ว",
+  "answeredLabel": "ข้อ",
+  "accuracyLabel": "ถูก",
+  "coinsEarned": "ได้ลินคอย",
+  "bonusDailyClear": "โบนัสเคลียร์การ์ดวันนี้",
+  "bonusCoverage": "โบนัสความครอบคลุม",
+  "laterSteps": "มีการ์ดที่กำลังเรียนอีก {count} ใบ จะกลับมาให้ทบทวนภายหลังวันนี้",
+  "@laterSteps": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "backHome": "กลับหน้าหลัก",
+  "sectionStudy": "การเรียน",
+  "sectionLook": "หน้าตา",
+  "sectionApp": "แอป",
+  "targetRetention": "เป้าหมายการจำ",
+  "targetRetentionHelp": "โอกาสจำได้ตอนถึงรอบทบทวน สูงขึ้น = ทบทวนบ่อยขึ้นมาก (90% เหมาะกับส่วนใหญ่)",
+  "newPerDay": "การ์ดใหม่ต่อวัน",
+  "newPerDayHelp": "1 คำมี 2 การ์ด (ความหมาย และคำอ่าน) การ์ดใหม่ทำให้งานทบทวนในอนาคตเพิ่มขึ้น",
+  "includeKana": "เริ่มจากคานะ",
+  "includeKanaHelp": "ปิดถ้าอ่านฮิรางานะ/คาตาคานะได้แล้ว",
+  "furiganaMode": "ฟุริงานะ",
+  "furiganaAlways": "แสดงเสมอ",
+  "furiganaHideMastered": "ซ่อนคำที่เชี่ยวชาญแล้ว",
+  "furiganaNever": "ซ่อนทั้งหมด",
+  "dayStart": "เริ่มวันใหม่เวลา",
+  "dayStartHelp": "เรียนหลังเที่ยงคืนก่อน 0{hour}:00 ยังนับเป็นวันก่อนหน้า",
+  "@dayStartHelp": {
+    "placeholders": {
+      "hour": {
+        "type": "int"
+      }
+    }
+  },
+  "theme": "ธีม",
+  "reduceMotion": "ลดแอนิเมชัน",
+  "updates": "อัปเดต",
+  "backup": "สำรองข้อมูล",
+  "credits": "เครดิตและสัญญาอนุญาต",
+  "appVersion": "เวอร์ชันแอป",
+  "contentVersion": "เวอร์ชันเนื้อหา",
+  "lastChecked": "ตรวจล่าสุด",
+  "checkForUpdates": "ตรวจหาอัปเดต",
+  "updateFromFile": "อัปเดตจากไฟล์",
+  "updateFromFileHelp": "เลือกไฟล์ .apk (แอป) หรือ .lincoin-content (เนื้อหา) ที่อยู่ในเครื่องแล้ว ไม่ต้องใช้เน็ต",
+  "upToDate": "เป็นเวอร์ชันล่าสุดแล้ว",
+  "newAppVersion": "แอปเวอร์ชันใหม่ {version}",
+  "@newAppVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "newContentVersion": "เนื้อหาเวอร์ชันใหม่ {version}",
+  "@newContentVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateApp": "อัปเดตแอป",
+  "updateContent": "อัปเดตเนื้อหา",
+  "contentNeedsNewerApp": "มีเนื้อหาใหม่ที่ต้องใช้แอปเวอร์ชันใหม่กว่า อัปเดตแอปก่อน",
+  "onlineCheck": "ตรวจอัปเดตออนไลน์",
+  "onlineCheckHelp": "ปิดแล้วแอปจะไม่ใช้เน็ตเพื่ออัปเดตเลย (ยังอัปเดตจากไฟล์ได้)",
+  "rollbackContent": "ย้อนกลับเป็นเนื้อหา {version}",
+  "@rollbackContent": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "rollbackHelp": "ความก้าวหน้าไม่หาย การ์ดของคำที่ไม่มีในเวอร์ชันนั้นจะถูกพักไว้",
+  "updateSafety": "ก่อนอัปเดตทุกครั้งแอปจะสำรองข้อมูลการเรียนอัตโนมัติ ทุกไฟล์ตรวจด้วย sha256 และไม่มีการติดตั้งโดยไม่กดยืนยัน",
+  "installAppFromFile": "ติดตั้งแอปเวอร์ชัน {version}?",
+  "@installAppFromFile": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "installAppFromFileHelp": "แอปจะสำรองข้อมูลก่อน แล้วเปิดตัวติดตั้งของ Android (ไฟล์ต้องเซ็นด้วยกุญแจเดียวกับแอปที่ติดตั้งอยู่)",
+  "installContentFromFile": "ติดตั้งเนื้อหาเวอร์ชัน {version}?",
+  "@installContentFromFile": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "installedContent": "ที่ติดตั้งอยู่: {version}",
+  "@installedContent": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "backupHelp": "ข้อมูลการเรียน ลินคอย และรางวัลทั้งหมดอยู่ในไฟล์เดียว ส่งออกเก็บไว้ใน Drive หรือเครื่องอื่นได้ แอปสำรองให้อัตโนมัติก่อนอัปเดตทุกครั้ง",
+  "exportBackup": "ส่งออกไฟล์สำรอง",
+  "importBackup": "นำเข้าไฟล์สำรอง",
+  "exported": "บันทึกไฟล์สำรองแล้ว",
+  "exportCancelled": "ยกเลิกการบันทึก",
+  "autoBackups": "สำรองในเครื่อง (5 ชุดล่าสุด)",
+  "noBackups": "ยังไม่มี",
+  "restore": "กู้คืน",
+  "restoreConfirmTitle": "กู้คืนข้อมูลจากไฟล์นี้?",
+  "restoreConfirmBody": "ข้อมูลปัจจุบันจะถูกแทนที่ (แอปจะสำรองข้อมูลปัจจุบันไว้ก่อน ย้อนกลับได้)",
+  "restored": "กู้คืนแล้ว",
+  "reasonBeforeUpdate": "ก่อนอัปเดตแอป",
+  "reasonBeforeContent": "ก่อนอัปเดตเนื้อหา",
+  "reasonBeforeMigrate": "ก่อนปรับฐานข้อมูล",
+  "reasonBeforeRestore": "ก่อนกู้คืน",
+  "reasonManual": "สำรองเอง",
+  "versionLine": "แอป {app} · เนื้อหา {content}",
+  "@versionLine": {
+    "placeholders": {
+      "app": {
+        "type": "String"
+      },
+      "content": {
+        "type": "String"
+      }
+    }
+  },
+  "contentSources": "แหล่งเนื้อหา",
+  "contentLicenseNote": "เนื้อหาในแอป (รวมคำแปลไทยที่ดัดแปลงจาก JMdict) เผยแพร่ภายใต้ CC BY-SA 4.0 ประโยคตัวอย่างจาก Tatoeba แสดงชื่อผู้เขียนทุกประโยค",
+  "fonts": "ฟอนต์",
+  "softwareLicenses": "สัญญาอนุญาตซอฟต์แวร์",
+  "expectedKnown": "คำที่น่าจะจำได้ตอนนี้",
+  "expectedKnownHelp": "ผลรวมความน่าจะเป็นที่จะจำได้ของทุกคำ ไม่ใช่แค่จำนวนคำที่เคยเห็น",
+  "itemsStarted": "เริ่มเรียนแล้ว",
+  "masteredItems": "เชี่ยวชาญ",
+  "minutes7Days": "นาที (7 วัน)",
+  "retentionTitle": "การจำจริง (30 วัน)",
+  "targetIs": "เป้าหมาย {percent}%",
+  "@targetIs": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "retentionHelp": "สัดส่วนที่ตอบถูกเมื่อถึงรอบทบทวน จาก {n} ครั้ง ถ้าใกล้เป้าหมาย แปลว่าตารางทบทวนแม่นยำ",
+  "@retentionHelp": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "smallSample": "ข้อมูลยังน้อย ตัวเลขอาจแกว่ง",
+  "levelLine": "จำได้ ~{known}/{total} · เชี่ยวชาญ {mastered}",
+  "@levelLine": {
+    "placeholders": {
+      "known": {
+        "type": "String"
+      },
+      "total": {
+        "type": "int"
+      },
+      "mastered": {
+        "type": "int"
+      }
+    }
+  },
+  "activity14": "การทบทวน 14 วันล่าสุด",
+  "activityHelp": "แท่งเข้ม = ตอบถูก แท่งอ่อน = ทั้งหมด",
+  "forecast7": "การ์ดที่จะถึงรอบ 7 วันข้างหน้า",
+  "forecastHelp": "รวมการ์ดค้างไว้ในวันนี้",
+  "today": "วันนี้",
+  "calibration": "ความแม่นของการคาดการณ์",
+  "calibrationHelp": "เทียบโอกาสจำที่ระบบคาด (แถว) กับที่จำได้จริง (แถบ) ค่า log loss {logLoss} ยิ่งต่ำยิ่งดี",
+  "@calibrationHelp": {
+    "placeholders": {
+      "logLoss": {
+        "type": "String"
+      }
+    }
+  },
+  "leeches": "คำที่ลืมบ่อย {count} คำ",
+  "@leeches": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "totalReviews": "ทบทวนไปแล้วทั้งหมด {count} ครั้ง",
+  "@totalReviews": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "balance": "ยอดลินคอย",
+  "avgPerDay": "ได้เฉลี่ย/วัน (7 วัน)",
+  "noRewardsTitle": "ยังไม่มีรางวัล",
+  "noRewardsBody": "ตั้งรางวัลให้ตัวเอง เช่น ชานม 1 แก้ว ดูหนัง 1 เรื่อง แล้วใช้ลินคอยแลก",
+  "addReward": "เพิ่มรางวัล",
+  "editReward": "แก้ไขรางวัล",
+  "emoji": "ไอคอน",
+  "rewardTitle": "ชื่อรางวัล",
+  "price": "ราคา (ลินคอย)",
+  "priceHelp": "ทบทวนครบทุกวันได้ราว 50–150 ลินคอย/วัน",
+  "repeatable": "แลกได้หลายครั้ง",
+  "cooldownDays": "เว้นระยะกี่วันต่อครั้ง (ไม่บังคับ)",
+  "oneTime": "ครั้งเดียว",
+  "everyNDays": "ทุก {days} วัน",
+  "@everyNDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "readyToRedeem": "แลกได้แล้ว!",
+  "needMore": "อีก {amount} ลินคอย",
+  "@needMore": {
+    "placeholders": {
+      "amount": {
+        "type": "int"
+      }
+    }
+  },
+  "cooldownUntil": "แลกได้อีกครั้ง {date}",
+  "@cooldownUntil": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "alreadyRedeemed": "แลกไปแล้ว",
+  "redeem": "แลก",
+  "redeemConfirm": "ใช้ {price} ลินคอย แลกรางวัลนี้?",
+  "@redeemConfirm": {
+    "placeholders": {
+      "price": {
+        "type": "int"
+      }
+    }
+  },
+  "redeemed": "แลก {title} แล้ว ขอให้สนุก!",
+  "@redeemed": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "redeemHistory": "ประวัติการแลก",
+  "practiceTitle": "โหมดฝึก",
+  "practiceBody": "เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว ได้ลินคอยแบบลดหลั่น ไม่กระทบตารางทบทวน",
+  "challengeTitle": "โหมดท้าทาย",
+  "challengeBody": "เดิมพันลินคอยกับเป้าหมายที่ปรับตามฝีมือ ชนะได้ถึง 6 เท่า"
+}

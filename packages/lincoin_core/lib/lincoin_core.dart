@@ -15,4 +15,7 @@ export 'src/srs/queue_builder.dart';
 export 'src/srs/scheduler.dart';
 export 'src/srs/simulator.dart';
 export 'src/srs/srs_config.dart';
+export 'src/study/questions.dart';
+export 'src/study/session_queue.dart';
 export 'src/time/study_day.dart';
+export 'src/util/hash.dart' show fnv1a32, unitFromKey;

@@ -1,0 +1,130 @@
+name: Release
+
+# vX.Y.Z        → new app (APK) + current content
+# content-*     → content only; the app entry of the previous release is kept
+on:
+  push:
+    tags:
+      - "v*"
+      - "content-*"
+
+permissions:
+  contents: write
+
+env:
+  FLUTTER_VERSION: "3.47.5"
+  REPO: ${{ github.repository }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Content (latest build from the content-build branch)
+        run: |
+          mkdir -p dist
+          app/tool/fetch_content.sh
+
+      - name: Check tag matches pubspec version
+        if: startsWith(github.ref_name, 'v')
+        run: |
+          full=$(grep -E '^version:' app/pubspec.yaml | awk '{print $2}')
+          name=${full%%+*}; code=${full##*+}
+          test "v$name" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME != pubspec $name"; exit 1; }
+          echo "VERSION_NAME=$name" >> "$GITHUB_ENV"
+          echo "VERSION_CODE=$code" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-java@v4
+        if: startsWith(github.ref_name, 'v')
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: subosito/flutter-action@v2
+        if: startsWith(github.ref_name, 'v')
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Tests
+        if: startsWith(github.ref_name, 'v')
+        working-directory: app
+        run: |
+          flutter pub get
+          flutter analyze --fatal-infos
+          flutter test
+
+      # The same key must sign every release, or phones refuse the update.
+      - name: Signing key
+        if: startsWith(github.ref_name, 'v')
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ] || [ -z "$STORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ]; then
+            echo "::error::Signing secrets are missing. See docs/10-updates.md (กุญแจเซ็นแอป)."
+            exit 1
+          fi
+          echo "$KEYSTORE_B64" | base64 -d > app/android/release.jks
+          cat > app/android/key.properties <<PROPS
+          storeFile=release.jks
+          storePassword=$STORE_PASSWORD
+          keyAlias=$KEY_ALIAS
+          keyPassword=${KEY_PASSWORD:-$STORE_PASSWORD}
+          PROPS
+          sed -i 's/^ *//' app/android/key.properties
+
+      - name: Build APK
+        if: startsWith(github.ref_name, 'v')
+        working-directory: app
+        run: |
+          flutter build apk --release
+          cp build/app/outputs/flutter-apk/app-release.apk "../dist/lincoin-$VERSION_NAME.apk"
+          rm -f android/key.properties android/release.jks
+
+      - name: Release files
+        run: |
+          if [[ "$GITHUB_REF_NAME" == v* ]]; then
+            python3 tools/release/make_release_files.py \
+              --content app/assets/content/content.db --out dist \
+              --repo "$REPO" --tag "$GITHUB_REF_NAME" \
+              --apk "dist/lincoin-$VERSION_NAME.apk" \
+              --version-name "$VERSION_NAME" --version-code "$VERSION_CODE"
+          else
+            curl -fsSL -o prev-latest.json \
+              "https://github.com/$REPO/releases/latest/download/latest.json" || true
+            python3 tools/release/make_release_files.py \
+              --content app/assets/content/content.db --out dist \
+              --repo "$REPO" --tag "$GITHUB_REF_NAME" \
+              --previous-latest prev-latest.json
+          fi
+          git show origin/content-build:CREDITS.md > dist/CREDITS.md
+          ls -la dist
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          notes=$(python3 - <<'PY'
+          import json
+          l = json.load(open("dist/latest.json", encoding="utf-8"))
+          out = []
+          if "app" in l:
+              out.append(f"แอป {l['app']['versionName']}")
+              out += [f"- {x}" for x in l["app"]["changelogTh"]]
+          out.append(f"เนื้อหา {l['content']['version']}")
+          out += [f"- {x}" for x in l["content"]["changelogTh"]]
+          out.append("")
+          out.append("เนื้อหาเผยแพร่ภายใต้ CC BY-SA 4.0 ดูเครดิตใน CREDITS.md")
+          print("\n".join(out))
+          PY
+          )
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --title "Lincoin $GITHUB_REF_NAME" --notes "$notes" --latest

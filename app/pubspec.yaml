@@ -1,0 +1,58 @@
+name: lincoin
+description: "Lincoin: เรียนภาษาญี่ปุ่นตั้งแต่ศูนย์ถึง N1"
+publish_to: 'none'
+
+# versionName+versionCode. versionCode must increase with every release
+# (Android refuses downgrades); tools/release checks the tag matches.
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  lincoin_core:
+    path: ../packages/lincoin_core
+  archive: ^4.0.0
+  crypto: ^3.0.6
+  file_picker: ^13.0.0
+  flutter_riverpod: ^3.4.0
+  flutter_tts: ^4.2.0
+  http: ^1.4.0
+  intl: any
+  package_info_plus: ^10.0.0
+  path: ^1.9.0
+  path_provider: ^2.1.5
+  sqlite3: ^3.7.0
+  uuid: ^4.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/content/
+    - assets/brand/
+    - assets/licenses/
+  fonts:
+    - family: IBMPlexSansThai
+      fonts:
+        - asset: assets/fonts/IBMPlexSansThai-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/IBMPlexSansThai-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/IBMPlexSansThai-Bold.ttf
+          weight: 700
+    - family: ZenMaruGothic
+      fonts:
+        - asset: assets/fonts/ZenMaruGothic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/ZenMaruGothic-Bold.ttf
+          weight: 700

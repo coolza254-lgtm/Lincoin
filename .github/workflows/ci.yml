@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+env:
+  FLUTTER_VERSION: "3.47.5"
+
 jobs:
   core:
     runs-on: ubuntu-latest
@@ -28,3 +31,60 @@ jobs:
         with:
           sdk: stable
       - run: dart run design/check_tokens.dart
+      - name: Generated theme matches tokens.json
+        run: dart run design/gen_tokens.dart --check
+
+  release-tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m unittest discover -s tools/release -v
+
+  app:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: dart format --output=none --set-exit-if-changed lib test
+      - run: flutter analyze --fatal-infos
+      - run: flutter test
+
+  # Test build: proves the Android build works and gives an APK to try.
+  # Signed with a throwaway debug key, so it cannot update (or be updated by)
+  # a real release: uninstall it before installing a release.
+  apk:
+    needs: app
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - name: Bundle latest content
+        run: tool/fetch_content.sh
+      - run: flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lincoin-test-apk
+          path: app/build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 14

@@ -135,10 +135,48 @@ String katakanaToHiragana(String input) {
   return out.toString();
 }
 
-/// Canonical form for comparing readings: hiragana, no whitespace.
+/// Canonical form for comparing readings: hiragana, no whitespace, and the
+/// long-vowel mark written out as a vowel (コーヒー ≡ "koohii").
 String normalizeReading(String input) =>
-    katakanaToHiragana(romajiToHiragana(input.trim()))
-        .replaceAll(RegExp(r'[\s　]'), '');
+    _expandLongVowels(katakanaToHiragana(romajiToHiragana(input.trim()))
+        .replaceAll(RegExp(r'[\s　]'), ''));
+
+/// Vowel row of each hiragana, for replacing ー with the preceding vowel.
+const Map<String, String> _vowelOf = {
+  'a': 'あかがさざただなはばぱまやゃらわゎぁ',
+  'i': 'いきぎしじちぢにひびぴみりぃ',
+  'u': 'うくぐすずつづぬふぶぷむゆゅるぅゔ',
+  'e': 'えけげせぜてでねへべぺめれぇ',
+  'o': 'おこごそぞとどのほぼぽもよょろをぉ',
+};
+const Map<String, String> _vowelKana = {
+  'a': 'あ',
+  'i': 'い',
+  'u': 'う',
+  'e': 'え',
+  'o': 'お'
+};
+
+String _expandLongVowels(String s) {
+  if (!s.contains('ー')) return s;
+  final out = StringBuffer();
+  String? prev;
+  for (final ch in s.split('')) {
+    if (ch == 'ー' && prev != null) {
+      final v = _vowelOf.entries
+          .where((e) => e.value.contains(prev!))
+          .map((e) => e.key)
+          .firstOrNull;
+      final kana = v == null ? ch : _vowelKana[v]!;
+      out.write(kana);
+      prev = kana;
+      continue;
+    }
+    out.write(ch);
+    prev = ch;
+  }
+  return out.toString();
+}
 
 /// True when [input] (romaji or kana) equals any of [accepted] readings.
 bool readingMatches(String input, Iterable<String> accepted) {

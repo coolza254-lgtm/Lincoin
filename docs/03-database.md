@@ -143,6 +143,6 @@ content_reports(id UUID PK, item_id, kind, comment, created_at, resolved)
 | `update.online_check` | true | true/false |
 
 ## นโยบาย
-- **Migration:** Drift schema version, สำรอง `user.db` ก่อน migrate ทุกครั้ง, มีทดสอบ migration ทุกเวอร์ชัน
+- **Migration:** `PRAGMA user_version` + รายการ SQL ใน `app/lib/data/user_db.dart` (ห้ามแก้รายการที่ออกไปแล้ว ให้เพิ่มรายการใหม่), สำรอง `user.db` ก่อน migrate ทุกครั้ง, มีทดสอบ migration ทุกเวอร์ชัน
 - **อัปเดตเนื้อหา:** เทียบ ID กับ `deprecations` ถ้า ID ถูกย้ายให้ย้ายการ์ด ถ้าถูกลบให้ suspend การ์ดแต่เก็บประวัติ
 - **Export:** ไฟล์ `user.db` ทั้งไฟล์ + ทางเลือก JSON
