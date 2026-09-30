@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'features/home/home_screen.dart';
+import 'features/onboarding/onboarding_screen.dart';
 import 'features/practice/practice_screen.dart';
 import 'features/shop/shop_screen.dart';
 import 'features/stats/stats_screen.dart';
@@ -67,6 +68,10 @@ class _AppShellState extends ConsumerState<AppShell> {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
+    final onboarded = ref.watch(userDbProvider).meta(onboardedKey) != null;
+    if (!onboarded) {
+      return OnboardingScreen(onDone: () => setState(() {}));
+    }
     return Scaffold(
       // Only the visible tab is built, so hidden tabs do not recompute
       // their data after every change.

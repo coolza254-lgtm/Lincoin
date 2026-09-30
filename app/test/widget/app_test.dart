@@ -30,6 +30,7 @@ void main() {
     WidgetTester tester, {
     bool content = true,
     AppSettings? settings,
+    bool onboarding = false,
   }) async {
     if (content) {
       await tester.runAsync(() async {
@@ -37,9 +38,10 @@ void main() {
         await ContentStore(paths.content).install(f);
       });
     }
-    if (settings != null) {
+    if (!onboarding) {
       final db = UserDb.open(paths.userDb);
-      SettingsRepo(db).save(settings, DateTime.utc(2026));
+      if (settings != null) SettingsRepo(db).save(settings, DateTime.utc(2026));
+      db.setMeta('onboarded', '1');
       db.close();
     }
     final container = ProviderContainer(
@@ -72,6 +74,23 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('ตรวจหาอัปเดต'), findsOneWidget);
     expect(find.text('อัปเดตจากไฟล์'), findsOneWidget);
+  });
+
+  testWidgets('first run: onboarding sets kana and pace', (tester) async {
+    final c = await start(tester, onboarding: true);
+    expect(find.text('ยินดีต้อนรับสู่ Lincoin'), findsOneWidget);
+    await tester.tap(find.text('ต่อไป'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('อ่านได้แล้ว ข้ามไป N5'));
+    await tester.tap(find.text('ต่อไป'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.textContaining('ใหม่ 20 ใบ/วัน'));
+    await tester.tap(find.text('เริ่มเลย'));
+    await tester.pumpAndSettle();
+    expect(find.text('ท่องศัพท์'), findsOneWidget);
+    final s = c.read(settingsProvider);
+    expect(s.includeKana, isFalse);
+    expect(s.vocabNewPerDay, 20);
   });
 
   testWidgets('a full study session records reviews', (tester) async {

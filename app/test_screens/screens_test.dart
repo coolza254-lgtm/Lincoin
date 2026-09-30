@@ -63,6 +63,7 @@ void main() {
     final db = UserDb.open(paths.userDb);
     final settings = AppSettings(theme: theme, includeKana: false);
     SettingsRepo(db).save(settings, now);
+    db.setMeta('onboarded', '1');
     final content = ContentDb.openFile('${paths.content.path}/content.db');
     final catalog = Catalog.load(content);
     var t = now.subtract(const Duration(days: 21));

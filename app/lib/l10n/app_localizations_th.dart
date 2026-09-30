@@ -540,7 +540,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get noRewardsBody =>
-      'ตั้งรางวัลให้ตัวเอง เช่น ชานม 1 แก้ว ดูหนัง 1 เรื่อง แล้วใช้ Lincoinแลก';
+      'ตั้งรางวัลให้ตัวเอง เช่น ชานม 1 แก้ว ดูหนัง 1 เรื่อง แล้วใช้ Lincoin แลก';
 
   @override
   String get addReward => 'เพิ่มรางวัล';
@@ -611,14 +611,14 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get practiceBody =>
-      'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ Lincoinแบบลดหลั่นต่อวัน';
+      'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ Lincoin แบบลดหลั่นต่อวัน';
 
   @override
   String get challengeTitle => 'ท้าทาย';
 
   @override
   String get challengeBody =>
-      'เดิมพัน Lincoinกับเป้าหมายที่ปรับตามฝีมือคุณเอง ชนะได้คืนทุนพร้อมกำไร แพ้เสียเดิมพัน ออกกลางคันถือว่าแพ้';
+      'เดิมพัน Lincoin กับเป้าหมายที่ปรับตามฝีมือคุณเอง ชนะได้คืนทุนพร้อมกำไร แพ้เสียเดิมพัน ออกกลางคันถือว่าแพ้';
 
   @override
   String get qChooseWord => 'เลือกคำภาษาญี่ปุ่น';
@@ -772,7 +772,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String stakeTooLow(int min) {
-    return 'ต้องมี Lincoinพอให้เดิมพันขั้นต่ำ $min (เดิมพันได้ไม่เกิน 30% ของยอด)';
+    return 'ต้องมี Lincoin พอให้เดิมพันขั้นต่ำ $min (เดิมพันได้ไม่เกิน 30% ของยอด)';
   }
 
   @override
@@ -841,4 +841,65 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get noGrammarYet =>
       'ยังไม่มีหัวข้อที่พร้อมเรียน (ประโยคตัวอย่างกำลังแปล)';
+
+  @override
+  String get welcomeTitle => 'ยินดีต้อนรับสู่ Lincoin';
+
+  @override
+  String get welcome1 =>
+      'ทบทวนทุกวันตามตารางที่คำนวณให้ จำได้นานโดยไม่ต้องท่องซ้ำเกินจำเป็น';
+
+  @override
+  String get welcome2 => 'เรียนแล้วได้ Lincoin เอาไปแลกรางวัลจริงที่คุณตั้งเอง';
+
+  @override
+  String get welcome3 =>
+      'ไม่มีหัวใจ ไม่มี streak ตอบผิดก็แค่ทบทวนใหม่ ไม่มีบทลงโทษ';
+
+  @override
+  String get onbKanaTitle => 'อ่านฮิรางานะ/คาตาคานะได้หรือยัง?';
+
+  @override
+  String get onbKanaYes => 'ยังไม่ได้ เริ่มจากคานะ';
+
+  @override
+  String get onbKanaYesBody => 'เรียนตัวอักษรก่อน แล้วต่อด้วยศัพท์ N5';
+
+  @override
+  String get onbKanaNo => 'อ่านได้แล้ว ข้ามไป N5';
+
+  @override
+  String get onbKanaNoBody => 'เริ่มท่องศัพท์ N5 ได้เลย';
+
+  @override
+  String get onbPaceTitle => 'วันละเท่าไรดี?';
+
+  @override
+  String get onbPaceBody =>
+      'การ์ดใหม่ทุกใบจะกลับมาให้ทบทวนอีกหลายครั้ง เลือกจำนวนที่ทำได้ทุกวันสบายๆ';
+
+  @override
+  String get paceLight => 'สบายๆ';
+
+  @override
+  String get paceNormal => 'แนะนำ';
+
+  @override
+  String get paceIntense => 'เข้มข้น';
+
+  @override
+  String cardsPerDay(int n) {
+    return 'ใหม่ $n ใบ/วัน';
+  }
+
+  @override
+  String paceMinutes(int m) {
+    return 'ประมาณ $m นาทีต่อวันเมื่อผ่านไปสักพัก';
+  }
+
+  @override
+  String get onbChangeLater => 'เปลี่ยนได้ทุกเมื่อในหน้าตั้งค่า';
+
+  @override
+  String get letsStart => 'เริ่มเลย';
 }

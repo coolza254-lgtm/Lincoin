@@ -1039,7 +1039,7 @@ abstract class AppLocalizations {
   /// No description provided for @noRewardsBody.
   ///
   /// In th, this message translates to:
-  /// **'ตั้งรางวัลให้ตัวเอง เช่น ชานม 1 แก้ว ดูหนัง 1 เรื่อง แล้วใช้ Lincoinแลก'**
+  /// **'ตั้งรางวัลให้ตัวเอง เช่น ชานม 1 แก้ว ดูหนัง 1 เรื่อง แล้วใช้ Lincoin แลก'**
   String get noRewardsBody;
 
   /// No description provided for @addReward.
@@ -1159,7 +1159,7 @@ abstract class AppLocalizations {
   /// No description provided for @practiceBody.
   ///
   /// In th, this message translates to:
-  /// **'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ Lincoinแบบลดหลั่นต่อวัน'**
+  /// **'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ Lincoin แบบลดหลั่นต่อวัน'**
   String get practiceBody;
 
   /// No description provided for @challengeTitle.
@@ -1171,7 +1171,7 @@ abstract class AppLocalizations {
   /// No description provided for @challengeBody.
   ///
   /// In th, this message translates to:
-  /// **'เดิมพัน Lincoinกับเป้าหมายที่ปรับตามฝีมือคุณเอง ชนะได้คืนทุนพร้อมกำไร แพ้เสียเดิมพัน ออกกลางคันถือว่าแพ้'**
+  /// **'เดิมพัน Lincoin กับเป้าหมายที่ปรับตามฝีมือคุณเอง ชนะได้คืนทุนพร้อมกำไร แพ้เสียเดิมพัน ออกกลางคันถือว่าแพ้'**
   String get challengeBody;
 
   /// No description provided for @qChooseWord.
@@ -1429,7 +1429,7 @@ abstract class AppLocalizations {
   /// No description provided for @stakeTooLow.
   ///
   /// In th, this message translates to:
-  /// **'ต้องมี Lincoinพอให้เดิมพันขั้นต่ำ {min} (เดิมพันได้ไม่เกิน 30% ของยอด)'**
+  /// **'ต้องมี Lincoin พอให้เดิมพันขั้นต่ำ {min} (เดิมพันได้ไม่เกิน 30% ของยอด)'**
   String stakeTooLow(int min);
 
   /// No description provided for @stake.
@@ -1551,6 +1551,114 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'ยังไม่มีหัวข้อที่พร้อมเรียน (ประโยคตัวอย่างกำลังแปล)'**
   String get noGrammarYet;
+
+  /// No description provided for @welcomeTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'ยินดีต้อนรับสู่ Lincoin'**
+  String get welcomeTitle;
+
+  /// No description provided for @welcome1.
+  ///
+  /// In th, this message translates to:
+  /// **'ทบทวนทุกวันตามตารางที่คำนวณให้ จำได้นานโดยไม่ต้องท่องซ้ำเกินจำเป็น'**
+  String get welcome1;
+
+  /// No description provided for @welcome2.
+  ///
+  /// In th, this message translates to:
+  /// **'เรียนแล้วได้ Lincoin เอาไปแลกรางวัลจริงที่คุณตั้งเอง'**
+  String get welcome2;
+
+  /// No description provided for @welcome3.
+  ///
+  /// In th, this message translates to:
+  /// **'ไม่มีหัวใจ ไม่มี streak ตอบผิดก็แค่ทบทวนใหม่ ไม่มีบทลงโทษ'**
+  String get welcome3;
+
+  /// No description provided for @onbKanaTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'อ่านฮิรางานะ/คาตาคานะได้หรือยัง?'**
+  String get onbKanaTitle;
+
+  /// No description provided for @onbKanaYes.
+  ///
+  /// In th, this message translates to:
+  /// **'ยังไม่ได้ เริ่มจากคานะ'**
+  String get onbKanaYes;
+
+  /// No description provided for @onbKanaYesBody.
+  ///
+  /// In th, this message translates to:
+  /// **'เรียนตัวอักษรก่อน แล้วต่อด้วยศัพท์ N5'**
+  String get onbKanaYesBody;
+
+  /// No description provided for @onbKanaNo.
+  ///
+  /// In th, this message translates to:
+  /// **'อ่านได้แล้ว ข้ามไป N5'**
+  String get onbKanaNo;
+
+  /// No description provided for @onbKanaNoBody.
+  ///
+  /// In th, this message translates to:
+  /// **'เริ่มท่องศัพท์ N5 ได้เลย'**
+  String get onbKanaNoBody;
+
+  /// No description provided for @onbPaceTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'วันละเท่าไรดี?'**
+  String get onbPaceTitle;
+
+  /// No description provided for @onbPaceBody.
+  ///
+  /// In th, this message translates to:
+  /// **'การ์ดใหม่ทุกใบจะกลับมาให้ทบทวนอีกหลายครั้ง เลือกจำนวนที่ทำได้ทุกวันสบายๆ'**
+  String get onbPaceBody;
+
+  /// No description provided for @paceLight.
+  ///
+  /// In th, this message translates to:
+  /// **'สบายๆ'**
+  String get paceLight;
+
+  /// No description provided for @paceNormal.
+  ///
+  /// In th, this message translates to:
+  /// **'แนะนำ'**
+  String get paceNormal;
+
+  /// No description provided for @paceIntense.
+  ///
+  /// In th, this message translates to:
+  /// **'เข้มข้น'**
+  String get paceIntense;
+
+  /// No description provided for @cardsPerDay.
+  ///
+  /// In th, this message translates to:
+  /// **'ใหม่ {n} ใบ/วัน'**
+  String cardsPerDay(int n);
+
+  /// No description provided for @paceMinutes.
+  ///
+  /// In th, this message translates to:
+  /// **'ประมาณ {m} นาทีต่อวันเมื่อผ่านไปสักพัก'**
+  String paceMinutes(int m);
+
+  /// No description provided for @onbChangeLater.
+  ///
+  /// In th, this message translates to:
+  /// **'เปลี่ยนได้ทุกเมื่อในหน้าตั้งค่า'**
+  String get onbChangeLater;
+
+  /// No description provided for @letsStart.
+  ///
+  /// In th, this message translates to:
+  /// **'เริ่มเลย'**
+  String get letsStart;
 }
 
 class _AppLocalizationsDelegate
