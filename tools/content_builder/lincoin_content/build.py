@@ -267,15 +267,20 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
     # 7. Grammar points with example sentences.
     points = [p for lv in levels for p in grammar.load_points(int(lv[1]), grammar_root)]
     if points:
-        known = {ch for (t,) in db.execute("SELECT text FROM word_forms WHERE kind='kanji'")
-                 for ch in t}
-        known |= set("一二三四五六七八九十百千万円時分日月年人")
+        # Kanji known at each grammar level = kanji of that level's and easier
+        # words, so adding harder vocabulary never changes chosen examples.
+        known_by_level = {}
+        for lv in {p.level for p in points}:
+            known_by_level[lv] = {ch for (t,) in db.execute(
+                "SELECT f.text FROM word_forms f JOIN words w ON w.id = f.word_id "
+                "WHERE f.kind='kanji' AND w.jlpt_level >= ?", (lv,)) for ch in t}
+            known_by_level[lv] |= set("一二三四五六七八九十百千万円時分日月年人")
         matches, sents = ({}, {})
         if with_examples:
             exclude: dict[str, set[int]] = {}
             for lv in levels:
                 exclude.update(grammar.load_exclusions(int(lv[1]), grammar_root))
-            matches, sents = _grammar_examples(cache, points, known, exclude,
+            matches, sents = _grammar_examples(cache, points, known_by_level, exclude,
                                                example_filter or ExampleFilter())
             if sents:
                 used = {s for (s,) in db.execute("SELECT id FROM sources")}
@@ -375,7 +380,7 @@ def _examples(cache, entries, order, primaries, spelling_counts, report, flt: Ex
     return out, cc0
 
 
-def _grammar_examples(cache, points, known_kanji, exclude, flt: ExampleFilter):
+def _grammar_examples(cache, points, known_by_level, exclude, flt: ExampleFilter):
     """Scans every Japanese Tatoeba sentence that has an authored English
     translation for the grammar patterns."""
     jpn = {sid: s for sid, s in readers.read_sentences(cache.path("tatoeba", "jpn_sentences")).items()
@@ -389,8 +394,11 @@ def _grammar_examples(cache, points, known_kanji, exclude, flt: ExampleFilter):
         if en is None or flt.blocked(ja.text, en.text):
             continue
         usable[sid] = (ja, en)
-    matches = grammar.find_examples(points, {sid: ja.text for sid, (ja, _) in usable.items()},
-                                    known_kanji, exclude)
+    texts = {sid: ja.text for sid, (ja, _) in usable.items()}
+    matches = {}
+    for lv, known in known_by_level.items():
+        matches.update(grammar.find_examples([p for p in points if p.level == lv], texts,
+                                             known, exclude))
     wanted = {m.sentence_id for ms in matches.values() for m in ms}
     ids = wanted | {usable[s][1].id for s in wanted}
     cc0 = readers.read_cc0_ids(cache.path("tatoeba", "cc0"), ids)
