@@ -16,12 +16,14 @@ import 'question_body.dart';
 import 'session_controller.dart';
 
 class StudyScreen extends ConsumerWidget {
-  const StudyScreen({super.key});
+  /// 'vocab' or 'grammar'.
+  final String deck;
+  const StudyScreen({super.key, this.deck = vocabDeck});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final s = ref.watch(sessionProvider);
-    final ctl = ref.read(sessionProvider.notifier);
+    final s = ref.watch(sessionProvider(deck));
+    final ctl = ref.read(sessionProvider(deck).notifier);
     final t = AppLocalizations.of(context);
     return PopScope(
       onPopInvokedWithResult: (didPop, _) {
@@ -54,10 +56,10 @@ class StudyScreen extends ConsumerWidget {
                       '${s.phase}-${s.question?.cardId}-${s.answered}',
                     ),
                     child: switch (s.phase) {
-                      SessionPhase.intro => _Intro(s),
-                      SessionPhase.question => _QuestionView(s),
-                      SessionPhase.feedback => _Feedback(s),
-                      SessionPhase.done => _Done(s),
+                      SessionPhase.intro => _Intro(s, deck),
+                      SessionPhase.question => _QuestionView(s, deck),
+                      SessionPhase.feedback => _Feedback(s, deck),
+                      SessionPhase.done => _Done(s, deck),
                     },
                   ),
                 ),
@@ -110,7 +112,8 @@ class _Frame extends StatelessWidget {
 
 class _Intro extends ConsumerWidget {
   final SessionState s;
-  const _Intro(this.s);
+  final String deck;
+  const _Intro(this.s, this.deck);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -119,10 +122,11 @@ class _Intro extends ConsumerWidget {
     return _Frame(
       body: Column(
         children: [
-          LcPill(
-            item is KanaStudy ? t.newKana : t.newWord,
-            icon: Icons.auto_awesome_rounded,
-          ),
+          LcPill(switch (item) {
+            KanaStudy() => t.newKana,
+            GrammarStudy() => t.newGrammar,
+            _ => t.newWord,
+          }, icon: Icons.auto_awesome_rounded),
           const SizedBox(height: LcTokens.spacingXl),
           LcCard(large: true, child: ItemDetails(item: item)),
           const SizedBox(height: LcTokens.spacingMd),
@@ -135,7 +139,7 @@ class _Intro extends ConsumerWidget {
       ),
       actions: [
         FilledButton(
-          onPressed: ref.read(sessionProvider.notifier).finishIntro,
+          onPressed: ref.read(sessionProvider(deck).notifier).finishIntro,
           child: Text(t.gotIt),
         ),
       ],
@@ -145,13 +149,14 @@ class _Intro extends ConsumerWidget {
 
 class _QuestionView extends ConsumerWidget {
   final SessionState s;
-  const _QuestionView(this.s);
+  final String deck;
+  const _QuestionView(this.s, this.deck);
 
   bool _showFurigana(WidgetRef ref, Question q) {
     final mode = ref.read(settingsProvider).furigana;
     if (mode == FuriganaMode.always) return true;
     if (mode == FuriganaMode.never) return false;
-    final svc = ref.read(studyServiceProvider);
+    final svc = ref.read(deckServiceProvider(deck));
     final stored = svc?.stored(q.cardId);
     return stored == null || !svc!.config.mastery.isMastered(stored.state);
   }
@@ -160,7 +165,7 @@ class _QuestionView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = AppLocalizations.of(context);
     final q = s.question!;
-    final ctl = ref.read(sessionProvider.notifier);
+    final ctl = ref.read(sessionProvider(deck).notifier);
     return _Frame(
       body: QuestionBody(
         question: q,
@@ -192,7 +197,8 @@ class _QuestionView extends ConsumerWidget {
 
 class _Feedback extends ConsumerWidget {
   final SessionState s;
-  const _Feedback(this.s);
+  final String deck;
+  const _Feedback(this.s, this.deck);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -250,7 +256,10 @@ class _Feedback extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: LcTokens.spacingLg),
-          LcCard(large: true, child: ItemDetails(item: q.item)),
+          LcCard(
+            large: true,
+            child: ItemDetails(item: q.item, example: q.example),
+          ),
           const SizedBox(height: LcTokens.spacingSm),
           if (q.item is WordStudy)
             Align(
@@ -266,7 +275,7 @@ class _Feedback extends ConsumerWidget {
       actions: [
         FilledButton(
           autofocus: true,
-          onPressed: ref.read(sessionProvider.notifier).next,
+          onPressed: ref.read(sessionProvider(deck).notifier).next,
           child: Text(t.next),
         ),
       ],
@@ -319,7 +328,8 @@ class _Feedback extends ConsumerWidget {
 
 class _Done extends ConsumerWidget {
   final SessionState s;
-  const _Done(this.s);
+  final String deck;
+  const _Done(this.s, this.deck);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

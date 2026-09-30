@@ -91,6 +91,11 @@ class SessionState {
 /// One vocabulary session: builds the queue, times answers, grades them
 /// through the engines and records everything.
 class SessionController extends Notifier<SessionState> {
+  SessionController(this.deck);
+
+  /// 'vocab' or 'grammar'.
+  final String deck;
+
   late StudyService _svc;
   late SessionQueue _queue;
   late String _sessionId;
@@ -104,20 +109,14 @@ class SessionController extends Notifier<SessionState> {
 
   @override
   SessionState build() {
-    final svc = ref.read(studyServiceProvider);
+    final svc = ref.read(deckServiceProvider(deck));
     if (svc == null) return const SessionState(phase: SessionPhase.done);
     _svc = svc;
     final plan = svc.plan();
     _queue = SessionQueue(initial: svc.sessionOrder(plan));
     _sessionId = UserDb.newId();
     final now = svc.clock.nowUtc();
-    svc.repo.startSession(
-      _sessionId,
-      'study',
-      vocabDeck,
-      now,
-      svc.studyDay(now),
-    );
+    svc.repo.startSession(_sessionId, 'study', deck, now, svc.studyDay(now));
     ref.onDispose(_saveSession);
     return _advance(const SessionState(phase: SessionPhase.question));
   }
@@ -266,7 +265,5 @@ class SessionController extends Notifier<SessionState> {
   }
 }
 
-final sessionProvider =
-    NotifierProvider.autoDispose<SessionController, SessionState>(
-      SessionController.new,
-    );
+final sessionProvider = NotifierProvider.autoDispose
+    .family<SessionController, SessionState, String>(SessionController.new);

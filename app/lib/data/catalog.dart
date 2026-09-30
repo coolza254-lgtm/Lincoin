@@ -4,6 +4,10 @@ import 'content_db.dart';
 
 /// Levels in teaching order. Only levels with content appear in the app.
 const vocabLevels = ['kana', 'n5', 'n4', 'n3', 'n2', 'n1'];
+const grammarLevels = ['n5', 'n4', 'n3', 'n2', 'n1'];
+
+const vocabDeck = 'vocab';
+const grammarDeck = 'grammar';
 
 /// Something that can be studied: a kana character or a word.
 sealed class StudyItem {
@@ -15,6 +19,9 @@ sealed class StudyItem {
   /// Position on the learning path (kana first, then N5 …).
   int get pathOrder;
   List<Facet> get facets;
+
+  /// 'vocab' or 'grammar'; each deck has its own schedule and settings.
+  String get deck => vocabDeck;
 }
 
 class KanaStudy extends StudyItem {
@@ -47,6 +54,22 @@ class WordStudy extends StudyItem {
   String get group => word.pos.isEmpty ? '' : word.pos.first;
 }
 
+class GrammarStudy extends StudyItem {
+  final GrammarPoint point;
+  @override
+  final int pathOrder;
+  GrammarStudy(this.point, this.pathOrder);
+
+  @override
+  String get id => point.id;
+  @override
+  String get level => 'n${point.level}';
+  @override
+  List<Facet> get facets => const [Facet.cloze];
+  @override
+  String get deck => grammarDeck;
+}
+
 /// Content loaded into memory for fast queue building and question making.
 class Catalog {
   final ContentInfo info;
@@ -66,6 +89,10 @@ class Catalog {
     for (final w in db.words()) {
       path.add(WordStudy(w, order++));
     }
+    // Grammar points without a translated example cannot be asked yet.
+    for (final g in db.grammarPoints()) {
+      if (g.clozeExamples.isNotEmpty) path.add(GrammarStudy(g, order++));
+    }
     return Catalog._(
       db.info(),
       path,
@@ -75,9 +102,9 @@ class Catalog {
     );
   }
 
-  Map<String, int> get itemsPerLevel {
+  Map<String, int> itemsPerLevel([String deck = vocabDeck]) {
     final m = <String, int>{};
-    for (final i in path) {
+    for (final i in path.where((i) => i.deck == deck)) {
       m[i.level] = (m[i.level] ?? 0) + 1;
     }
     return m;

@@ -143,4 +143,45 @@ void main() {
     expect(cards.containsKey('w:100#recog'), isTrue);
     expect(cards['w:2#recog']!.suspended, isTrue);
   });
+
+  group('grammar deck', () {
+    StudyService grammar() => StudyService(
+      db: db,
+      catalog: catalog,
+      settings: const AppSettings(grammarNewPerDay: 5),
+      clock: Clock(() => now, () => 420),
+      deck: grammarDeck,
+    );
+
+    test('only points with translated examples; separate deck and limits', () {
+      expect(catalog.itemsPerLevel(grammarDeck), {'n5': 2});
+      final p = grammar().plan();
+      expect(p.queue.newCards.map((c) => c.cardId), [
+        'g:n5.001#cloze',
+        'g:n5.002#cloze',
+      ]);
+      // Vocab plan is unaffected.
+      expect(
+        service().plan().queue.newCards.map((c) => c.cardId),
+        everyElement(isNot(startsWith('g:'))),
+      );
+    });
+
+    test('cloze uses a translated example and rotates by repetition', () {
+      final g = grammar();
+      final q = g.question('g:n5.001#cloze');
+      expect(q.form, QuestionForm.cloze);
+      expect(q.needsIntro, isTrue);
+      expect(q.choices!.options[q.choices!.correctIndex], 'を');
+      expect(q.choices!.options.toSet(), {'を', 'に', 'で', 'の'});
+      expect(q.example!.parts, ('コーヒー', 'を', '飲みます。'));
+      g.introduce(q);
+      g.answer(q, const AnswerEvent(isCorrect: true, responseMs: 5000));
+      final q2 = g.question('g:n5.001#cloze');
+      expect(q2.example!.sentence.id, 'ex:3');
+      final stored = StudyRepo(db).card('g:n5.001#cloze')!;
+      expect(stored.deck, grammarDeck);
+      expect(StudyRepo(db).reviewRecords(deck: grammarDeck), hasLength(1));
+    });
+  });
 }

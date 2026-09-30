@@ -789,4 +789,56 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get weeklyStarted =>
       'เริ่มสัปดาห์ขยันแล้ว ทบทวนให้ครบในแต่ละวันเพื่อเก็บวัน';
+
+  @override
+  String get grammarMeaning => 'ความหมาย';
+
+  @override
+  String get grammarFormation => 'วิธีใช้';
+
+  @override
+  String get grammarNotes => 'หมายเหตุ';
+
+  @override
+  String get grammarExamples => 'ตัวอย่าง';
+
+  @override
+  String get grammarCompare => 'อย่าสับสนกับ';
+
+  @override
+  String get grammarList => 'ไวยากรณ์ทั้งหมด';
+
+  @override
+  String get qCloze => 'เติมคำในช่องว่าง';
+
+  @override
+  String get newGrammar => 'ไวยากรณ์ใหม่';
+
+  @override
+  String grammarLevel(String level) {
+    return 'ไวยากรณ์ $level';
+  }
+
+  @override
+  String get seeAllGrammar => 'ดูทั้งหมด';
+
+  @override
+  String get deckVocabShort => 'ศัพท์';
+
+  @override
+  String get deckGrammarShort => 'ไวยากรณ์';
+
+  @override
+  String get targetRetentionGrammar => 'เป้าหมายการจำ (ไวยากรณ์)';
+
+  @override
+  String get newPerDayGrammar => 'หัวข้อไวยากรณ์ใหม่ต่อวัน';
+
+  @override
+  String get newPerDayGrammarHelp =>
+      'หัวข้อละ 1 การ์ด แต่ละรอบถามด้วยประโยคตัวอย่างต่างกัน';
+
+  @override
+  String get noGrammarYet =>
+      'ยังไม่มีหัวข้อที่พร้อมเรียน (ประโยคตัวอย่างกำลังแปล)';
 }

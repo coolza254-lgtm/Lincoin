@@ -122,6 +122,75 @@ void fillFixture(Database db, {String version = '2026.09.30'}) {
     'tatoeba',
   ]);
   db.execute('INSERT INTO word_examples VALUES (?, ?, 1, 1)', ['w:1', 'ex:1']);
+
+  // Grammar: two points with translated examples, one without (not usable).
+  for (final (id, ja, th) in [
+    ('ex:2', 'コーヒーを飲みます。', 'ฉันดื่มกาแฟ'),
+    ('ex:3', '水を飲みました。', 'ดื่มน้ำแล้ว'),
+    ('ex:4', '本を読みます。', null),
+  ]) {
+    db.execute(
+      'INSERT INTO examples VALUES (?, ?, NULL, ?, ?, ?, ?, ?, ?, ?)',
+      [
+        id,
+        ja,
+        'en',
+        th,
+        'someone',
+        'other',
+        'CC BY 2.0 FR',
+        'CC BY 2.0 FR',
+        'tatoeba',
+      ],
+    );
+  }
+  for (final (i, id, title) in [
+    (1, 'g:n5.001', '〜を'),
+    (2, 'g:n5.002', '〜が好きです'),
+    (3, 'g:n5.003', '〜ます'),
+  ]) {
+    db.execute(
+      'INSERT INTO grammar_points VALUES (?, 5, ?, ?, ?, ?, ?, NULL, ?, ?, ?)',
+      [
+        id,
+        i,
+        title,
+        'หัวข้อ $i',
+        'ความหมาย',
+        'วิธีใช้',
+        '[]',
+        'auto_checked',
+        'lincoin',
+      ],
+    );
+  }
+  String span(int start, int end, String answer, List<String> wrong) =>
+      jsonEncode({
+        'start': start,
+        'end': end,
+        'answer': answer,
+        'wrong': wrong,
+      });
+  db.execute('INSERT INTO grammar_examples VALUES (?, ?, 0, ?)', [
+    'g:n5.001',
+    'ex:2',
+    span(4, 5, 'を', ['に', 'で', 'の']),
+  ]);
+  db.execute('INSERT INTO grammar_examples VALUES (?, ?, 1, ?)', [
+    'g:n5.001',
+    'ex:3',
+    span(1, 2, 'を', ['に', 'で', 'の']),
+  ]);
+  db.execute('INSERT INTO grammar_examples VALUES (?, ?, 0, ?)', [
+    'g:n5.002',
+    'ex:1',
+    span(1, 2, 'が', ['を', 'で', 'へ']),
+  ]);
+  db.execute('INSERT INTO grammar_examples VALUES (?, ?, 0, ?)', [
+    'g:n5.003',
+    'ex:4',
+    span(4, 6, 'ます', ['ません', 'ました']),
+  ]);
 }
 
 Catalog fixtureCatalog() => Catalog.load(ContentDb(fixtureContentDb()));

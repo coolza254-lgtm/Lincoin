@@ -65,6 +65,32 @@ class SettingsScreen extends ConsumerWidget {
                   set.update((x) => x.copyWith(vocabNewPerDay: v.round())),
             ),
             const Divider(indent: 16, endIndent: 16),
+            const Divider(indent: 16, endIndent: 16),
+            _SliderTile(
+              title: t.targetRetentionGrammar,
+              help: t.targetRetentionHelp,
+              value: s.grammarRetention,
+              min: 0.80,
+              max: 0.95,
+              divisions: 15,
+              label: '${(s.grammarRetention * 100).round()}%',
+              onChanged: (v) => set.update(
+                (x) => x.copyWith(grammarRetention: (v * 100).round() / 100),
+              ),
+            ),
+            const Divider(indent: 16, endIndent: 16),
+            _SliderTile(
+              title: t.newPerDayGrammar,
+              help: t.newPerDayGrammarHelp,
+              value: s.grammarNewPerDay.toDouble(),
+              min: 0,
+              max: AppSettings.grammarNewPerDayMax.toDouble(),
+              divisions: AppSettings.grammarNewPerDayMax,
+              label: '${s.grammarNewPerDay}',
+              onChanged: (v) =>
+                  set.update((x) => x.copyWith(grammarNewPerDay: v.round())),
+            ),
+            const Divider(indent: 16, endIndent: 16),
             SwitchListTile(
               title: Text(t.includeKana),
               subtitle: Text(t.includeKanaHelp),

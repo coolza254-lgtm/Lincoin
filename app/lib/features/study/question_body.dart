@@ -8,6 +8,7 @@ import '../../services/study_service.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
+import '../grammar/grammar_lesson.dart' show ClozeSentence;
 
 /// Prompt and answer area of one question. Shared by study sessions,
 /// practice and challenges, so every mode asks questions the same way.
@@ -103,6 +104,20 @@ class _QuestionBodyState extends State<QuestionBody> {
       QuestionForm.wordChoice => (
         t.qChooseWord,
         meaningPrompt(item as WordStudy),
+      ),
+      QuestionForm.cloze => (
+        t.qCloze,
+        Column(
+          children: [
+            ClozeSentence(q.example!, blank: true, size: 26),
+            const SizedBox(height: LcTokens.spacingMd),
+            Text(
+              q.example!.sentence.th ?? '',
+              style: tt.bodyLarge?.copyWith(color: c.muted),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
       QuestionForm.kanaType || QuestionForm.kanaChoice => (
         q.form == QuestionForm.kanaType ? t.qTypeRomaji : t.qChooseRomaji,

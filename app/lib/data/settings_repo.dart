@@ -10,6 +10,8 @@ class AppSettings {
   final String theme;
   final double vocabRetention;
   final int vocabNewPerDay;
+  final double grammarRetention;
+  final int grammarNewPerDay;
   final bool includeKana;
   final FuriganaMode furigana;
   final int dayStartHour;
@@ -21,6 +23,8 @@ class AppSettings {
     this.theme = LcTokens.defaultTheme,
     this.vocabRetention = 0.90,
     this.vocabNewPerDay = 10,
+    this.grammarRetention = 0.90,
+    this.grammarNewPerDay = 2,
     this.includeKana = true,
     this.furigana = FuriganaMode.always,
     this.dayStartHour = 4,
@@ -30,11 +34,14 @@ class AppSettings {
   });
 
   static const newPerDayMax = 50;
+  static const grammarNewPerDayMax = 10;
 
   AppSettings copyWith({
     String? theme,
     double? vocabRetention,
     int? vocabNewPerDay,
+    double? grammarRetention,
+    int? grammarNewPerDay,
     bool? includeKana,
     FuriganaMode? furigana,
     int? dayStartHour,
@@ -45,6 +52,8 @@ class AppSettings {
     theme: theme ?? this.theme,
     vocabRetention: vocabRetention ?? this.vocabRetention,
     vocabNewPerDay: vocabNewPerDay ?? this.vocabNewPerDay,
+    grammarRetention: grammarRetention ?? this.grammarRetention,
+    grammarNewPerDay: grammarNewPerDay ?? this.grammarNewPerDay,
     includeKana: includeKana ?? this.includeKana,
     furigana: furigana ?? this.furigana,
     dayStartHour: dayStartHour ?? this.dayStartHour,
@@ -57,6 +66,8 @@ class AppSettings {
     'theme': theme,
     'vocab.desired_retention': vocabRetention.toStringAsFixed(2),
     'vocab.new_per_day': '$vocabNewPerDay',
+    'grammar.desired_retention': grammarRetention.toStringAsFixed(2),
+    'grammar.new_per_day': '$grammarNewPerDay',
     'vocab.include_kana': '$includeKana',
     'furigana': furigana.name,
     'day_start_hour': '$dayStartHour',
@@ -98,6 +109,18 @@ class AppSettings {
         d.vocabNewPerDay,
         0,
         newPerDayMax,
+      ),
+      grammarRetention: dbl(
+        'grammar.desired_retention',
+        d.grammarRetention,
+        SrsConfig.minRetention,
+        SrsConfig.maxRetention,
+      ),
+      grammarNewPerDay: integer(
+        'grammar.new_per_day',
+        d.grammarNewPerDay,
+        0,
+        grammarNewPerDayMax,
       ),
       includeKana: b('vocab.include_kana', d.includeKana),
       furigana:

@@ -13,7 +13,10 @@ enum Facet {
   listen,
 
   /// See a kana character → type its romaji.
-  kana;
+  kana,
+
+  /// Grammar: fill the blank in an example sentence (Thai translation shown).
+  cloze;
 
   static Facet? tryParse(String name) =>
       values.where((f) => f.name == name).firstOrNull;

@@ -264,6 +264,7 @@ class _Answer extends StatelessWidget {
     final (big, small) = switch (i) {
       KanaStudy() => (i.kana.char, i.kana.romaji),
       WordStudy() => (i.word.headword, i.word.reading),
+      GrammarStudy() => (i.point.titleJa, i.point.titleTh),
     };
     return Column(
       children: [

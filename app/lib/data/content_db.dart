@@ -154,6 +154,74 @@ class ExampleSentence {
   String get sourceNumber => id.startsWith('ex:') ? id.substring(3) : id;
 }
 
+/// An example sentence of a grammar point, with the part blanked in cloze
+/// questions ([start], [end] count Unicode code points).
+class GrammarExample {
+  final ExampleSentence sentence;
+  final int start;
+  final int end;
+  final String answer;
+  final List<String> wrong;
+  const GrammarExample(
+    this.sentence,
+    this.start,
+    this.end,
+    this.answer,
+    this.wrong,
+  );
+
+  /// (before, answer, after), robust to offset mismatches.
+  (String, String, String) get parts {
+    final r = sentence.ja.runes.toList();
+    if (end <= r.length &&
+        String.fromCharCodes(r.sublist(start, end)) == answer) {
+      return (
+        String.fromCharCodes(r.sublist(0, start)),
+        answer,
+        String.fromCharCodes(r.sublist(end)),
+      );
+    }
+    final i = sentence.ja.indexOf(answer);
+    if (i < 0) return (sentence.ja, '', '');
+    return (
+      sentence.ja.substring(0, i),
+      answer,
+      sentence.ja.substring(i + answer.length),
+    );
+  }
+}
+
+class GrammarPoint {
+  final String id;
+  final int level;
+  final int ord;
+  final String titleJa;
+  final String titleTh;
+  final String meaningTh;
+  final String formationTh;
+  final String? notesTh;
+  final List<String> similarIds;
+  final List<GrammarExample> examples;
+
+  const GrammarPoint({
+    required this.id,
+    required this.level,
+    required this.ord,
+    required this.titleJa,
+    required this.titleTh,
+    required this.meaningTh,
+    required this.formationTh,
+    required this.notesTh,
+    required this.similarIds,
+    required this.examples,
+  });
+
+  /// Examples usable as cloze questions: the Thai translation is the cue
+  /// that makes exactly one option right.
+  List<GrammarExample> get clozeExamples =>
+      examples.where((e) => e.sentence.th?.isNotEmpty ?? false).toList();
+}
+
 class SourceCredit {
   final String id;
   final String name;
@@ -300,6 +368,57 @@ class ContentDb {
         r['ja_license'] as String,
       ),
   ];
+
+  List<GrammarPoint> grammarPoints() {
+    final ex = <String, List<GrammarExample>>{};
+    for (final r in db.select(
+      'SELECT ge.grammar_id, ge.target_span_json, e.id, e.ja, e.en, e.th, '
+      'e.ja_author, e.en_author, e.ja_license FROM grammar_examples ge '
+      'JOIN examples e ON e.id = ge.example_id ORDER BY ge.grammar_id, ge.rank',
+    )) {
+      final span = r['target_span_json'] == null
+          ? const <String, dynamic>{}
+          : jsonDecode(r['target_span_json'] as String) as Map<String, dynamic>;
+      final answer = span['answer'] as String?;
+      if (answer == null) continue;
+      ex
+          .putIfAbsent(r['grammar_id'] as String, () => [])
+          .add(
+            GrammarExample(
+              ExampleSentence(
+                r['id'] as String,
+                r['ja'] as String,
+                r['en'] as String?,
+                r['th'] as String?,
+                r['ja_author'] as String,
+                r['en_author'] as String?,
+                r['ja_license'] as String,
+              ),
+              (span['start'] as num).toInt(),
+              (span['end'] as num).toInt(),
+              answer,
+              ((span['wrong'] as List?) ?? const []).cast<String>(),
+            ),
+          );
+    }
+    return [
+      for (final r in db.select(
+        'SELECT * FROM grammar_points ORDER BY jlpt_level DESC, ord',
+      ))
+        GrammarPoint(
+          id: r['id'] as String,
+          level: r['jlpt_level'] as int,
+          ord: r['ord'] as int,
+          titleJa: r['title_ja'] as String,
+          titleTh: r['title_th'] as String,
+          meaningTh: r['meaning_th'] as String,
+          formationTh: r['formation_th'] as String,
+          notesTh: r['notes_th'] as String?,
+          similarIds: _list(r['similar_ids'] as String?),
+          examples: ex[r['id']] ?? const [],
+        ),
+    ];
+  }
 
   List<SourceCredit> sources() => [
     for (final r in db.select(

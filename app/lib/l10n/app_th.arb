@@ -522,5 +522,28 @@
     }
   },
   "startChallenge": "เริ่มชาเลนจ์",
-  "weeklyStarted": "เริ่มสัปดาห์ขยันแล้ว ทบทวนให้ครบในแต่ละวันเพื่อเก็บวัน"
+  "weeklyStarted": "เริ่มสัปดาห์ขยันแล้ว ทบทวนให้ครบในแต่ละวันเพื่อเก็บวัน",
+  "grammarMeaning": "ความหมาย",
+  "grammarFormation": "วิธีใช้",
+  "grammarNotes": "หมายเหตุ",
+  "grammarExamples": "ตัวอย่าง",
+  "grammarCompare": "อย่าสับสนกับ",
+  "grammarList": "ไวยากรณ์ทั้งหมด",
+  "qCloze": "เติมคำในช่องว่าง",
+  "newGrammar": "ไวยากรณ์ใหม่",
+  "grammarLevel": "ไวยากรณ์ {level}",
+  "seeAllGrammar": "ดูทั้งหมด",
+  "deckVocabShort": "ศัพท์",
+  "deckGrammarShort": "ไวยากรณ์",
+  "targetRetentionGrammar": "เป้าหมายการจำ (ไวยากรณ์)",
+  "newPerDayGrammar": "หัวข้อไวยากรณ์ใหม่ต่อวัน",
+  "newPerDayGrammarHelp": "หัวข้อละ 1 การ์ด แต่ละรอบถามด้วยประโยคตัวอย่างต่างกัน",
+  "noGrammarYet": "ยังไม่มีหัวข้อที่พร้อมเรียน (ประโยคตัวอย่างกำลังแปล)",
+  "@grammarLevel": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      }
+    }
+  }
 }

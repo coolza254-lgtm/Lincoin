@@ -82,9 +82,9 @@ class StatsService {
     for (final c in tracked) {
       byLevel.putIfAbsent(c.level, () => []).add(c);
     }
-    final totals = s.catalog.itemsPerLevel;
+    final totals = s.catalog.itemsPerLevel(s.deck);
     final levels = [
-      for (final l in vocabLevels)
+      for (final l in s.deck == grammarDeck ? grammarLevels : vocabLevels)
         if (totals.containsKey(l))
           LevelStats(
             l,
@@ -95,7 +95,7 @@ class StatsService {
           ),
     ];
 
-    final log = s.repo.reviewRecords(deck: vocabDeck);
+    final log = s.repo.reviewRecords(deck: s.deck);
     final recent = log.where((r) => r.studyDay > today - 30).toList();
     final reviewSample = recent
         .where((r) => r.statusBefore == CardStatus.review)
@@ -117,7 +117,7 @@ class StatsService {
     final active7 = days.skip(7).fold(0, (a, d) => a + d.activeMs);
 
     final forecast = List.filled(7, 0);
-    final cards = s.repo.cards(deck: vocabDeck).values;
+    final cards = s.repo.cards(deck: s.deck).values;
     var leeches = 0;
     for (final c in cards) {
       if (c.isLeech && !c.suspended) leeches++;

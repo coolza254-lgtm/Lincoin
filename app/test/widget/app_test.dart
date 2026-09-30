@@ -80,7 +80,7 @@ void main() {
       settings: const AppSettings(includeKana: false, vocabNewPerDay: 3),
     );
     expect(find.text('ท่องศัพท์'), findsOneWidget);
-    await tester.tap(find.text('เริ่มเรียน'));
+    await tester.tap(find.text('เริ่มเรียน').first);
     await tester.pumpAndSettle();
 
     var intros = 0, questions = 0;
@@ -91,7 +91,8 @@ void main() {
         await tester.tap(find.text('จำแล้ว ไปต่อ'));
       } else if (find.text('ต่อไป').evaluate().isNotEmpty) {
         await tester.tap(find.text('ต่อไป'));
-      } else if (find.text('ความหมายคืออะไร').evaluate().isNotEmpty) {
+      } else if (find.text('ความหมายคืออะไร').evaluate().isNotEmpty ||
+          find.text('เติมคำในช่องว่าง').evaluate().isNotEmpty) {
         questions++;
         await tester.tap(find.byType(OutlinedButton).first);
       } else {
@@ -107,6 +108,28 @@ void main() {
     await tester.tap(find.text('กลับหน้าหลัก'));
     await tester.pumpAndSettle();
     expect(find.text('ท่องศัพท์'), findsOneWidget);
+  });
+
+  testWidgets('a grammar session: lesson, cloze, feedback', (tester) async {
+    final c = await start(
+      tester,
+      settings: const AppSettings(includeKana: false, grammarNewPerDay: 1),
+    );
+    expect(find.text('ไวยากรณ์'), findsWidgets);
+    await tester.tap(find.text('เริ่มเรียน').last);
+    await tester.pumpAndSettle();
+    expect(find.text('ไวยากรณ์ใหม่'), findsOneWidget);
+    expect(find.text('วิธีใช้'), findsWidgets);
+    await tester.tap(find.text('จำแล้ว ไปต่อ'));
+    await tester.pumpAndSettle();
+    expect(find.text('เติมคำในช่องว่าง'), findsOneWidget);
+    expect(find.text('ฉันดื่มกาแฟ'), findsOneWidget); // Thai cue
+    await tester.tap(find.widgetWithText(OutlinedButton, 'を'));
+    await tester.pumpAndSettle();
+    expect(find.text('ถูกต้อง'), findsOneWidget);
+    final log = StudyRepo(c.read(userDbProvider))
+        .reviewRecords(deck: 'grammar');
+    expect(log, hasLength(1));
   });
 
   testWidgets('every theme renders all tabs', (tester) async {

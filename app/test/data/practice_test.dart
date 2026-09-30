@@ -28,8 +28,14 @@ void main() {
 
   /// Studies every fixture item once so practice has a pool.
   void learnAll() {
-    final s = study();
     for (final item in catalog.path) {
+      final s = StudyService(
+        db: db,
+        catalog: catalog,
+        settings: const AppSettings(),
+        clock: Clock(() => now, () => 420),
+        deck: item.deck,
+      );
       final q = s.question(cardIdFor(item.id, item.facets.first));
       s.introduce(q);
       s.answer(q, const AnswerEvent(isCorrect: true, responseMs: 5000));

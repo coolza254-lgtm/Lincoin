@@ -46,7 +46,8 @@ class PracticeService {
     final today = study.studyDay(now);
     final errors = _recentPracticeErrorRate(today - 14);
     final byItem = <String, List<StoredCard>>{};
-    for (final c in study.repo.cards(deck: vocabDeck).values) {
+    // Every studied item, vocabulary and grammar.
+    for (final c in study.repo.cards().values) {
       if (c.suspended || c.state.isNew) continue;
       byItem.putIfAbsent(c.itemId, () => []).add(c);
     }
@@ -147,6 +148,13 @@ class PracticeService {
                 pool: _catalog.romajiPool,
                 seedKey: seed,
               ),
+      );
+    }
+    if (item is GrammarStudy) {
+      return StudyService.clozeQuestion(
+        item,
+        seedKey: seed,
+        pick: rnd.nextInt(1 << 20),
       );
     }
     final w = item as WordStudy;

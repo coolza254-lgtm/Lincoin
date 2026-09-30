@@ -144,8 +144,8 @@ class DataVersion extends Notifier<int> {
 
 final dataVersionProvider = NotifierProvider<DataVersion, int>(DataVersion.new);
 
-/// Study rules for the current settings; null without content.
-final studyServiceProvider = Provider<StudyService?>((ref) {
+/// Study rules for one deck ('vocab' / 'grammar'); null without content.
+final deckServiceProvider = Provider.family<StudyService?, String>((ref, deck) {
   final catalog = ref.watch(catalogProvider);
   if (catalog == null) return null;
   return StudyService(
@@ -153,17 +153,26 @@ final studyServiceProvider = Provider<StudyService?>((ref) {
     catalog: catalog,
     settings: ref.watch(settingsProvider),
     clock: ref.watch(clockProvider),
+    deck: deck,
   );
 });
 
-final todayPlanProvider = Provider<TodayPlan?>((ref) {
+/// The vocabulary deck (also used for practice, challenges and the shop).
+final studyServiceProvider = Provider<StudyService?>(
+  (ref) => ref.watch(deckServiceProvider(vocabDeck)),
+);
+
+final todayPlanProvider = Provider.family<TodayPlan?, String>((ref, deck) {
   ref.watch(dataVersionProvider);
-  return ref.watch(studyServiceProvider)?.plan();
+  return ref.watch(deckServiceProvider(deck))?.plan();
 });
 
-final coverageProvider = Provider<Map<String, double>>((ref) {
+final coverageProvider = Provider.family<Map<String, double>, String>((
+  ref,
+  deck,
+) {
   ref.watch(dataVersionProvider);
-  return ref.watch(studyServiceProvider)?.coverage() ?? const {};
+  return ref.watch(deckServiceProvider(deck))?.coverage() ?? const {};
 });
 
 final balanceProvider = Provider<int>((ref) {
@@ -171,9 +180,9 @@ final balanceProvider = Provider<int>((ref) {
   return LedgerRepo(ref.watch(userDbProvider)).balance();
 });
 
-final statsProvider = Provider<StatsData?>((ref) {
+final statsProvider = Provider.family<StatsData?, String>((ref, deck) {
   ref.watch(dataVersionProvider);
-  final s = ref.watch(studyServiceProvider);
+  final s = ref.watch(deckServiceProvider(deck));
   return s == null ? null : StatsService(s).compute();
 });
 

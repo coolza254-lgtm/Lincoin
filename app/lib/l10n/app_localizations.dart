@@ -1455,6 +1455,102 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'เริ่มสัปดาห์ขยันแล้ว ทบทวนให้ครบในแต่ละวันเพื่อเก็บวัน'**
   String get weeklyStarted;
+
+  /// No description provided for @grammarMeaning.
+  ///
+  /// In th, this message translates to:
+  /// **'ความหมาย'**
+  String get grammarMeaning;
+
+  /// No description provided for @grammarFormation.
+  ///
+  /// In th, this message translates to:
+  /// **'วิธีใช้'**
+  String get grammarFormation;
+
+  /// No description provided for @grammarNotes.
+  ///
+  /// In th, this message translates to:
+  /// **'หมายเหตุ'**
+  String get grammarNotes;
+
+  /// No description provided for @grammarExamples.
+  ///
+  /// In th, this message translates to:
+  /// **'ตัวอย่าง'**
+  String get grammarExamples;
+
+  /// No description provided for @grammarCompare.
+  ///
+  /// In th, this message translates to:
+  /// **'อย่าสับสนกับ'**
+  String get grammarCompare;
+
+  /// No description provided for @grammarList.
+  ///
+  /// In th, this message translates to:
+  /// **'ไวยากรณ์ทั้งหมด'**
+  String get grammarList;
+
+  /// No description provided for @qCloze.
+  ///
+  /// In th, this message translates to:
+  /// **'เติมคำในช่องว่าง'**
+  String get qCloze;
+
+  /// No description provided for @newGrammar.
+  ///
+  /// In th, this message translates to:
+  /// **'ไวยากรณ์ใหม่'**
+  String get newGrammar;
+
+  /// No description provided for @grammarLevel.
+  ///
+  /// In th, this message translates to:
+  /// **'ไวยากรณ์ {level}'**
+  String grammarLevel(String level);
+
+  /// No description provided for @seeAllGrammar.
+  ///
+  /// In th, this message translates to:
+  /// **'ดูทั้งหมด'**
+  String get seeAllGrammar;
+
+  /// No description provided for @deckVocabShort.
+  ///
+  /// In th, this message translates to:
+  /// **'ศัพท์'**
+  String get deckVocabShort;
+
+  /// No description provided for @deckGrammarShort.
+  ///
+  /// In th, this message translates to:
+  /// **'ไวยากรณ์'**
+  String get deckGrammarShort;
+
+  /// No description provided for @targetRetentionGrammar.
+  ///
+  /// In th, this message translates to:
+  /// **'เป้าหมายการจำ (ไวยากรณ์)'**
+  String get targetRetentionGrammar;
+
+  /// No description provided for @newPerDayGrammar.
+  ///
+  /// In th, this message translates to:
+  /// **'หัวข้อไวยากรณ์ใหม่ต่อวัน'**
+  String get newPerDayGrammar;
+
+  /// No description provided for @newPerDayGrammarHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'หัวข้อละ 1 การ์ด แต่ละรอบถามด้วยประโยคตัวอย่างต่างกัน'**
+  String get newPerDayGrammarHelp;
+
+  /// No description provided for @noGrammarYet.
+  ///
+  /// In th, this message translates to:
+  /// **'ยังไม่มีหัวข้อที่พร้อมเรียน (ประโยคตัวอย่างกำลังแปล)'**
+  String get noGrammarYet;
 }
 
 class _AppLocalizationsDelegate

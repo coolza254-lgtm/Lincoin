@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import '../../data/catalog.dart';
 import '../../data/user_db.dart';
 import '../../services/challenge_service.dart';
 import '../../services/practice_service.dart';

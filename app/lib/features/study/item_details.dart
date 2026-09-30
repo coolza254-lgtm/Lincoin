@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/catalog.dart';
+import '../../data/content_db.dart';
+import '../grammar/grammar_lesson.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/pos_th.dart';
 import '../../state/providers.dart';
@@ -14,7 +16,15 @@ import '../../ui/widgets.dart';
 class ItemDetails extends ConsumerWidget {
   final StudyItem item;
   final bool showFurigana;
-  const ItemDetails({super.key, required this.item, this.showFurigana = true});
+
+  /// Grammar feedback: the sentence that was asked.
+  final GrammarExample? example;
+  const ItemDetails({
+    super.key,
+    required this.item,
+    this.showFurigana = true,
+    this.example,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,6 +32,9 @@ class ItemDetails extends ConsumerWidget {
     final tt = Theme.of(context).textTheme;
     final c = context.lc;
     final i = item;
+    if (i is GrammarStudy) {
+      return GrammarLesson(point: i.point, highlight: example);
+    }
     if (i is KanaStudy) {
       return Column(
         children: [

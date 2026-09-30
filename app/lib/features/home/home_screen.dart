@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../data/catalog.dart';
 import '../../l10n/app_localizations.dart';
 import '../../state/providers.dart';
 import '../../state/update_controller.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
+import '../grammar/grammar_lesson.dart';
 import '../settings/settings_screen.dart';
 import '../settings/updates_screen.dart';
 import '../study/study_screen.dart';
@@ -23,10 +25,28 @@ class HomeScreen extends ConsumerWidget {
     final tt = Theme.of(context).textTheme;
     final c = context.lc;
     final catalog = ref.watch(catalogProvider);
-    final plan = ref.watch(todayPlanProvider);
     final balance = ref.watch(balanceProvider);
-    final coverage = ref.watch(coverageProvider);
+    final vocabCov = ref.watch(coverageProvider(vocabDeck));
+    final grammarCov = ref.watch(coverageProvider(grammarDeck));
     final updateDot = ref.watch(updateControllerProvider).hasUpdate;
+
+    Widget covRow(String label, double v) => Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          SizedBox(width: 96, child: Text(label, style: tt.labelLarge)),
+          Expanded(child: LcProgressBar(v)),
+          SizedBox(
+            width: 52,
+            child: Text(
+              '${(v * 100).toStringAsFixed(0)}%',
+              textAlign: TextAlign.right,
+              style: tt.labelLarge,
+            ),
+          ),
+        ],
+      ),
+    );
 
     return SafeArea(
       child: ListView(
@@ -78,108 +98,115 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
             )
-          else if (plan != null) ...[
-            LcCard(
-              large: true,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.style_rounded, color: c.accent),
-                      const SizedBox(width: LcTokens.spacingSm),
-                      Text(t.vocabDeck, style: tt.titleLarge),
-                    ],
-                  ),
-                  const SizedBox(height: LcTokens.spacingLg),
-                  Row(
-                    children: [
-                      Expanded(child: StatTile('${plan.dueCount}', t.dueLabel)),
-                      Expanded(child: StatTile('${plan.newCount}', t.newLabel)),
-                      Expanded(
-                        child: StatTile(
-                          plan.isEmpty ? '–' : '~${plan.estimatedMinutes}',
-                          t.minutesLabel,
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (plan.queue.newCardsPausedForBacklog) ...[
-                    const SizedBox(height: LcTokens.spacingMd),
-                    LcPill(
-                      t.newPausedBacklog,
-                      bg: c.warnSoft,
-                      fg: c.warn,
-                      icon: Icons.info_outline_rounded,
-                    ),
-                  ],
-                  const SizedBox(height: LcTokens.spacingLg),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton(
-                      onPressed: plan.isEmpty
-                          ? null
-                          : () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                fullscreenDialog: true,
-                                builder: (_) => const StudyScreen(),
-                              ),
-                            ),
-                      child: Text(plan.isEmpty ? t.allDoneToday : t.startStudy),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          else ...[
+            const _DeckCard(deck: vocabDeck, large: true),
             const SizedBox(height: LcTokens.spacingLg),
-            LcCard(
-              child: Row(
-                children: [
-                  Icon(Icons.menu_book_rounded, color: c.muted),
-                  const SizedBox(width: LcTokens.spacingMd),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(t.grammarDeck, style: tt.titleMedium),
-                        Text(t.comingInPhase(6), style: tt.bodySmall),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            const _DeckCard(deck: grammarDeck),
             SectionLabel(t.coverageTitle),
             LcCard(
               child: Column(
                 children: [
-                  for (final e in coverage.entries)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 64,
-                            child: Text(
-                              levelName(t, e.key),
-                              style: tt.labelLarge,
-                            ),
-                          ),
-                          Expanded(child: LcProgressBar(e.value)),
-                          SizedBox(
-                            width: 52,
-                            child: Text(
-                              '${(e.value * 100).toStringAsFixed(0)}%',
-                              textAlign: TextAlign.right,
-                              style: tt.labelLarge,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  for (final e in vocabCov.entries)
+                    covRow(levelName(t, e.key), e.value),
+                  for (final e in grammarCov.entries)
+                    covRow(t.grammarLevel(e.key.toUpperCase()), e.value),
                   const SizedBox(height: LcTokens.spacingSm),
                   Text(t.coverageHelp, style: tt.bodySmall),
                 ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Today's due/new counts and the start button for one deck.
+class _DeckCard extends ConsumerWidget {
+  final String deck;
+  final bool large;
+  const _DeckCard({required this.deck, this.large = false});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = AppLocalizations.of(context);
+    final tt = Theme.of(context).textTheme;
+    final c = context.lc;
+    final plan = ref.watch(todayPlanProvider(deck));
+    final grammar = deck == grammarDeck;
+    final hasItems =
+        ref.watch(catalogProvider)?.path.any((i) => i.deck == deck) ?? false;
+    return LcCard(
+      large: large,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                grammar ? Icons.menu_book_rounded : Icons.style_rounded,
+                color: c.accent,
+              ),
+              const SizedBox(width: LcTokens.spacingSm),
+              Expanded(
+                child: Text(
+                  grammar ? t.grammarDeck : t.vocabDeck,
+                  style: tt.titleLarge,
+                ),
+              ),
+              if (grammar && hasItems)
+                TextButton(
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const GrammarListScreen(),
+                    ),
+                  ),
+                  child: Text(t.seeAllGrammar),
+                ),
+            ],
+          ),
+          if (!hasItems)
+            Padding(
+              padding: const EdgeInsets.only(top: LcTokens.spacingSm),
+              child: Text(t.noGrammarYet, style: tt.bodySmall),
+            )
+          else if (plan != null) ...[
+            const SizedBox(height: LcTokens.spacingLg),
+            Row(
+              children: [
+                Expanded(child: StatTile('${plan.dueCount}', t.dueLabel)),
+                Expanded(child: StatTile('${plan.newCount}', t.newLabel)),
+                Expanded(
+                  child: StatTile(
+                    plan.isEmpty ? '–' : '~${plan.estimatedMinutes}',
+                    t.minutesLabel,
+                  ),
+                ),
+              ],
+            ),
+            if (plan.queue.newCardsPausedForBacklog) ...[
+              const SizedBox(height: LcTokens.spacingMd),
+              LcPill(
+                t.newPausedBacklog,
+                bg: c.warnSoft,
+                fg: c.warn,
+                icon: Icons.info_outline_rounded,
+              ),
+            ],
+            const SizedBox(height: LcTokens.spacingLg),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: plan.isEmpty
+                    ? null
+                    : () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          fullscreenDialog: true,
+                          builder: (_) => StudyScreen(deck: deck),
+                        ),
+                      ),
+                child: Text(plan.isEmpty ? t.allDoneToday : t.startStudy),
               ),
             ),
           ],

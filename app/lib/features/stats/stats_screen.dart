@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../data/catalog.dart';
 import '../../l10n/app_localizations.dart';
 import '../../state/providers.dart';
 import '../../ui/theme.dart';
@@ -12,15 +13,22 @@ import '../home/home_screen.dart' show levelName;
 
 /// Progress numbers, all derived from the review log with fixed rules and
 /// shown with their sample size so they are not over-read.
-class StatsScreen extends ConsumerWidget {
+class StatsScreen extends ConsumerStatefulWidget {
   const StatsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<StatsScreen> createState() => _StatsScreenState();
+}
+
+class _StatsScreenState extends ConsumerState<StatsScreen> {
+  String _deck = vocabDeck;
+
+  @override
+  Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
     final tt = Theme.of(context).textTheme;
     final c = context.lc;
-    final s = ref.watch(statsProvider);
+    final s = ref.watch(statsProvider(_deck));
     if (s == null) {
       return SafeArea(
         child: EmptyState(
@@ -41,6 +49,19 @@ class StatsScreen extends ConsumerWidget {
         ),
         children: [
           Text(t.tabStats, style: tt.headlineMedium),
+          const SizedBox(height: LcTokens.spacingLg),
+          SegmentedButton<String>(
+            segments: [
+              ButtonSegment(value: vocabDeck, label: Text(t.deckVocabShort)),
+              ButtonSegment(
+                value: grammarDeck,
+                label: Text(t.deckGrammarShort),
+              ),
+            ],
+            selected: {_deck},
+            onSelectionChanged: (v) => setState(() => _deck = v.first),
+            showSelectedIcon: false,
+          ),
           const SizedBox(height: LcTokens.spacingLg),
           LcCard(
             large: true,
@@ -115,7 +136,12 @@ class StatsScreen extends ConsumerWidget {
                       children: [
                         Row(
                           children: [
-                            Text(levelName(t, l.level), style: tt.labelLarge),
+                            Text(
+                              _deck == grammarDeck
+                                  ? t.grammarLevel(l.level.toUpperCase())
+                                  : levelName(t, l.level),
+                              style: tt.labelLarge,
+                            ),
                             const SizedBox(width: LcTokens.spacingSm),
                             Expanded(
                               child: Text(

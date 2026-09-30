@@ -1,11 +1,10 @@
 import 'package:lincoin_core/lincoin_core.dart';
 
 import '../data/catalog.dart';
+import '../data/content_db.dart';
 import '../data/settings_repo.dart';
 import '../data/study_repo.dart';
 import '../data/user_db.dart';
-
-const vocabDeck = 'vocab';
 
 /// Wall clock and time zone, injectable for tests.
 class Clock {
@@ -51,6 +50,9 @@ class Question {
   /// First time this card is seen: show the introduction first.
   final bool needsIntro;
 
+  /// Grammar cloze: the sentence asked about.
+  final GrammarExample? example;
+
   const Question({
     required this.cardId,
     required this.item,
@@ -58,6 +60,7 @@ class Question {
     required this.type,
     this.choices,
     this.needsIntro = false,
+    this.example,
   });
 
   bool get isTyped => choices == null;
@@ -80,18 +83,22 @@ enum QuestionForm {
   kanaType,
 
   /// Kana → choose romaji ("kana.choice", practice).
-  kanaChoice;
+  kanaChoice,
+
+  /// Grammar: choose what fills the blank ("cloze.choice").
+  cloze;
 
   static QuestionForm fromType(String type) => switch (type) {
     'recall.type' => readingType,
     'reverse.choice' => wordChoice,
     'kana.type' => kanaType,
     'kana.choice' => kanaChoice,
+    'cloze.choice' => cloze,
     _ => meaningChoice,
   };
 
   /// Options are Japanese text (shown in the Japanese font).
-  bool get japaneseOptions => this == wordChoice;
+  bool get japaneseOptions => this == wordChoice || this == cloze;
 }
 
 enum AnswerCheck { correct, wrong, synonym }
@@ -132,7 +139,12 @@ class StudyService {
   final Clock clock;
   final EngineConfig config;
 
-  late final SrsScheduler scheduler = SrsScheduler(config.vocab);
+  /// 'vocab' or 'grammar': which items, schedule settings and daily bonus.
+  final String deck;
+
+  late final SrsScheduler scheduler = SrsScheduler(
+    deck == grammarDeck ? config.grammar : config.vocab,
+  );
   late final Grader grader = Grader(config.grader);
   late final RewardEngine rewards = RewardEngine(
     config: config.rewards,
@@ -147,12 +159,17 @@ class StudyService {
     required this.catalog,
     required this.settings,
     this.clock = const Clock(),
+    this.deck = vocabDeck,
     EngineConfig? config,
   }) : config =
            config ??
            EngineConfig(
              vocab: SrsConfig(desiredRetention: settings.vocabRetention),
+             grammar: SrsConfig(desiredRetention: settings.grammarRetention),
            );
+
+  int get _newPerDay =>
+      deck == grammarDeck ? settings.grammarNewPerDay : settings.vocabNewPerDay;
 
   int studyDay([DateTime? utc]) => studyDayNumber(
     utc ?? clock.nowUtc(),
@@ -160,17 +177,15 @@ class StudyService {
     dayStartHour: settings.dayStartHour,
   );
 
-  QueueSettings get _queueSettings => QueueSettings(
-    newPerDay: settings.vocabNewPerDay,
-    dayStartHour: settings.dayStartHour,
-  );
+  QueueSettings get _queueSettings =>
+      QueueSettings(newPerDay: _newPerDay, dayStartHour: settings.dayStartHour);
 
   /// Cards that exist in the database plus the virtual new cards on the
   /// learning path. A word's recall card becomes available only after its
   /// recognition card was introduced.
   List<QueueCard> _queueCards(Map<String, StoredCard> stored) {
     final out = <QueueCard>[];
-    for (final item in catalog.path) {
+    for (final item in catalog.path.where((i) => i.deck == deck)) {
       if (item is KanaStudy && !settings.includeKana) {
         // Kana already started keep their schedule.
         final id = cardIdFor(item.id, Facet.kana);
@@ -214,20 +229,23 @@ class StudyService {
   TodayPlan plan() {
     final now = clock.nowUtc();
     final day = studyDay(now);
-    final introduced = repo.introducedOn(day, vocabDeck);
+    final introduced = repo.introducedOn(day, deck);
     final q = QueueBuilder(scheduler, _queueSettings).build(
-      cards: _queueCards(repo.cards(deck: vocabDeck)),
+      cards: _queueCards(repo.cards(deck: deck)),
       nowUtc: now,
       tzOffsetMinutes: clock.tzOffsetMinutes(),
       newIntroducedToday: introduced,
-      itemsSeenToday: repo.itemsReviewedOn(day, vocabDeck),
+      itemsSeenToday: repo.itemsReviewedOn(day, deck),
     );
-    final perReview = (times.median('recog.choice') ?? 6000) + 3000;
+    final perReview =
+        (times.median(deck == grammarDeck ? 'cloze.choice' : 'recog.choice') ??
+            6000) +
+        3000;
     final ms = q.dueCount * perReview + q.newCards.length * (perReview * 3);
     return TodayPlan(
       q,
       day,
-      (settings.vocabNewPerDay - introduced).clamp(0, 999),
+      (_newPerDay - introduced).clamp(0, 999),
       (ms / 60000).ceil(),
     );
   }
@@ -293,7 +311,44 @@ class StudyService {
           type: 'kana.type',
           needsIntro: needsIntro,
         );
+      case Facet.cloze:
+        return clozeQuestion(
+          item as GrammarStudy,
+          seedKey: '$cardId#$reps',
+          pick: reps,
+          needsIntro: needsIntro,
+        );
     }
+  }
+
+  /// A fill-the-blank question on one of the point's translated examples
+  /// (a different one each review, so the rule is learned, not the sentence).
+  static Question clozeQuestion(
+    GrammarStudy g, {
+    required String seedKey,
+    required int pick,
+    bool needsIntro = false,
+  }) {
+    final examples = g.point.clozeExamples;
+    final ex = examples[pick % examples.length];
+    return Question(
+      cardId: cardIdFor(g.id, Facet.cloze),
+      item: g,
+      facet: Facet.cloze,
+      type: 'cloze.choice',
+      needsIntro: needsIntro,
+      example: ex,
+      choices: buildChoices(
+        correctItemId: '=',
+        correct: ex.answer,
+        group: '',
+        pool: [
+          for (final (i, w) in ex.wrong.indexed)
+            DistractorCandidate('$i', w, ''),
+        ],
+        seedKey: seedKey,
+      ),
+    );
   }
 
   /// Checks a typed answer. A different word with the same meaning is
@@ -325,7 +380,7 @@ class StudyService {
     repo.introduce(
       cardId: q.cardId,
       itemId: q.item.id,
-      deck: vocabDeck,
+      deck: deck,
       facet: q.facet,
       nowUtc: now,
       studyDay: studyDay(now),
@@ -361,7 +416,7 @@ class StudyService {
       ReviewRewardInput(
         reviewLogId: logId,
         cardId: q.cardId,
-        deck: vocabDeck,
+        deck: deck,
         statusBefore: before.status,
         rating: rating,
         responseMs: e.responseMs,
@@ -378,7 +433,7 @@ class StudyService {
         logId: logId,
         cardId: q.cardId,
         itemId: q.item.id,
-        deck: vocabDeck,
+        deck: deck,
         facet: q.facet,
         sessionId: sessionId,
         tsUtc: at,
@@ -412,15 +467,13 @@ class StudyService {
     final day = studyDay(now);
     final entries = <LedgerEntry>[];
     if (answeredAny && plan().dueCount == 0) {
-      entries.add(
-        rewards.dailyClear(deck: vocabDeck, nowUtc: now, studyDay: day),
-      );
+      entries.add(rewards.dailyClear(deck: deck, nowUtc: now, studyDay: day));
     }
     final cov = coverage(now);
     cov.forEach((level, c) {
       entries.addAll(
         rewards.forCoverage(
-          deck: vocabDeck,
+          deck: deck,
           level: level,
           coverage: c,
           nowUtc: now,
@@ -434,7 +487,7 @@ class StudyService {
 
   List<TrackedCard> trackedCards() {
     final out = <TrackedCard>[];
-    for (final c in repo.cards(deck: vocabDeck).values) {
+    for (final c in repo.cards(deck: deck).values) {
       if (c.state.isNew || c.suspended) continue;
       final item = catalog.byId[c.itemId];
       if (item == null) continue;
@@ -452,7 +505,7 @@ class StudyService {
       byLevel.putIfAbsent(c.level, () => []).add(c);
     }
     return {
-      for (final e in catalog.itemsPerLevel.entries)
+      for (final e in catalog.itemsPerLevel(deck).entries)
         e.key: metrics.coverage(
           cards: byLevel[e.key] ?? const [],
           totalItemsInLevel: e.value,

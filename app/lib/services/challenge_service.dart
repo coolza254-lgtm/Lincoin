@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:lincoin_core/lincoin_core.dart';
 
+import '../data/catalog.dart';
 import '../data/study_repo.dart';
 import '../data/user_db.dart';
 import 'study_service.dart';

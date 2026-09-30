@@ -197,7 +197,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('หน้าหลัก').last);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('เริ่มเรียน'));
+    await tester.tap(find.text('เริ่มเรียน').first);
     await tester.pumpAndSettle();
     var intro = false, choice = false, typed = false, feedback = false;
     for (var i = 0; i < 60 && !(intro && choice && typed && feedback); i++) {
