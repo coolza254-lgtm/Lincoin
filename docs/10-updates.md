@@ -91,7 +91,7 @@ Android ยอมให้อัปเดตทับได้ **เฉพาะ
 - APK จาก CI (`lincoin-test-apk` ในแต่ละ commit) เซ็นด้วยกุญแจชั่วคราว ใช้ลองเล่นเท่านั้น: อัปเดตทับ release จริงไม่ได้ ต้องส่งออกข้อมูลและถอนก่อนติดตั้ง release
 
 ## ขั้นตอนออกเวอร์ชัน (GitHub Actions)
-**แอปใหม่:** แก้ `version:` ใน `app/pubspec.yaml` (เช่น `0.2.0+2`, ตัวหลัง `+` คือ `versionCode` ต้องเพิ่มทุกครั้ง) → เพิ่มหัวข้อ `## 0.2.0` ใน `CHANGELOG.md` → ติด tag `v0.2.0`
+**แอปใหม่:** แก้ `version:` ใน `app/pubspec.yaml` (เช่น `0.2.0+2`, ตัวหลัง `+` คือ `versionCode` ต้องเพิ่มทุกครั้ง) → เพิ่มหัวข้อ `## 0.2.0` ใน `CHANGELOG.md` → ติด tag `v0.2.0` (push tag หรือกด Actions → Release → Run workflow แล้วใส่ `v0.2.0` ก็ได้ workflow สร้าง tag ให้)
 
 **เนื้อหาอย่างเดียว:** รอ `content.yml` สร้างเนื้อหาใหม่ลง branch `content-build` → เพิ่ม `## content <เวอร์ชัน>` ใน `CHANGELOG.md` → ติด tag `content-<เวอร์ชัน>`
 

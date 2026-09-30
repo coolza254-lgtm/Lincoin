@@ -2,11 +2,18 @@ name: Release
 
 # vX.Y.Z        → new app (APK) + current content
 # content-*     → content only; the app entry of the previous release is kept
+# Start by pushing the tag, or from the Actions tab ("Run workflow") with the
+# tag name; the release (and tag) is then created at the chosen commit.
 on:
   push:
     tags:
       - "v*"
       - "content-*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag: vX.Y.Z (app + content) or content-<version>"
+        required: true
 
 permissions:
   contents: write
@@ -14,6 +21,7 @@ permissions:
 env:
   FLUTTER_VERSION: "3.47.5"
   REPO: ${{ github.repository }}
+  TAG: ${{ inputs.tag || github.ref_name }}
 
 jobs:
   release:
@@ -30,29 +38,36 @@ jobs:
           mkdir -p dist
           app/tool/fetch_content.sh
 
+      - name: Check tag format and that it is new
+        run: |
+          [[ "$TAG" =~ ^(v[0-9]+\.[0-9]+\.[0-9]+|content-[0-9.]+)$ ]] || { echo "bad tag $TAG"; exit 1; }
+          if git ls-remote --exit-code origin "refs/tags/$TAG" >/dev/null && [ "${{ github.event_name }}" = workflow_dispatch ]; then
+            echo "tag $TAG already exists"; exit 1
+          fi
+
       - name: Check tag matches pubspec version
-        if: startsWith(github.ref_name, 'v')
+        if: startsWith(env.TAG, 'v')
         run: |
           full=$(grep -E '^version:' app/pubspec.yaml | awk '{print $2}')
           name=${full%%+*}; code=${full##*+}
-          test "v$name" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME != pubspec $name"; exit 1; }
+          test "v$name" = "$TAG" || { echo "tag $TAG != pubspec $name"; exit 1; }
           echo "VERSION_NAME=$name" >> "$GITHUB_ENV"
           echo "VERSION_CODE=$code" >> "$GITHUB_ENV"
 
       - uses: actions/setup-java@v4
-        if: startsWith(github.ref_name, 'v')
+        if: startsWith(env.TAG, 'v')
         with:
           distribution: temurin
           java-version: "17"
       - uses: subosito/flutter-action@v2
-        if: startsWith(github.ref_name, 'v')
+        if: startsWith(env.TAG, 'v')
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
       - name: Tests
-        if: startsWith(github.ref_name, 'v')
+        if: startsWith(env.TAG, 'v')
         working-directory: app
         run: |
           flutter pub get
@@ -61,7 +76,7 @@ jobs:
 
       # The same key must sign every release, or phones refuse the update.
       - name: Signing key
-        if: startsWith(github.ref_name, 'v')
+        if: startsWith(env.TAG, 'v')
         env:
           KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -82,7 +97,7 @@ jobs:
           sed -i 's/^ *//' app/android/key.properties
 
       - name: Build APK
-        if: startsWith(github.ref_name, 'v')
+        if: startsWith(env.TAG, 'v')
         working-directory: app
         run: |
           flutter build apk --release
@@ -91,10 +106,10 @@ jobs:
 
       - name: Release files
         run: |
-          if [[ "$GITHUB_REF_NAME" == v* ]]; then
+          if [[ "$TAG" == v* ]]; then
             python3 tools/release/make_release_files.py \
               --content app/assets/content/content.db --out dist \
-              --repo "$REPO" --tag "$GITHUB_REF_NAME" \
+              --repo "$REPO" --tag "$TAG" \
               --apk "dist/lincoin-$VERSION_NAME.apk" \
               --version-name "$VERSION_NAME" --version-code "$VERSION_CODE"
           else
@@ -102,7 +117,7 @@ jobs:
               "https://github.com/$REPO/releases/latest/download/latest.json" || true
             python3 tools/release/make_release_files.py \
               --content app/assets/content/content.db --out dist \
-              --repo "$REPO" --tag "$GITHUB_REF_NAME" \
+              --repo "$REPO" --tag "$TAG" \
               --previous-latest prev-latest.json
           fi
           git show origin/content-build:CREDITS.md > dist/CREDITS.md
@@ -126,5 +141,5 @@ jobs:
           print("\n".join(out))
           PY
           )
-          gh release create "$GITHUB_REF_NAME" dist/* \
-            --title "Lincoin $GITHUB_REF_NAME" --notes "$notes" --latest
+          gh release create "$TAG" dist/* --target "$GITHUB_SHA" \
+            --title "Lincoin $TAG" --notes "$notes" --latest
