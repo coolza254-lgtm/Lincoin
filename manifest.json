@@ -1,0 +1,72 @@
+{
+  "jmdict/jmdict": {
+    "file": "jmdict__jmdict__JMdict_e.gz",
+    "url": "http://ftp.edrdg.org/pub/Nihongo/JMdict_e.gz",
+    "sha256": "89777236dbf06f4d7b01c6dbff5e1f707978ddd067061b66bcb782d1f24e6ed3",
+    "bytes": 10580129,
+    "retrieved_at": "2026-10-01T05:15:43+00:00"
+  },
+  "jlpt_jmdict_match/n5": {
+    "file": "jlpt_jmdict_match__n5__n5.csv",
+    "url": "https://raw.githubusercontent.com/stephenmk/yomitan-jlpt-vocab/b062d4e38c4bdd0950ae1d4ec55f04b176182e03/original_data/n5.csv",
+    "sha256": "07dc6f197b51cc076c65c3c9f23218d10c2b67f76545f5c1c4d9e3750495533a",
+    "bytes": 24010,
+    "retrieved_at": "2026-10-01T05:15:43+00:00"
+  },
+  "jlpt_jmdict_match/n4": {
+    "file": "jlpt_jmdict_match__n4__n4.csv",
+    "url": "https://raw.githubusercontent.com/stephenmk/yomitan-jlpt-vocab/b062d4e38c4bdd0950ae1d4ec55f04b176182e03/original_data/n4.csv",
+    "sha256": "a14dcc7fdc02259b22331a486c6ff66df74c16472c8aeb5a0ebe7e5fa8ee8eb4",
+    "bytes": 24772,
+    "retrieved_at": "2026-10-01T05:15:44+00:00"
+  },
+  "jlpt_jmdict_match/n3": {
+    "file": "jlpt_jmdict_match__n3__n3.csv",
+    "url": "https://raw.githubusercontent.com/stephenmk/yomitan-jlpt-vocab/b062d4e38c4bdd0950ae1d4ec55f04b176182e03/original_data/n3.csv",
+    "sha256": "bd4d68c59cfee861351e1bdf9d99818e434392201eabbed4d3657225fe53a3ac",
+    "bytes": 88623,
+    "retrieved_at": "2026-10-01T05:15:44+00:00"
+  },
+  "jmdict_furigana/furigana": {
+    "file": "jmdict_furigana__furigana__JmdictFurigana.json",
+    "url": "https://github.com/Doublevil/JmdictFurigana/releases/latest/download/JmdictFurigana.json",
+    "sha256": "2a8e206f0b171fa5acdce89e5f5798621b227175e5bfa2db6bd92fef63dd962e",
+    "bytes": 34736193,
+    "retrieved_at": "2026-10-01T05:15:59+00:00"
+  },
+  "tatoeba/jpn_sentences": {
+    "file": "tatoeba__jpn_sentences__jpn_sentences_detailed.tsv.bz2",
+    "url": "https://downloads.tatoeba.org/exports/per_language/jpn/jpn_sentences_detailed.tsv.bz2",
+    "sha256": "48d144a89227d61de29dfaf28c2c8f2486b3f6e5980e734fb03b5754aa715348",
+    "bytes": 4461233,
+    "retrieved_at": "2026-10-01T05:16:02+00:00"
+  },
+  "tatoeba/eng_sentences": {
+    "file": "tatoeba__eng_sentences__eng_sentences_detailed.tsv.bz2",
+    "url": "https://downloads.tatoeba.org/exports/per_language/eng/eng_sentences_detailed.tsv.bz2",
+    "sha256": "353d48de7905952cf6f1500f6a3158516ecf9e10cd844ba051982cfa4a11c111",
+    "bytes": 34909145,
+    "retrieved_at": "2026-10-01T05:16:05+00:00"
+  },
+  "tatoeba/jpn_eng_links": {
+    "file": "tatoeba__jpn_eng_links__jpn-eng_links.tsv.bz2",
+    "url": "https://downloads.tatoeba.org/exports/per_language/jpn/jpn-eng_links.tsv.bz2",
+    "sha256": "ef044cd1f78ef88bc7ca4a9ec06cf225fd3e13783a0d472af6884a68684fe6ba",
+    "bytes": 1454991,
+    "retrieved_at": "2026-10-01T05:16:07+00:00"
+  },
+  "tatoeba/jpn_indices": {
+    "file": "tatoeba__jpn_indices__jpn_indices.tar.bz2",
+    "url": "https://downloads.tatoeba.org/exports/jpn_indices.tar.bz2",
+    "sha256": "0be79dba59773ccb2270d076fbb0b7ddfb4c2bda7b5a92ca1c0fb359dcf04904",
+    "bytes": 2862423,
+    "retrieved_at": "2026-10-01T05:16:09+00:00"
+  },
+  "tatoeba/cc0": {
+    "file": "tatoeba__cc0__sentences_CC0.tar.bz2",
+    "url": "https://downloads.tatoeba.org/exports/sentences_CC0.tar.bz2",
+    "sha256": "ea567c9c3efef007eac9aecf0b518bd2845a92d16a1564ba40b003811dfca4d1",
+    "bytes": 7961039,
+    "retrieved_at": "2026-10-01T05:16:12+00:00"
+  }
+}
