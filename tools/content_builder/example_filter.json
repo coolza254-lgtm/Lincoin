@@ -1,7 +1,7 @@
 {
   "_comment": "Example sentences matching these patterns are never used (the app should suit all ages). Patterns are case-insensitive regular expressions. Japanese patterns avoid bare 殺 so words like 殺到 (to rush) stay allowed.",
   "english": [
-    "\\b(fuck\\w*|shit\\w*|damn\\w*|dammit|bitch\\w*|bastard\\w*|asshole\\w*|cunt|dick|piss\\w*|rap(e|ed|es|ing|ist)|murder\\w*|kill(s|ed|er|ing)?|suicid\\w*|porn\\w*|sex\\w*|drugs?|cocaine|heroin|naked|nude)\\b"
+    "\\b(fuck\\w*|shit\\w*|damn\\w*|dammit|bitch\\w*|bastard\\w*|asshole\\w*|cunt|dick|piss\\w*|rap(e|ed|es|ing|ist)|murder\\w*|kill(s|ed|er|ing)?|suicid\\w*|porn\\w*|sex\\w*|drugs?|cocaine|heroin|naked|nude|bondage|fetish\\w*)\\b"
   ],
   "japanese": [
     "死ね",
@@ -19,6 +19,9 @@
     "覚醒剤",
     "セックス",
     "エロ",
-    "自殺"
+    "自殺",
+    "フェチ",
+    "緊縛",
+    "性欲"
   ]
 }
