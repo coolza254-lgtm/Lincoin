@@ -171,10 +171,17 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
             continue
         old = items.pop(o["seq"])
         new_seq = found[0]
+        readings = list_readings.pop(o["seq"], [old.kana])
+        report.overrides_applied.append({"from": o["seq"], "to": new_seq, "reason": o["reason"]})
+        if new_seq in items:
+            # The corrected entry is already listed: like any duplicate, the
+            # word stays at its easiest level (N5 = 5).
+            report.duplicate_list_entries.append(new_seq)
+            if items[new_seq].level >= old.level:
+                continue
         items[new_seq] = readers.JlptItem(new_seq, old.kana, old.kanji if old.kanji else "",
                                           old.definition, old.level, old.index)
-        list_readings[new_seq] = list_readings.pop(o["seq"], [old.kana])
-        report.overrides_applied.append({"from": o["seq"], "to": new_seq, "reason": o["reason"]})
+        list_readings[new_seq] = readings
     for seq, it in items.items():
         if seq not in entries:
             report.missing_in_jmdict.append({"seq": seq, "kanji": it.kanji, "kana": it.kana})

@@ -169,6 +169,20 @@ class BuildTest(unittest.TestCase):
         self.assertEqual(self.q("SELECT COUNT(*) FROM words WHERE id='w:1000006'"), [(0,)])
         self.assertEqual(self.q("SELECT gloss_en FROM senses WHERE word_id='w:1000007'"), [("button",)])
 
+    def test_override_onto_a_listed_word_keeps_its_level(self):
+        with tempfile.TemporaryDirectory() as d:
+            ov = Path(d) / "o.json"
+            ov.write_text(json.dumps({"overrides": [
+                {"seq": 1000006, "reading": "あう", "gloss": "^to meet", "reason": "test"}]}))
+            out = Path(d) / "c.db"
+            report = build(self.cache, out, ["n5"], with_examples=False, translations_root=None,
+                           overrides_path=ov, primary_path=None)
+            db = sqlite3.connect(out)
+            self.assertEqual(db.execute("SELECT jlpt_level FROM words WHERE id='w:1198180'").fetchall(), [(5,)])
+            self.assertEqual(db.execute("SELECT COUNT(*) FROM words WHERE id='w:1000006'").fetchall(), [(0,)])
+            db.close()
+            self.assertIn(1198180, report.duplicate_list_entries)
+
     def test_override_that_does_not_resolve_fails(self):
         tmp = Path(tempfile.mkdtemp())
         try:
