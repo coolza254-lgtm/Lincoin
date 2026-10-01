@@ -639,5 +639,59 @@
   "controllerMapShoulderDo": "เปลี่ยนแท็บ",
   "controllerMapQuickDo": "ตอบตัวเลือกที่ 1–4 (เมื่อเปิดตอบด้วยปุ่มหน้าจอย)",
   "controllerMapKeys": "คีย์บอร์ด 1–4",
-  "controllerMapKeysDo": "ตอบตัวเลือกที่ 1–4"
+  "controllerMapKeysDo": "ตอบตัวเลือกที่ 1–4",
+  "flashcards": "ทวนศัพท์แบบแฟลชการ์ด",
+  "flashcardsHelp": "เห็นคำ นึกความหมาย แล้วพลิกการ์ดให้คะแนนตัวเอง (อีกครั้ง/ยาก/ดี/ง่าย) แบบ Anki ปิดเพื่อทวนแบบตอบคำถาม",
+  "autoPlayAudio": "อ่านออกเสียงเมื่อพลิกการ์ด",
+  "autoPlayAudioHelp": "ใช้เสียงภาษาญี่ปุ่นของเครื่อง",
+  "showAnswer": "แสดงคำตอบ",
+  "flashFrontHint": "นึกความหมายในใจ แล้วแตะการ์ดเพื่อพลิก",
+  "flashRecallHint": "นึกคำภาษาญี่ปุ่น แล้วแตะการ์ดเพื่อพลิก",
+  "rateAgain": "อีกครั้ง",
+  "rateHard": "ยาก",
+  "rateGood": "ดี",
+  "rateEasy": "ง่าย",
+  "rateHelp": "จำได้แค่ไหน? การ์ดจะกลับมาตามเวลาบนปุ่ม",
+  "ivlNow": "<1 นาที",
+  "ivlMinutes": "{n} นาที",
+  "@ivlMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "ivlHours": "{n} ชม.",
+  "@ivlHours": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "ivlDays": "{n} วัน",
+  "@ivlDays": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "ivlMonths": "{n} เดือน",
+  "@ivlMonths": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "ivlYears": "{n} ปี",
+  "@ivlYears": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "controllerMapFlashDo": "การ์ด: พลิก แล้วกด 1–4 ให้คะแนน (อีกครั้ง/ยาก/ดี/ง่าย)"
 }

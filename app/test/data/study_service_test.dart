@@ -15,7 +15,9 @@ void main() {
   var now = DateTime.utc(2026, 10, 1, 3); // 10:00 Bangkok
   const tz = 420;
 
-  StudyService service([AppSettings s = const AppSettings()]) => StudyService(
+  StudyService service([
+    AppSettings s = const AppSettings(flashcards: false),
+  ]) => StudyService(
     db: db,
     catalog: catalog,
     settings: s,
@@ -37,12 +39,13 @@ void main() {
   });
 
   test('without kana the path starts at N5', () {
-    final p = service(const AppSettings(includeKana: false)).plan();
+    final p = service(const AppSettings(flashcards: false, includeKana: false))
+        .plan();
     expect(p.queue.newCards.first.cardId, 'w:1#recog');
   });
 
   test('new-card limit counts introductions today', () {
-    final s = service(const AppSettings(vocabNewPerDay: 2));
+    final s = service(const AppSettings(flashcards: false, vocabNewPerDay: 2));
     final q = s.question(s.plan().queue.newCards.first.cardId);
     expect(q.needsIntro, isTrue);
     s.introduce(q);
@@ -50,7 +53,7 @@ void main() {
   });
 
   test('answering records log, state and Lincoin atomically', () {
-    final s = service(const AppSettings(includeKana: false));
+    final s = service(const AppSettings(flashcards: false, includeKana: false));
     final q = s.question('w:1#recog');
     expect(q.choices!.options[q.choices!.correctIndex], 'ฤดูใบไม้ร่วง');
     s.introduce(q);
@@ -65,7 +68,7 @@ void main() {
   });
 
   test('graduating pays "learned" once; recall unlocks next day', () {
-    final s = service(const AppSettings(includeKana: false));
+    final s = service(const AppSettings(flashcards: false, includeKana: false));
     final q = s.question('w:1#recog');
     s.introduce(q);
     for (var i = 0; i < 2; i++) {
@@ -82,7 +85,7 @@ void main() {
     );
     now = now.add(const Duration(days: 1));
     expect(
-      service(const AppSettings(includeKana: false))
+      service(const AppSettings(flashcards: false, includeKana: false))
           .plan()
           .queue
           .newCards
@@ -110,7 +113,13 @@ void main() {
   });
 
   test('daily clear bonus once per day, only when nothing is due', () {
-    final s = service(const AppSettings(includeKana: false, vocabNewPerDay: 1));
+    final s = service(
+      const AppSettings(
+        flashcards: false,
+        includeKana: false,
+        vocabNewPerDay: 1,
+      ),
+    );
     final q = s.question('w:1#recog');
     s.introduce(q);
     s.answer(q, const AnswerEvent(isCorrect: true, responseMs: 5000));
@@ -132,7 +141,7 @@ void main() {
   });
 
   test('deprecations move or suspend cards', () {
-    final s = service(const AppSettings(includeKana: false));
+    final s = service(const AppSettings(flashcards: false, includeKana: false));
     for (final id in ['w:1#recog', 'w:2#recog']) {
       final q = s.question(id);
       s.introduce(q);
@@ -204,5 +213,47 @@ void main() {
     expect(c.byId.containsKey('w:99'), isFalse);
     expect(c.meaningPool.map((d) => d.text), isNot(contains('thing')));
     expect(c.itemsPerLevel().containsKey('n3'), isFalse);
+  });
+
+  test('flashcards: self-rated, intervals grow with the rating', () {
+    final s = service(const AppSettings(includeKana: false));
+    final id = s.plan().queue.newCards.first.cardId;
+    final q = s.question(id);
+    expect(q.isFlashcard, isTrue);
+    expect(q.isTyped, isFalse);
+    expect(q.needsIntro, isFalse);
+    final ivl = s.intervals(q);
+    expect(ivl[Rating.again]! < ivl[Rating.good]!, isTrue);
+    expect(ivl[Rating.good]! < ivl[Rating.easy]!, isTrue);
+    expect(s.stored(id), isNull, reason: 'previews save nothing');
+    s.introduce(q);
+    // A slow answer would be graded Hard; the learner's own rating wins.
+    final r = s.answer(
+      q,
+      const AnswerEvent(isCorrect: true, responseMs: 59000),
+      selfRating: Rating.easy,
+    );
+    expect(r.rating, Rating.easy);
+  });
+
+  test('flashcards start no reverse (recall) cards', () {
+    final s = service(const AppSettings(includeKana: false));
+    for (var day = 0; day < 3; day++) {
+      for (final c in s.plan().queue.newCards) {
+        final q = s.question(c.cardId);
+        s.introduce(q);
+        s.answer(
+          q,
+          const AnswerEvent(isCorrect: true, responseMs: 3000),
+          selfRating: Rating.easy,
+        );
+      }
+      now = now.add(const Duration(days: 1));
+    }
+    final ids = [
+      for (final c in s.plan().queue.newCards) c.cardId,
+      for (final c in s.plan().queue.reviews) c.cardId,
+    ];
+    expect(ids.where((i) => i.endsWith('#recall')), isEmpty);
   });
 }

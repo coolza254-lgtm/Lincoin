@@ -23,6 +23,10 @@ class AppSettings {
   final bool swapAB;
   final bool quickAnswerButtons;
 
+  /// Vocabulary reviews as self-rated flashcards (Anki/Kaishi style)
+  /// instead of quizzes.
+  final bool flashcards;
+
   const AppSettings({
     this.theme = LcTokens.defaultTheme,
     this.vocabRetention = 0.90,
@@ -39,6 +43,7 @@ class AppSettings {
     this.controller = true,
     this.swapAB = false,
     this.quickAnswerButtons = false,
+    this.flashcards = true,
   });
 
   /// Animations on (the setting is stored as its opposite, reduce_motion).
@@ -63,6 +68,7 @@ class AppSettings {
     bool? controller,
     bool? swapAB,
     bool? quickAnswerButtons,
+    bool? flashcards,
   }) => AppSettings(
     theme: theme ?? this.theme,
     vocabRetention: vocabRetention ?? this.vocabRetention,
@@ -79,6 +85,7 @@ class AppSettings {
     controller: controller ?? this.controller,
     swapAB: swapAB ?? this.swapAB,
     quickAnswerButtons: quickAnswerButtons ?? this.quickAnswerButtons,
+    flashcards: flashcards ?? this.flashcards,
   );
 
   Map<String, String> toMap() => {
@@ -97,6 +104,7 @@ class AppSettings {
     'input.controller': '$controller',
     'input.swap_ab': '$swapAB',
     'input.quick_answer': '$quickAnswerButtons',
+    'vocab.flashcards': '$flashcards',
   };
 
   /// Unknown or out-of-range values fall back to defaults, so a setting
@@ -159,6 +167,7 @@ class AppSettings {
       controller: b('input.controller', d.controller),
       swapAB: b('input.swap_ab', d.swapAB),
       quickAnswerButtons: b('input.quick_answer', d.quickAnswerButtons),
+      flashcards: b('vocab.flashcards', d.flashcards),
     );
   }
 }

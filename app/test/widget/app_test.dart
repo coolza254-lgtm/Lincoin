@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
+import 'package:lincoin_core/lincoin_core.dart' show Rating;
 import 'package:lincoin/app.dart';
 import 'package:lincoin/data/settings_repo.dart';
 import 'package:lincoin/data/study_repo.dart';
@@ -95,10 +96,54 @@ void main() {
     expect(s.vocabNewPerDay, 20);
   });
 
+  testWidgets('flashcards: flip, rate yourself, Again comes back', (
+    tester,
+  ) async {
+    final c = await start(
+      tester,
+      settings: const AppSettings(includeKana: false, vocabNewPerDay: 2),
+    );
+    await tester.tap(find.text('เริ่มเรียน').first);
+    await tester.pumpAndSettle();
+    var flips = 0, again = 0;
+    for (var i = 0; i < 60; i++) {
+      if (find.text('กลับหน้าหลัก').evaluate().isNotEmpty) break;
+      if (find.text('แสดงคำตอบ').evaluate().isNotEmpty) {
+        // No quiz and no separate introduction: the word alone.
+        expect(find.text('ความหมายคืออะไร'), findsNothing);
+        flips++;
+        await tester.tap(find.text('แสดงคำตอบ'));
+      } else if (find.text('ดี').evaluate().isNotEmpty) {
+        // Anki-style buttons show when the card would come back.
+        expect(find.textContaining('นาที'), findsWidgets);
+        if (again == 0) {
+          again++;
+          await tester.tap(find.text('อีกครั้ง'));
+        } else {
+          await tester.sendKeyEvent(LogicalKeyboardKey.digit3);
+        }
+      } else {
+        fail('unexpected screen at step $i');
+      }
+      await tester.pumpAndSettle();
+    }
+    expect(find.text('กลับหน้าหลัก'), findsOneWidget);
+    final log = StudyRepo(c.read(userDbProvider)).reviewRecords();
+    expect(log.length, flips);
+    expect(flips, greaterThan(2));
+    expect(log.first.rating, Rating.again);
+    // One card per word, as in Kaishi: no reverse cards are started.
+    expect(log.every((r) => r.cardId.endsWith('#recog')), isTrue);
+  });
+
   testWidgets('a full study session records reviews', (tester) async {
     final c = await start(
       tester,
-      settings: const AppSettings(includeKana: false, vocabNewPerDay: 3),
+      settings: const AppSettings(
+        flashcards: false,
+        includeKana: false,
+        vocabNewPerDay: 3,
+      ),
     );
     expect(find.text('ท่องศัพท์'), findsOneWidget);
     await tester.tap(find.text('เริ่มเรียน').first);
@@ -189,6 +234,8 @@ void main() {
     final c = await start(tester);
     await tester.tap(find.byTooltip('ตั้งค่า'));
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('เริ่มจากคานะ'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('เริ่มจากคานะ'));
     await tester.pumpAndSettle();
     expect(c.read(settingsProvider).includeKana, isFalse);
@@ -208,6 +255,7 @@ void main() {
     final c = await start(
       tester,
       settings: const AppSettings(
+        flashcards: false,
         includeKana: false,
         vocabNewPerDay: 3,
         reduceMotion: true,

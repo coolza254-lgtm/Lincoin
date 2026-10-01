@@ -22,7 +22,7 @@ void main() {
   StudyService study() => StudyService(
     db: db,
     catalog: catalog,
-    settings: const AppSettings(),
+    settings: const AppSettings(flashcards: false),
     clock: Clock(() => now, () => 420),
   );
 
@@ -32,7 +32,7 @@ void main() {
       final s = StudyService(
         db: db,
         catalog: catalog,
-        settings: const AppSettings(),
+        settings: const AppSettings(flashcards: false),
         clock: Clock(() => now, () => 420),
         deck: item.deck,
       );
@@ -74,7 +74,13 @@ void main() {
         expect(q.choices!.options.toSet().length, q.choices!.options.length);
       }
     }
-    expect(forms, containsAll(QuestionForm.values));
+    // Practice is always a quiz; flashcards belong to study sessions.
+    expect(
+      forms,
+      containsAll(
+        QuestionForm.values.where((f) => f != QuestionForm.flashcard),
+      ),
+    );
     final choiceOnly = {
       for (var i = 0; i < 30; i++)
         p.question(pool[i % pool.length], rnd, choiceOnly: true).isTyped,

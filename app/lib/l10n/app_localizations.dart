@@ -1827,6 +1827,120 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'ตอบตัวเลือกที่ 1–4'**
   String get controllerMapKeysDo;
+
+  /// No description provided for @flashcards.
+  ///
+  /// In th, this message translates to:
+  /// **'ทวนศัพท์แบบแฟลชการ์ด'**
+  String get flashcards;
+
+  /// No description provided for @flashcardsHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'เห็นคำ นึกความหมาย แล้วพลิกการ์ดให้คะแนนตัวเอง (อีกครั้ง/ยาก/ดี/ง่าย) แบบ Anki ปิดเพื่อทวนแบบตอบคำถาม'**
+  String get flashcardsHelp;
+
+  /// No description provided for @autoPlayAudio.
+  ///
+  /// In th, this message translates to:
+  /// **'อ่านออกเสียงเมื่อพลิกการ์ด'**
+  String get autoPlayAudio;
+
+  /// No description provided for @autoPlayAudioHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'ใช้เสียงภาษาญี่ปุ่นของเครื่อง'**
+  String get autoPlayAudioHelp;
+
+  /// No description provided for @showAnswer.
+  ///
+  /// In th, this message translates to:
+  /// **'แสดงคำตอบ'**
+  String get showAnswer;
+
+  /// No description provided for @flashFrontHint.
+  ///
+  /// In th, this message translates to:
+  /// **'นึกความหมายในใจ แล้วแตะการ์ดเพื่อพลิก'**
+  String get flashFrontHint;
+
+  /// No description provided for @flashRecallHint.
+  ///
+  /// In th, this message translates to:
+  /// **'นึกคำภาษาญี่ปุ่น แล้วแตะการ์ดเพื่อพลิก'**
+  String get flashRecallHint;
+
+  /// No description provided for @rateAgain.
+  ///
+  /// In th, this message translates to:
+  /// **'อีกครั้ง'**
+  String get rateAgain;
+
+  /// No description provided for @rateHard.
+  ///
+  /// In th, this message translates to:
+  /// **'ยาก'**
+  String get rateHard;
+
+  /// No description provided for @rateGood.
+  ///
+  /// In th, this message translates to:
+  /// **'ดี'**
+  String get rateGood;
+
+  /// No description provided for @rateEasy.
+  ///
+  /// In th, this message translates to:
+  /// **'ง่าย'**
+  String get rateEasy;
+
+  /// No description provided for @rateHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'จำได้แค่ไหน? การ์ดจะกลับมาตามเวลาบนปุ่ม'**
+  String get rateHelp;
+
+  /// No description provided for @ivlNow.
+  ///
+  /// In th, this message translates to:
+  /// **'<1 นาที'**
+  String get ivlNow;
+
+  /// No description provided for @ivlMinutes.
+  ///
+  /// In th, this message translates to:
+  /// **'{n} นาที'**
+  String ivlMinutes(String n);
+
+  /// No description provided for @ivlHours.
+  ///
+  /// In th, this message translates to:
+  /// **'{n} ชม.'**
+  String ivlHours(String n);
+
+  /// No description provided for @ivlDays.
+  ///
+  /// In th, this message translates to:
+  /// **'{n} วัน'**
+  String ivlDays(String n);
+
+  /// No description provided for @ivlMonths.
+  ///
+  /// In th, this message translates to:
+  /// **'{n} เดือน'**
+  String ivlMonths(String n);
+
+  /// No description provided for @ivlYears.
+  ///
+  /// In th, this message translates to:
+  /// **'{n} ปี'**
+  String ivlYears(String n);
+
+  /// No description provided for @controllerMapFlashDo.
+  ///
+  /// In th, this message translates to:
+  /// **'การ์ด: พลิก แล้วกด 1–4 ให้คะแนน (อีกครั้ง/ยาก/ดี/ง่าย)'**
+  String get controllerMapFlashDo;
 }
 
 class _AppLocalizationsDelegate

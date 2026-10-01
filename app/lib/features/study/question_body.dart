@@ -104,7 +104,7 @@ class _QuestionBodyState extends State<QuestionBody> {
     );
 
     final (String label, Widget prompt) = switch (q.form) {
-      QuestionForm.meaningChoice => (
+      QuestionForm.meaningChoice || QuestionForm.flashcard => (
         t.qMeaning,
         Furigana(
           (item as WordStudy).word.headwordFurigana,

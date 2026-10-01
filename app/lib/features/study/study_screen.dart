@@ -11,6 +11,7 @@ import '../../state/providers.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
+import 'flashcard.dart';
 import 'item_details.dart';
 import 'question_body.dart';
 import 'session_controller.dart';
@@ -70,6 +71,9 @@ class StudyScreen extends ConsumerWidget {
                     }),
                     child: switch (s.phase) {
                       SessionPhase.intro => _Intro(s, deck),
+                      SessionPhase.question
+                          when s.question?.isFlashcard ?? false =>
+                        FlashcardView(s, deck),
                       SessionPhase.question ||
                       SessionPhase.feedback => _QuestionView(s, deck),
                       SessionPhase.done => _Done(s, deck),

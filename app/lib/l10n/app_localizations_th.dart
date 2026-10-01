@@ -998,4 +998,73 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get controllerMapKeysDo => 'ตอบตัวเลือกที่ 1–4';
+
+  @override
+  String get flashcards => 'ทวนศัพท์แบบแฟลชการ์ด';
+
+  @override
+  String get flashcardsHelp =>
+      'เห็นคำ นึกความหมาย แล้วพลิกการ์ดให้คะแนนตัวเอง (อีกครั้ง/ยาก/ดี/ง่าย) แบบ Anki ปิดเพื่อทวนแบบตอบคำถาม';
+
+  @override
+  String get autoPlayAudio => 'อ่านออกเสียงเมื่อพลิกการ์ด';
+
+  @override
+  String get autoPlayAudioHelp => 'ใช้เสียงภาษาญี่ปุ่นของเครื่อง';
+
+  @override
+  String get showAnswer => 'แสดงคำตอบ';
+
+  @override
+  String get flashFrontHint => 'นึกความหมายในใจ แล้วแตะการ์ดเพื่อพลิก';
+
+  @override
+  String get flashRecallHint => 'นึกคำภาษาญี่ปุ่น แล้วแตะการ์ดเพื่อพลิก';
+
+  @override
+  String get rateAgain => 'อีกครั้ง';
+
+  @override
+  String get rateHard => 'ยาก';
+
+  @override
+  String get rateGood => 'ดี';
+
+  @override
+  String get rateEasy => 'ง่าย';
+
+  @override
+  String get rateHelp => 'จำได้แค่ไหน? การ์ดจะกลับมาตามเวลาบนปุ่ม';
+
+  @override
+  String get ivlNow => '<1 นาที';
+
+  @override
+  String ivlMinutes(String n) {
+    return '$n นาที';
+  }
+
+  @override
+  String ivlHours(String n) {
+    return '$n ชม.';
+  }
+
+  @override
+  String ivlDays(String n) {
+    return '$n วัน';
+  }
+
+  @override
+  String ivlMonths(String n) {
+    return '$n เดือน';
+  }
+
+  @override
+  String ivlYears(String n) {
+    return '$n ปี';
+  }
+
+  @override
+  String get controllerMapFlashDo =>
+      'การ์ด: พลิก แล้วกด 1–4 ให้คะแนน (อีกครั้ง/ยาก/ดี/ง่าย)';
 }

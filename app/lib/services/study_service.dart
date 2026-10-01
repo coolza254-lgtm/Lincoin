@@ -63,7 +63,10 @@ class Question {
     this.example,
   });
 
-  bool get isTyped => choices == null;
+  bool get isTyped => choices == null && !isFlashcard;
+
+  /// Self-rated flashcard: flip, then Again/Hard/Good/Easy.
+  bool get isFlashcard => form == QuestionForm.flashcard;
 
   QuestionForm get form => QuestionForm.fromType(type);
 }
@@ -86,7 +89,11 @@ enum QuestionForm {
   kanaChoice,
 
   /// Grammar: choose what fills the blank ("cloze.choice").
-  cloze;
+  cloze,
+
+  /// Flashcard, rated by the learner: word → meaning ("recog.flash") or
+  /// meaning → word ("recall.flash").
+  flashcard;
 
   static QuestionForm fromType(String type) => switch (type) {
     'recall.type' => readingType,
@@ -94,6 +101,7 @@ enum QuestionForm {
     'kana.type' => kanaType,
     'kana.choice' => kanaChoice,
     'cloze.choice' => cloze,
+    'recog.flash' || 'recall.flash' => flashcard,
     _ => meaningChoice,
   };
 
@@ -168,6 +176,9 @@ class StudyService {
              grammar: SrsConfig(desiredRetention: settings.grammarRetention),
            );
 
+  /// Words are reviewed as self-rated flashcards.
+  bool get flashcards => deck == vocabDeck && settings.flashcards;
+
   int get _newPerDay =>
       deck == grammarDeck ? settings.grammarNewPerDay : settings.vocabNewPerDay;
 
@@ -209,7 +220,10 @@ class StudyService {
         if (s != null) {
           out.add(_fromStored(s, item, order));
         } else if (facet == Facet.recall &&
-            !stored.containsKey(cardIdFor(item.id, Facet.recog))) {
+            (flashcards ||
+                !stored.containsKey(cardIdFor(item.id, Facet.recog)))) {
+          // Flashcards are one card per word, like Kaishi: no new reverse
+          // cards (ones already started keep their schedule).
           continue;
         } else {
           out.add(
@@ -287,6 +301,15 @@ class StudyService {
     final reps = s?.state.reps ?? 0;
     // Recall of an already introduced word needs no introduction.
     final needsIntro = s == null && facet != Facet.recall;
+    if (flashcards && item is WordStudy) {
+      // The back of the card is the introduction.
+      return Question(
+        cardId: cardId,
+        item: item,
+        facet: facet,
+        type: '${facet.name}.flash',
+      );
+    }
     switch (facet) {
       case Facet.recog || Facet.listen:
         final w = (item as WordStudy);
@@ -396,17 +419,38 @@ class StudyService {
     );
   }
 
+  /// When each rating would bring [q] back (Anki shows these on its
+  /// buttons). Nothing is saved.
+  Map<Rating, Duration> intervals(Question q) {
+    final now = clock.nowUtc();
+    final before = stored(q.cardId)?.state ?? CardState.initial;
+    final at = before.lastReview != null && now.isBefore(before.lastReview!)
+        ? before.lastReview!
+        : now;
+    return {
+      for (final r in Rating.values)
+        r: scheduler
+            .review(cardId: q.cardId, state: before, rating: r, nowUtc: at)
+            .after
+            .due!
+            .difference(at),
+    };
+  }
+
+  /// Records an answer. [selfRating] (flashcards) replaces the grader.
   AnswerResult answer(
     Question q,
     AnswerEvent e, {
     String? sessionId,
     String? answerRaw,
+    Rating? selfRating,
   }) {
     final now = clock.nowUtc();
     final day = studyDay(now);
     final s = stored(q.cardId);
     final before = s?.state ?? CardState.initial;
-    final rating = grader.grade(e, medianMs: times.median(q.type));
+    final rating =
+        selfRating ?? grader.grade(e, medianMs: times.median(q.type));
     // Answer times can't go backwards if the clock was changed.
     final at = before.lastReview != null && now.isBefore(before.lastReview!)
         ? before.lastReview!

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lincoin_core/lincoin_core.dart';
 
 import '../../ui/input.dart';
+import '../../data/catalog.dart';
 import '../../data/user_db.dart';
 import '../../services/study_service.dart';
 import '../../state/providers.dart';
@@ -31,6 +32,12 @@ class SessionState {
   /// Learning steps due later than the session window.
   final int laterSteps;
 
+  /// Flashcard turned over (answer side showing).
+  final bool flipped;
+
+  /// Flashcard: when each rating would bring the card back.
+  final Map<Rating, Duration>? intervals;
+
   const SessionState({
     required this.phase,
     this.question,
@@ -47,6 +54,8 @@ class SessionState {
     this.remaining = 0,
     this.bonus,
     this.laterSteps = 0,
+    this.flipped = false,
+    this.intervals,
   });
 
   SessionState copyWith({
@@ -65,6 +74,8 @@ class SessionState {
     int? remaining,
     SessionBonus? bonus,
     int? laterSteps,
+    bool? flipped,
+    Map<Rating, Duration>? intervals,
     bool clearAnswer = false,
   }) => SessionState(
     phase: phase ?? this.phase,
@@ -82,6 +93,8 @@ class SessionState {
     remaining: remaining ?? this.remaining,
     bonus: bonus ?? this.bonus,
     laterSteps: laterSteps ?? this.laterSteps,
+    flipped: flipped ?? (clearAnswer ? false : this.flipped),
+    intervals: clearAnswer ? null : (intervals ?? this.intervals),
   );
 
   double get progress =>
@@ -179,6 +192,54 @@ class SessionController extends Notifier<SessionState> {
     _activeMs += _answerTimer.elapsedMilliseconds.clamp(0, _activeCapMs);
     _queue.afterIntro(q.cardId, _svc.clock.nowUtc());
     state = _advance(state);
+  }
+
+  /// Turns a flashcard over.
+  void flip() {
+    if (state.phase != SessionPhase.question || state.flipped) return;
+    final q = state.question!;
+    if (!q.isFlashcard) return;
+    Feel.selection();
+    state = state.copyWith(flipped: true, intervals: _svc.intervals(q));
+    if (ref.read(settingsProvider).autoPlayAudio && q.item is WordStudy) {
+      ref.read(ttsProvider).speak((q.item as WordStudy).word.reading).ignore();
+    }
+  }
+
+  /// The learner's own rating of a turned-over flashcard; the next card
+  /// follows straight away, as in Anki.
+  void rate(Rating rating) {
+    final q = state.question;
+    if (state.phase != SessionPhase.question ||
+        q == null ||
+        !q.isFlashcard ||
+        !state.flipped) {
+      return;
+    }
+    if (_svc.stored(q.cardId) == null) _svc.introduce(q);
+    _answerTimer.stop();
+    final ms = _answerTimer.elapsedMilliseconds;
+    _activeMs += ms.clamp(0, _activeCapMs);
+    final ok = rating.isPass;
+    final result = _svc.answer(
+      q,
+      AnswerEvent(isCorrect: ok, responseMs: ms),
+      sessionId: _sessionId,
+      answerRaw: rating.name,
+      selfRating: rating,
+    );
+    if (result.outcome.after.inSteps) {
+      _queue.requeue(q.cardId, result.outcome.after.due!);
+    }
+    ok ? Feel.light() : Feel.medium();
+    state = _advance(
+      state.copyWith(
+        answered: state.answered + 1,
+        correctCount: state.correctCount + (ok ? 1 : 0),
+        coins: state.coins + result.coinTotal,
+        result: result,
+      ),
+    );
   }
 
   void toggleGuess() => state = state.copyWith(guessing: !state.guessing);

@@ -25,6 +25,7 @@ void _showControllerMap(BuildContext context, AppSettings s) {
     if (s.quickAnswerButtons)
       (s.swapAB ? 'B A X Y' : 'A B X Y', t.controllerMapQuickDo),
     (t.controllerMapKeys, t.controllerMapKeysDo),
+    (t.controllerMapKeys, t.controllerMapFlashDo),
   ];
   showDialog<void>(
     context: context,
@@ -112,6 +113,19 @@ class SettingsScreen extends ConsumerWidget {
                     set.update((x) => x.copyWith(vocabNewPerDay: v.round())),
               ),
               const Divider(indent: 16, endIndent: 16),
+              SwitchListTile(
+                title: Text(t.flashcards),
+                subtitle: Text(t.flashcardsHelp),
+                value: s.flashcards,
+                onChanged: (v) => set.update((x) => x.copyWith(flashcards: v)),
+              ),
+              SwitchListTile(
+                title: Text(t.autoPlayAudio),
+                subtitle: Text(t.autoPlayAudioHelp),
+                value: s.autoPlayAudio,
+                onChanged: (v) =>
+                    set.update((x) => x.copyWith(autoPlayAudio: v)),
+              ),
               const Divider(indent: 16, endIndent: 16),
               _SliderTile(
                 title: t.targetRetentionGrammar,

@@ -202,6 +202,20 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('หน้าหลัก').last);
     await tester.pumpAndSettle();
+    // Flashcards (the default): front, then the turned-over back.
+    await tester.tap(find.text('เริ่มเรียน').first);
+    await tester.pumpAndSettle();
+    await snap('5f-flashcard-front');
+    await tester.tap(find.text('แสดงคำตอบ'));
+    await snap('5g-flashcard-back');
+    await tester.tap(find.text('ดี'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('ปิด'));
+    await tester.pumpAndSettle();
+    container
+        .read(settingsProvider.notifier)
+        .update((x) => x.copyWith(flashcards: false));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('เริ่มเรียน').first);
     await tester.pumpAndSettle();
     var intro = false, choice = false, typed = false, feedback = false;
