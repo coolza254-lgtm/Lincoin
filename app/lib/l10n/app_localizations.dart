@@ -1707,6 +1707,12 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'กดย้อนกลับอีกครั้งเพื่อออก'**
   String get pressBackAgain;
+
+  /// No description provided for @grammarLevelProgress.
+  ///
+  /// In th, this message translates to:
+  /// **'ไวยากรณ์ {level} · เริ่มแล้ว {done}/{total} หัวข้อ'**
+  String grammarLevelProgress(String level, int done, int total);
 }
 
 class _AppLocalizationsDelegate

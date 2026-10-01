@@ -244,33 +244,50 @@ class GrammarListScreen extends ConsumerWidget {
       for (final i in catalog?.path ?? const <StudyItem>[])
         if (i is GrammarStudy) i.point,
     ];
+    final rows = <Object>[
+      for (final (i, p) in points.indexed) ...[
+        if (i == 0 || points[i - 1].level != p.level) 'N${p.level}',
+        p,
+      ],
+    ];
     return Scaffold(
       appBar: AppBar(title: Text(t.grammarList)),
-      body: ListView.builder(
-        padding: const EdgeInsets.fromLTRB(
-          LcTokens.spacingLg,
-          0,
-          LcTokens.spacingLg,
-          LcTokens.spacingXxl,
+      body: SafeArea(
+        top: false,
+        child: ListView.builder(
+          padding: const EdgeInsets.fromLTRB(
+            LcTokens.spacingLg,
+            0,
+            LcTokens.spacingLg,
+            LcTokens.spacingXxl,
+          ),
+          itemCount: rows.length,
+          itemBuilder: (context, i) {
+            final p = rows[i];
+            // A level header before each level's first point.
+            if (p is String) {
+              final done = points
+                  .where((g) => 'N${g.level}' == p && started.contains(g.id))
+                  .length;
+              final total = points.where((g) => 'N${g.level}' == p).length;
+              return SectionLabel(t.grammarLevelProgress(p, done, total));
+            }
+            p as GrammarPoint;
+            return ListTile(
+              leading: Icon(
+                started.contains(p.id)
+                    ? Icons.check_circle_rounded
+                    : Icons.circle_outlined,
+                color: started.contains(p.id) ? c.good : c.line,
+              ),
+              title: Text(p.titleJa, style: jpStyle(18, 500, c.ink)),
+              subtitle: Text(p.titleTh, style: tt.bodySmall),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => GrammarPointScreen(point: p)),
+              ),
+            );
+          },
         ),
-        itemCount: points.length,
-        itemBuilder: (context, i) {
-          final p = points[i];
-          return ListTile(
-            leading: Icon(
-              started.contains(p.id)
-                  ? Icons.check_circle_rounded
-                  : Icons.circle_outlined,
-              color: started.contains(p.id) ? c.good : c.line,
-            ),
-            title: Text(p.titleJa, style: jpStyle(18, 500, c.ink)),
-            subtitle: Text(p.titleTh, style: tt.bodySmall),
-            trailing: Text('N${p.level}', style: tt.labelMedium),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => GrammarPointScreen(point: p)),
-            ),
-          );
-        },
       ),
     );
   }

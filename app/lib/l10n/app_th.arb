@@ -606,5 +606,19 @@
     }
   },
   "undo": "เลิกทำ",
-  "pressBackAgain": "กดย้อนกลับอีกครั้งเพื่อออก"
+  "pressBackAgain": "กดย้อนกลับอีกครั้งเพื่อออก",
+  "grammarLevelProgress": "ไวยากรณ์ {level} · เริ่มแล้ว {done}/{total} หัวข้อ",
+  "@grammarLevelProgress": {
+    "placeholders": {
+      "level": {
+        "type": "String"
+      },
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

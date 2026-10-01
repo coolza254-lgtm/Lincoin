@@ -932,4 +932,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get pressBackAgain => 'กดย้อนกลับอีกครั้งเพื่อออก';
+
+  @override
+  String grammarLevelProgress(String level, int done, int total) {
+    return 'ไวยากรณ์ $level · เริ่มแล้ว $done/$total หัวข้อ';
+  }
 }
