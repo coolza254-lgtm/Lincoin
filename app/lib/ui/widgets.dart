@@ -138,32 +138,31 @@ class CountUpCoins extends StatelessWidget {
   );
 }
 
+/// The Lincoin coin (assets/brand/coin.png). Grey in the black-and-white
+/// theme, where the round shape and the L still mark it as a coin.
 class CoinMark extends StatelessWidget {
   final double size;
   const CoinMark({super.key, this.size = 16});
 
+  static const _grey = ColorFilter.matrix([
+    0.2126, 0.7152, 0.0722, 0, 0, //
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0.2126, 0.7152, 0.0722, 0, 0,
+    0, 0, 0, 1, 0,
+  ]);
+
   @override
   Widget build(BuildContext context) {
-    final c = context.lc;
-    return Container(
+    final img = Image.asset(
+      'assets/brand/coin.png',
       width: size,
       height: size,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: c.coin,
-        border: Border.all(color: c.coinSoft, width: size / 10),
-      ),
-      child: Text(
-        'L',
-        style: TextStyle(
-          fontSize: size * 0.58,
-          height: 1,
-          fontWeight: FontWeight.w800,
-          color: c.coinSoft,
-        ),
-      ),
+      filterQuality: FilterQuality.medium,
+      excludeFromSemantics: true,
     );
+    return context.lc.id == 'mono'
+        ? ColorFiltered(colorFilter: _grey, child: img)
+        : img;
   }
 }
 
