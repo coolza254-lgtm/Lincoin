@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lincoin/data/catalog.dart';
+import 'package:lincoin/data/content_db.dart';
 import 'package:lincoin/data/settings_repo.dart';
 import 'package:lincoin/data/study_repo.dart';
 import 'package:lincoin/data/user_db.dart';
@@ -183,5 +184,25 @@ void main() {
       expect(stored.deck, grammarDeck);
       expect(StudyRepo(db).reviewRecords(deck: grammarDeck), hasLength(1));
     });
+  });
+
+  test('words without a Thai main meaning stay out of the path', () {
+    final raw = fixtureContentDb();
+    raw.execute(
+      "INSERT INTO words VALUES ('w:99', 3, 0, '[\"n\"]', '[]', 1, 1, "
+      "'jmdict', 'jlpt', 'thing', '[\"もの\"]')",
+    );
+    raw.execute(
+      "INSERT INTO word_forms VALUES ('w:99', 'kana', 0, 'もの', NULL, NULL, "
+      "'[]', 1, 1, 1)",
+    );
+    raw.execute(
+      "INSERT INTO senses VALUES ('w:99:1', 'w:99', 1, '[\"n\"]', '[]', '[]', "
+      "'[]', '[]', 'thing', NULL, NULL, 'missing', 0)",
+    );
+    final c = Catalog.load(ContentDb(raw));
+    expect(c.byId.containsKey('w:99'), isFalse);
+    expect(c.meaningPool.map((d) => d.text), isNot(contains('thing')));
+    expect(c.itemsPerLevel().containsKey('n3'), isFalse);
   });
 }

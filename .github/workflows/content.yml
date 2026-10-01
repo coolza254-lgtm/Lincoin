@@ -10,7 +10,7 @@ on:
     inputs:
       levels:
         description: "JLPT levels, comma separated (n5,n4,...)"
-        default: "n5,n4"
+        default: "n5,n4,n3"
 
 permissions:
   contents: write
@@ -22,7 +22,7 @@ jobs:
       run:
         working-directory: tools/content_builder
     env:
-      LEVELS: ${{ github.event.inputs.levels || 'n5,n4' }}
+      LEVELS: ${{ github.event.inputs.levels || 'n5,n4,n3' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

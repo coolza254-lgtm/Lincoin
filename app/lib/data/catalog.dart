@@ -90,6 +90,12 @@ class Catalog {
       path.add(KanaStudy(k, order++));
     }
     for (final w in db.words()) {
+      // A level arrives in content updates before all of it is translated:
+      // a word joins the path (and the pool of wrong answers) only once its
+      // main meaning has Thai, so an English gloss never shows in a quiz.
+      if (w.senses.isEmpty || !(w.senses.first.th?.isNotEmpty ?? false)) {
+        continue;
+      }
       path.add(WordStudy(w, order++));
     }
     // Grammar points without a translated example cannot be asked yet.

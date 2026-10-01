@@ -111,14 +111,16 @@ jobs:
               --content app/assets/content/content.db --out dist \
               --repo "$REPO" --tag "$TAG" \
               --apk "dist/lincoin-$VERSION_NAME.apk" \
-              --version-name "$VERSION_NAME" --version-code "$VERSION_CODE"
+              --version-name "$VERSION_NAME" --version-code "$VERSION_CODE" \
+              --min-app-version-code "$(cat tools/release/content_min_app_version)"
           else
             curl -fsSL -o prev-latest.json \
               "https://github.com/$REPO/releases/latest/download/latest.json" || true
             python3 tools/release/make_release_files.py \
               --content app/assets/content/content.db --out dist \
               --repo "$REPO" --tag "$TAG" \
-              --previous-latest prev-latest.json
+              --previous-latest prev-latest.json \
+              --min-app-version-code "$(cat tools/release/content_min_app_version)"
           fi
           git show origin/content-build:CREDITS.md > dist/CREDITS.md
           ls -la dist
