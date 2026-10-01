@@ -70,6 +70,40 @@
       "reading": "うまい",
       "gloss": "^delicious",
       "reason": "N4: matched 上手い 'skilful' instead of 旨い 'delicious' (list definition)"
+    },
+    {
+      "seq": 1001560,
+      "reading": "おや",
+      "gloss": "^parent",
+      "pos": "n",
+      "reason": "N3 list 'おや (parents)' matched the interjection; 親 (also in N4) is meant"
+    },
+    {
+      "seq": 2252690,
+      "reading": "ど",
+      "gloss": "^degree \\(angle",
+      "reason": "N3 list '度' matched the slang prefix ド; 度 'degree; times' is meant"
+    },
+    {
+      "seq": 2771700,
+      "reading": "やや",
+      "gloss": "^a little|^slightly|somewhat",
+      "pos": "adv",
+      "reason": "N3 list 'やや (somewhat)' matched the interjection"
+    },
+    {
+      "seq": 2179090,
+      "reading": "しばしば",
+      "gloss": "^often|frequently",
+      "pos": "adv",
+      "reason": "N3 list 'しばしば (often)' matched '(blinking) repeatedly'"
+    },
+    {
+      "seq": 1594530,
+      "reading": "しまい",
+      "gloss": "^sisters",
+      "pos": "n",
+      "reason": "N3 list 'しまい (sisters)' matched 仕舞い (end); 姉妹 is meant"
     }
   ]
 }
