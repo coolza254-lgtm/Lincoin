@@ -81,6 +81,18 @@ def check_row(source: str, th: str, note: str | None, kind: str) -> list[str]:
     return w
 
 
+def translated_elsewhere(out: Path) -> set[str]:
+    """Ids already exported to the other jsonl files beside [out]."""
+    ids: set[str] = set()
+    for p in sorted(out.parent.glob("*.jsonl")):
+        if out.exists() and p.resolve() == out.resolve():
+            continue
+        for line in p.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                ids.add(json.loads(line)["id"])
+    return ids
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("kind", choices=["senses", "examples"])
@@ -91,11 +103,18 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
 
     sheet = [json.loads(l) for l in a.worksheet.read_text(encoding="utf-8").splitlines() if l.strip()]
+    # An item lives in exactly one jsonl (the builder rejects duplicates). A
+    # sentence shared with another level, or a word that moved level, keeps
+    # the translation it already has in a sibling file.
+    elsewhere = translated_elsewhere(a.out)
+    shared = [r["id"] for r in sheet if r["id"] in elsewhere]
+    sheet = [r for r in sheet if r["id"] not in elsewhere]
     by_id = {r["id"]: r for r in sheet}
     tr = read_tsv(a.tsv)
+    redundant = sorted(set(tr) & set(shared))
     src_key = "en" if a.kind == "senses" else "ja"
 
-    unknown = sorted(set(tr) - set(by_id))
+    unknown = sorted(set(tr) - set(by_id) - set(redundant))
     missing = [r["id"] for r in sheet if r["id"] not in tr]
     rows, flagged = [], []
     consistency: dict[str, set[str]] = defaultdict(set)
@@ -123,12 +142,15 @@ def main(argv=None) -> int:
         "flagged": flagged,
         "missing": missing,
         "unknown_ids": unknown,
+        "translated_elsewhere": len(shared),
+        "redundant_ids": redundant,
         "same_source_different_thai": inconsistent,
     }
     rep_path = a.out.with_suffix(".qa.json")
     rep_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"{a.kind}: {len(rows)} translated, {report['auto_checked']} auto_checked, "
           f"{len(flagged)} flagged, {len(missing)} missing, {len(unknown)} unknown ids, "
+          f"{len(shared)} translated in another file ({len(redundant)} redundant here), "
           f"{len(inconsistent)} sources with different Thai → {rep_path.name}")
     # Rows for items not in the current worksheet are kept: they apply again
     # if the item returns (e.g. example selection changes).

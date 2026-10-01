@@ -4,6 +4,8 @@
   "flagged": [],
   "missing": [],
   "unknown_ids": [],
+  "translated_elsewhere": 0,
+  "redundant_ids": [],
   "same_source_different_thai": {
     "interest": [
       "ความสนใจ",
