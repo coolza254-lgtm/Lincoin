@@ -260,6 +260,91 @@
       "seq": 1228690,
       "gloss": "^express \\(train\\)",
       "reason": "急行: express train"
+    },
+    {
+      "seq": 1576100,
+      "gloss": "^for a time(;|$)",
+      "reason": "一時: at N3 it is \"for a while; temporarily\" (一時的); the clock time 一時 is taught at N5"
+    },
+    {
+      "seq": 1166510,
+      "gloss": "^on the one hand(;|$)",
+      "reason": "一方: \"on the other hand\" (一方で) is the N3 use"
+    },
+    {
+      "seq": 1220870,
+      "gloss": "^agency(;|$)",
+      "reason": "機関: \"institution; agency\" (金融機関, 交通機関) is the everyday meaning, not \"engine\""
+    },
+    {
+      "seq": 1188420,
+      "gloss": "^somehow \\(handling",
+      "reason": "何とか: \"somehow; one way or another\" (なんとかなる)"
+    },
+    {
+      "seq": 1514950,
+      "gloss": "^year-end(;|$)",
+      "reason": "暮れ: on its own it usually means the end of the year (年の暮れ)"
+    },
+    {
+      "seq": 1359240,
+      "gloss": "^traffic light(;|$)",
+      "reason": "信号: \"traffic light\" is how learners meet it (信号が赤)"
+    },
+    {
+      "seq": 1502790,
+      "gloss": "^physics$",
+      "reason": "物理: \"physics\" (the subject), not \"laws of nature\""
+    },
+    {
+      "seq": 1328170,
+      "gloss": "^help(;|$)",
+      "reason": "手伝い: \"help\" (手伝いをする) is more common than \"helper\""
+    },
+    {
+      "seq": 1538900,
+      "gloss": "^free of charge(;|$)",
+      "reason": "ただ: \"free (of charge)\" is the N3 list meaning"
+    },
+    {
+      "seq": 1525780,
+      "gloss": "^\\(if\\) by some chance",
+      "reason": "万一: the adverb \"if by any chance\" (万一の場合) is the common use"
+    },
+    {
+      "seq": 1397720,
+      "gloss": "^to sue \\(a person\\)",
+      "reason": "訴える: \"to sue; to complain\" is the meaning taught first"
+    },
+    {
+      "seq": 1000920,
+      "gloss": "^welcome$",
+      "reason": "いらっしゃい: \"welcome!\" is the everyday use"
+    },
+    {
+      "seq": 1155400,
+      "gloss": "^grade \\(of quality",
+      "reason": "位 (くらい): \"rank; grade\", not \"throne\""
+    },
+    {
+      "seq": 1319060,
+      "gloss": "^ceremony(;|$)",
+      "reason": "式: on its own it means \"ceremony\" (式を挙げる); 〜式 \"style\" is a suffix use"
+    },
+    {
+      "seq": 1375260,
+      "gloss": "^sex; gender",
+      "reason": "性: \"sex; gender\" (性別) is the common standalone meaning"
+    },
+    {
+      "seq": 1586730,
+      "gloss": "^flaw \\(esp\\. of a person\\)",
+      "reason": "粗 (あら): \"flaw; fault\" (あらを探す), not fish bones"
+    },
+    {
+      "seq": 1252050,
+      "gloss": "^\\(in\\) total",
+      "reason": "計 (けい): \"total\" (計3点) is the common use, not \"plan\""
     }
   ]
 }
