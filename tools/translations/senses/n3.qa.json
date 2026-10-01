@@ -1,0 +1,148 @@
+{
+  "translated": 3840,
+  "auto_checked": 3831,
+  "flagged": [
+    {
+      "id": "w:1150410:3",
+      "source": "agape",
+      "th": "ความรักแบบอากาเป (ความรักอันบริสุทธิ์ของพระเจ้า)",
+      "warnings": [
+        "much longer than source"
+      ]
+    },
+    {
+      "id": "w:1323940:2",
+      "source": "number of games under the .500 mark",
+      "th": "จำนวนแพ้ที่เกินชนะ (เบสบอล)",
+      "warnings": [
+        "number 500 missing"
+      ]
+    },
+    {
+      "id": "w:1505650:2",
+      "source": "Bunmei era (1469.4.28-1487.7.20)",
+      "th": "ศักราชบุนเม (1469–1487)",
+      "warnings": [
+        "number 1469.4.28 missing",
+        "number 1487.7.20 missing"
+      ]
+    },
+    {
+      "id": "w:1576520:2",
+      "source": "Eikyū era (1113.7.13-1118.4.3)",
+      "th": "ศักราชเอคีว (1113–1118)",
+      "warnings": [
+        "number 1113.7.13 missing",
+        "number 1118.4.3 missing"
+      ]
+    },
+    {
+      "id": "w:1384840:4",
+      "source": "agility",
+      "th": "ความคล่องแคล่ว, ความเฉียบ (ของการเคลื่อนไหว)",
+      "warnings": [
+        "much longer than source"
+      ]
+    },
+    {
+      "id": "w:1409800:2",
+      "source": "to (e.g. score of 4 to 2, ratio of 3 to 1, vote of 320 to 180)",
+      "th": "ต่อ (เช่น 4 ต่อ 2, 3 ต่อ 1)",
+      "warnings": [
+        "number 320 missing",
+        "number 180 missing"
+      ]
+    },
+    {
+      "id": "w:2082450:4",
+      "source": "university",
+      "th": "มหาวิทยาลัย (เช่น 東大 = มหาวิทยาลัยโตเกียว)",
+      "warnings": [
+        "much longer than source"
+      ]
+    },
+    {
+      "id": "w:2088240:3",
+      "source": "student",
+      "th": "นักเรียน, นักศึกษา (เช่น 一年生 = นักเรียนปีหนึ่ง)",
+      "warnings": [
+        "much longer than source"
+      ]
+    },
+    {
+      "id": "w:1502850:1",
+      "source": "one-tenth; one percent (one-tenth of a wari); 3 mm (one-tenth of a sun); 2.4 mm (one-tenth of a mon, a traditional unit used to measure shoe sizes); 0.1 degree (one-tenth of a do, used to measure body temperature on any temperature scale)",
+      "th": "หนึ่งในสิบ, หนึ่งเปอร์เซ็นต์ (หน่วยเก่าต่างๆ)",
+      "warnings": [
+        "number 3 missing",
+        "number 2.4 missing",
+        "number 0.1 missing"
+      ]
+    }
+  ],
+  "missing": [],
+  "unknown_ids": [],
+  "same_source_different_thai": {
+    "money": [
+      "เงิน",
+      "เงินตรา"
+    ],
+    "stomach": [
+      "กระเพาะอาหาร",
+      "ท้อง"
+    ],
+    "abundant; plentiful; rich; ample": [
+      "อุดมสมบูรณ์, มากมาย",
+      "อุดมสมบูรณ์, มากมาย, หลากหลาย"
+    ],
+    "sympathy": [
+      "ความเห็นอกเห็นใจ",
+      "ความเห็นใจ"
+    ],
+    "value; worth; merit": [
+      "คุณค่า",
+      "คุณค่า, มูลค่า"
+    ],
+    "pipe; tube": [
+      "ท่อ",
+      "ท่อ, หลอด"
+    ],
+    "noon; midday": [
+      "เที่ยง, เที่ยงวัน",
+      "เที่ยงวัน"
+    ],
+    "each other; one another": [
+      "ซึ่งกันและกัน",
+      "ซึ่งกันและกัน, ต่างฝ่ายต่าง"
+    ],
+    "end; close": [
+      "การสิ้นสุด",
+      "ช่วงปลาย, ตอนท้าย"
+    ],
+    "to sell": [
+      "ขาย (ต่อ)",
+      "ขาย, แบ่งขาย"
+    ],
+    "coin": [
+      "เหรียญ (เงิน)",
+      "เหรียญ (เช่น 100円玉)"
+    ],
+    "mistake; error; blunder": [
+      "ความผิดพลาด",
+      "ความผิดพลาด, ข้อผิดพลาด"
+    ],
+    "speech": [
+      "คำพูด",
+      "สุนทรพจน์"
+    ],
+    "Japan": [
+      "ญี่ปุ่น",
+      "ญี่ปุ่น, ประเทศญี่ปุ่น"
+    ],
+    "un-; non-": [
+      "ไม่…",
+      "ไม่… (เช่น 不可能 = เป็นไปไม่ได้)",
+      "ไม่…, ไร้… (เช่น 無意味 = ไร้ความหมาย)"
+    ]
+  }
+}

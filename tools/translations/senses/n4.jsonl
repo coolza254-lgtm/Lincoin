@@ -61,7 +61,7 @@
 {"id": "w:1307770:7", "en": "new share", "th": "หุ้นใหม่", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1307770:8", "en": "player who is not a dealer", "th": "ผู้เล่นที่ไม่ใช่เจ้ามือ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1307770:9", "en": "young geisha; young prostitute", "th": "เกอิชาสาว", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1307770:10", "en": "bird egg", "th": "ไข่นก", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1307770:10", "en": "bird egg", "th": "ไข่นก", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1307770:11", "en": "-er (often of young women)", "th": "คำเติมท้ายชื่อ (มักใช้กับผู้หญิง)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1283500:1", "en": "senior high school; high school", "th": "โรงเรียนมัธยมปลาย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1578700:1", "en": "factory; plant; mill; workshop", "th": "โรงงาน", "note": null, "status": "auto_checked", "v": 1}
@@ -75,7 +75,7 @@
 {"id": "w:1293810:4", "en": "one's final moments; one's death; one's end", "th": "วาระสุดท้าย, ความตาย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1293990:1", "en": "beginning; outset; first; onset", "th": "ตอนแรก, ครั้งแรก, เริ่มแรก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1303770:1", "en": "industry", "th": "อุตสาหกรรม", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1303770:2", "en": "livelihood; occupation", "th": "อาชีพ, การทำมาหากิน", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1303770:2", "en": "livelihood; occupation", "th": "อาชีพ, การทำมาหากิน", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1312420:1", "en": "match; game; bout; contest", "th": "การแข่งขัน, แมตช์", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1313850:1", "en": "accident; incident; trouble", "th": "อุบัติเหตุ, เหตุขัดข้อง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1313850:2", "en": "circumstances; reasons", "th": "เหตุผล, สถานการณ์", "note": null, "status": "auto_checked", "v": 1}
@@ -145,8 +145,8 @@
 {"id": "w:1558050:1", "en": "history", "th": "ประวัติศาสตร์", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1159810:1", "en": "medicine; medical science", "th": "แพทยศาสตร์", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1155180:1", "en": "within; inside of; less than", "th": "ภายใน, ไม่เกิน", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1172830:1", "en": "operation (of a machine); running; working", "th": "การทำงาน (ของเครื่องจักร), การเดินเครื่อง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1172830:2", "en": "driving (a vehicle)", "th": "การขับ (รถ)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1172830:1", "en": "operation (of a machine); running; working", "th": "การทำงาน (ของเครื่องจักร), การเดินเครื่อง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1172830:3", "en": "use (of capital, funds, etc.); management; investment", "th": "การบริหาร (เงินทุน)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1588730:1", "en": "to choose; to select; to pick (out)", "th": "เลือก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1576900:1", "en": "sound; noise", "th": "เสียง", "note": null, "status": "auto_checked", "v": 1}
@@ -320,8 +320,8 @@
 {"id": "w:1550190:9", "en": "bottom (of an inning); last half (of an inning)", "th": "ครึ่งหลังของอินนิ่ง (เบสบอล)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1172870:1", "en": "driver; chauffeur", "th": "คนขับรถ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1198880:1", "en": "conversation; talk; chat", "th": "บทสนทนา, การพูดคุย", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1590480:1", "en": "shape; form; figure; posture; pose", "th": "รูปร่าง, ท่าทาง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1590480:2", "en": "appearance; style", "th": "การแต่งตัว, ลักษณะภายนอก", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1590480:1", "en": "shape; form; figure; posture; pose", "th": "รูปร่าง, ท่าทาง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1590480:3", "en": "state; situation", "th": "สภาพ, สถานการณ์", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1590480:4", "en": "suitable; fit; reasonable", "th": "เหมาะสม, พอดี", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1590480:5", "en": "about", "th": "ประมาณ〜", "note": null, "status": "auto_checked", "v": 1}
@@ -350,8 +350,8 @@
 {"id": "w:1596780:1", "en": "typhoon; hurricane", "th": "ไต้ฝุ่น, พายุ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1207250:1", "en": "enjoyment; pleasure; amusement; delight; joy; fun; diversion; hobby", "th": "ความสนุก, ความเพลิดเพลิน, งานอดิเรก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1207250:2", "en": "anticipation; looking forward to; something to look forward to", "th": "สิ่งที่ตั้งตารอ", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1426530:1", "en": "attention; notice; heed", "th": "ความสนใจ, ความใส่ใจ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1426530:2", "en": "care; caution; precaution; looking out (for); watching out (for)", "th": "ความระมัดระวัง", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1426530:1", "en": "attention; notice; heed", "th": "ความสนใจ, ความใส่ใจ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1426530:3", "en": "advice; warning; caution; reminder", "th": "คำเตือน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1426530:4", "en": "admonishment; reprimand; telling-off", "th": "การตักเตือน, การดุ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1423650:1", "en": "junior high school; middle school; lower secondary school", "th": "โรงเรียนมัธยมต้น", "note": null, "status": "auto_checked", "v": 1}
@@ -369,7 +369,7 @@
 {"id": "w:1215230:4", "en": "among (a group)", "th": "ท่ามกลาง (กลุ่ม)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1215230:5", "en": "relations (between); relationship", "th": "ความสัมพันธ์", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1215230:6", "en": "midpoint; average; halfway; middle ground", "th": "ตรงกลาง, ค่าเฉลี่ย", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1215230:7", "en": "due to; because of", "th": "เนื่องจาก, เพราะ", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1215230:7", "en": "due to; because of", "th": "เนื่องจาก, เพราะ", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1153890:1", "en": "peace of mind; relief; (sense of) security; safety; assurance; confidence", "th": "ความสบายใจ, ความโล่งใจ, ความอุ่นใจ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1562850:1", "en": "arm", "th": "แขน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1562850:2", "en": "ability; skill; talent; competence", "th": "ฝีมือ, ความสามารถ", "note": null, "status": "auto_checked", "v": 1}
@@ -420,8 +420,8 @@
 {"id": "w:1441390:9", "en": "counter for goods, items, articles of clothing, works of art, etc.", "th": "ลักษณนามของสิ่งของ, เสื้อผ้า, งานศิลปะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1367120:1", "en": "doll; puppet; marionette", "th": "ตุ๊กตา, หุ่นเชิด", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1367120:2", "en": "puppet (person under the control of another); straw man; yes-man", "th": "หุ่นเชิด (คนที่ถูกควบคุม)", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1467710:1", "en": "heat", "th": "ความร้อน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1467710:2", "en": "fever; temperature", "th": "ไข้", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1467710:1", "en": "heat", "th": "ความร้อน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1467710:3", "en": "zeal; passion; enthusiasm; mania; craze; rage", "th": "ความหลงใหล, ความคลั่งไคล้", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1467910:1", "en": "zealous; enthusiastic; ardent; fervent; keen; eager", "th": "กระตือรือร้น, ขยัน, ตั้งใจ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1376310:1", "en": "star (usu. excluding the Sun); planet (usu. excluding Earth); heavenly body", "th": "ดาว, ดวงดาว", "note": null, "status": "auto_checked", "v": 1}
@@ -429,17 +429,17 @@
 {"id": "w:1376310:3", "en": "star (actor, player, etc.)", "th": "ดารา", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1376310:4", "en": "dot; spot; fleck", "th": "จุด", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1376310:5", "en": "bullseye", "th": "จุดศูนย์กลางเป้า", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1376310:6", "en": "perp; perpetrator; culprit; offender; suspect", "th": "ผู้ต้องหา, คนร้าย", "note": "ภาษาสแลง", "status": "auto_checked", "v": 1}
+{"id": "w:1376310:6", "en": "perp; perpetrator; culprit; offender; suspect", "th": "ผู้ต้องหา, คนร้าย", "note": "คำสแลง", "status": "auto_checked", "v": 1}
 {"id": "w:1376310:7", "en": "one's star (that determines one's fate); one's fortune", "th": "ดวงชะตา", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1376310:8", "en": "point; score", "th": "แต้ม, คะแนน", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1376310:8", "en": "point; score", "th": "แต้ม, คะแนน (ซูโม่)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1376310:9", "en": "star point (intersection marked with a dot); hoshi", "th": "จุดดาว (จุดบนกระดานหมากล้อม)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1376310:10", "en": "(pyrotechnic) star", "th": "ลูกไฟ (ดอกไม้ไฟ)", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1604290:1", "en": "circumference; girth", "th": "เส้นรอบวง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1604290:2", "en": "surroundings; neighbourhood; neighborhood; vicinity", "th": "บริเวณรอบๆ, ละแวก", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1604290:1", "en": "circumference; girth", "th": "เส้นรอบวง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1604290:3", "en": "people surrounding oneself; surrounding circumstances", "th": "คนรอบข้าง, สภาพแวดล้อม", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1526920:1", "en": "cartoon; comic; comic strip; manga", "th": "การ์ตูน, มังงะ", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1530970:1", "en": "unreasonable; unnatural; unjustifiable", "th": "ไม่สมเหตุสมผล", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1530970:2", "en": "impossible", "th": "เป็นไปไม่ได้", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1530970:1", "en": "unreasonable; unnatural; unjustifiable", "th": "ไม่สมเหตุสมผล", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1530970:3", "en": "forcible; forced; compulsory", "th": "บังคับ, ฝืน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1530970:4", "en": "excessive (work, etc.); immoderate", "th": "มากเกินไป (งาน)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1530970:5", "en": "to work too hard; to try too hard", "th": "ฝืนตัวเอง, ทำเกินกำลัง", "note": null, "status": "auto_checked", "v": 1}
@@ -477,15 +477,15 @@
 {"id": "w:1402730:4", "en": "to spend (time); to pass; to lead (a life); to live", "th": "ใช้ (เวลา), ใช้ชีวิต", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1402730:5", "en": "to pass (on, along); to advance (a runner)", "th": "ส่งต่อ, ส่งนักวิ่งไปฐานถัดไป", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1402730:6", "en": "to affix (okurigana)", "th": "เติมโอคุริงานะ (คานะต่อท้ายคันจิ)", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1489340:1", "en": "surface", "th": "พื้นผิว", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1489340:2", "en": "face (i.e. the visible side of an object)", "th": "ด้านหน้า (ของสิ่งของ)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1489340:1", "en": "surface", "th": "พื้นผิว", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1489340:3", "en": "front (of a building, etc.); obverse side (i.e. \"head\") of a coin", "th": "หน้า (อาคาร), ด้านหัวของเหรียญ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1489340:4", "en": "outside; exterior", "th": "ข้างนอก, ภายนอก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1489340:5", "en": "appearance", "th": "ลักษณะภายนอก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1489340:6", "en": "public", "th": "ต่อหน้าสาธารณะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1489340:7", "en": "first half (of an inning); top (of an inning)", "th": "ครึ่งแรกของอินนิ่ง (เบสบอล)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1489340:8", "en": "cover (for tatami mats, etc.)", "th": "ผ้าหุ้ม (เสื่อทาทามิ)", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1489340:9", "en": "foreground", "th": "ฉากหน้า", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1489340:9", "en": "foreground", "th": "เบื้องหน้า (คอมพิวเตอร์)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1489340:10", "en": "Omotesenke school of tea ceremony", "th": "สำนักพิธีชงชาโอโมเตะเซ็นเกะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1238550:1", "en": "mirror; looking-glass", "th": "กระจก (ส่อง)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1238550:2", "en": "barrel head", "th": "ฝาถัง", "note": null, "status": "auto_checked", "v": 1}
@@ -495,8 +495,8 @@
 {"id": "w:1223021:1", "en": "rule; regulation", "th": "กฎ, ระเบียบ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1242350:1", "en": "neighbourhood; neighborhood; vicinity", "th": "ละแวกบ้าน, แถวบ้าน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1401910:1", "en": "grass; weed; herb; thatch", "th": "หญ้า, วัชพืช, สมุนไพร", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1401910:2", "en": "ninja", "th": "นินจา", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
-{"id": "w:1401910:3", "en": "marijuana; cannabis", "th": "กัญชา", "note": "ภาษาสแลง", "status": "auto_checked", "v": 1}
+{"id": "w:1401910:2", "en": "ninja", "th": "นินจา", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1401910:3", "en": "marijuana; cannabis", "th": "กัญชา", "note": "คำสแลง", "status": "auto_checked", "v": 1}
 {"id": "w:1401910:4", "en": "not genuine; substandard", "th": "ของไม่แท้, ระดับรอง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1401910:5", "en": "LOL; haha", "th": "555 (หัวเราะ)", "note": "ภาษาเน็ต", "status": "auto_checked", "v": 1}
 {"id": "w:1173100:1", "en": "cloud", "th": "เมฆ", "note": null, "status": "auto_checked", "v": 1}
@@ -523,7 +523,7 @@
 {"id": "w:1172660:5", "en": "to go (well, etc.); to proceed; to progress", "th": "ดำเนินไป (ด้วยดี)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1523400:1", "en": "translation", "th": "การแปล", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1523400:2", "en": "deciphering; decoding", "th": "การถอดรหัส", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1523400:3", "en": "translation", "th": "การแปล (โปรแกรม)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1523400:3", "en": "translation", "th": "การแปลรหัสพันธุกรรม (ชีววิทยา)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1426680:1", "en": "insect; bug; cricket; moth", "th": "แมลง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1426680:2", "en": "worm; roundworm", "th": "หนอน, พยาธิ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1426680:3", "en": "thing inside one's body believed to influence one's thoughts and feelings; (one's) unconscious", "th": "สิ่งที่เชื่อว่าอยู่ในตัวและมีผลต่อความรู้สึก, จิตใต้สำนึก", "note": null, "status": "auto_checked", "v": 1}
@@ -551,8 +551,8 @@
 {"id": "w:1592500:3", "en": "way; manner", "th": "วิธี, ลักษณะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1592500:4", "en": "circumstance; luck", "th": "สถานการณ์, โชค", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1592500:5", "en": "face; dignity; decency; propriety", "th": "ความเหมาะสม, หน้าตา (ศักดิ์ศรี)", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1184170:1", "en": "to hang; to suspend; to wear (e.g. decoration)", "th": "แขวน, ห้อย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1184170:2", "en": "to lower; to reduce; to bring down", "th": "ลด, ทำให้ต่ำลง", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1184170:1", "en": "to hang; to suspend; to wear (e.g. decoration)", "th": "แขวน, ห้อย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1184170:3", "en": "to demote; to move back; to pull back", "th": "ลดตำแหน่ง, ถอย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1184170:4", "en": "to clear (plates); to remove (food, etc. from table or altar)", "th": "เก็บ (จาน), ยกออก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1184170:5", "en": "to keep on playing after one has formed a scoring combination with captured cards", "th": "เล่นต่อหลังจากได้ชุดไพ่ทำแต้มแล้ว", "note": null, "status": "auto_checked", "v": 1}
@@ -573,10 +573,10 @@
 {"id": "w:1227370:2", "en": "it's been a long time; long time no see", "th": "ไม่ได้เจอกันนาน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1521400:1", "en": "I; me", "th": "ผม (สรรพนามผู้ชาย)", "note": "ผู้ชายใช้", "status": "auto_checked", "v": 1}
 {"id": "w:1521400:2", "en": "you", "th": "หนู, เธอ (เรียกเด็กผู้ชาย)", "note": "ภาษาพูด", "status": "auto_checked", "v": 1}
-{"id": "w:1521400:3", "en": "manservant", "th": "คนรับใช้ชาย", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1521400:3", "en": "manservant", "th": "คนรับใช้ชาย", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1554010:1", "en": "both; both sides; both parties", "th": "ทั้งสอง, ทั้งสองฝ่าย", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1284430:1", "en": "to come together; to merge; to unite; to meet", "th": "มาบรรจบ, รวมกัน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1284430:2", "en": "to fit; to match; to suit; to agree with; to be correct", "th": "เข้ากัน, พอดี, ถูกต้อง", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1284430:1", "en": "to come together; to merge; to unite; to meet", "th": "มาบรรจบ, รวมกัน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1284430:3", "en": "to be profitable; to be equitable", "th": "คุ้ม, ยุติธรรม", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1284430:4", "en": "to do ... to each other; to do ... together", "th": "〜กันและกัน, 〜ด้วยกัน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1457730:1", "en": "inside; within", "th": "ข้างใน, ภายใน", "note": null, "status": "auto_checked", "v": 1}
@@ -589,8 +589,8 @@
 {"id": "w:1457730:8", "en": "my spouse; my husband; my wife", "th": "สามี/ภรรยาของฉัน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1457730:9", "en": "signed on behalf of (husband's name) by his wife", "th": "ภรรยาเซ็นแทนสามี", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1457730:10", "en": "I; me", "th": "ฉัน", "note": "ภาษาถิ่นคันไซ มักใช้โดยผู้หญิง", "status": "auto_checked", "v": 1}
-{"id": "w:1457730:11", "en": "imperial palace grounds", "th": "เขตพระราชวัง", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
-{"id": "w:1457730:12", "en": "emperor", "th": "จักรพรรดิ", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1457730:11", "en": "imperial palace grounds", "th": "เขตพระราชวัง", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1457730:12", "en": "emperor", "th": "จักรพรรดิ", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1486360:1", "en": "beautiful; pretty; lovely; sweet; pure (heart, friendship, etc.)", "th": "สวยงาม, งดงาม", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1546880:1", "en": "dancing; dance", "th": "การเต้นรำ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1546880:2", "en": "iteration mark (used to represent repetition of the previous character)", "th": "เครื่องหมายซ้ำตัวอักษร", "note": null, "status": "auto_checked", "v": 1}
@@ -646,8 +646,8 @@
 {"id": "w:1396840:1", "en": "grandfather", "th": "ปู่, ตา", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1396840:2", "en": "old man", "th": "ชายชรา", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1396840:3", "en": "kyogen mask used for the role of an old man", "th": "หน้ากากเคียวเง็นสำหรับบทชายชรา", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1157080:1", "en": "good; advantage; benefit; welfare", "th": "ประโยชน์, ผลดี", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1157080:2", "en": "sake; purpose; objective; aim", "th": "เพื่อ〜, จุดประสงค์", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1157080:1", "en": "good; advantage; benefit; welfare", "th": "ประโยชน์, ผลดี", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1157080:3", "en": "consequence; result; effect", "th": "เพราะ〜, ผลจาก〜", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1157080:4", "en": "affecting; regarding; concerning", "th": "เกี่ยวกับ〜, สำหรับ〜", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1426590:1", "en": "injection; jab; shot", "th": "การฉีดยา", "note": null, "status": "auto_checked", "v": 1}
@@ -687,7 +687,7 @@
 {"id": "w:1548550:21", "en": "to fall (upon; of light, a shadow, one's gaze, etc.)", "th": "(แสง, เงา, สายตา) ตกลงบน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1548550:22", "en": "to pass out (in judo); to fall unconscious", "th": "หมดสติ (ในยูโด)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1548550:23", "en": "to go down (of a website, server, etc.); to crash", "th": "(เว็บไซต์, เซิร์ฟเวอร์) ล่ม", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1548550:24", "en": "to log out (of an online game, chat room, etc.); to drop out; to leave; to go offline", "th": "ออฟไลน์, ออกจากเกม/แชท", "note": "ภาษาสแลง", "status": "auto_checked", "v": 1}
+{"id": "w:1548550:24", "en": "to log out (of an online game, chat room, etc.); to drop out; to leave; to go offline", "th": "ออฟไลน์, ออกจากเกม/แชท", "note": "คำสแลง", "status": "auto_checked", "v": 1}
 {"id": "w:1548550:25", "en": "to move to deeper water (of a fish in cold weather)", "th": "(ปลา) ย้ายไปน้ำลึก (ช่วงอากาศหนาว)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1548550:26", "en": "to die (of an animal)", "th": "(สัตว์) ตาย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1548550:27", "en": "to strike (of lightning)", "th": "(ฟ้า) ผ่า", "note": null, "status": "auto_checked", "v": 1}
@@ -716,8 +716,8 @@
 {"id": "w:1496890:1", "en": "futon; Japanese bedding consisting of a mattress and a duvet", "th": "ฟูก, ที่นอนญี่ปุ่น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1496890:2", "en": "round cushion used for Zen meditation (traditionally made of woven bulrush leaves)", "th": "เบาะกลมสำหรับนั่งสมาธิแบบเซน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1185930:1", "en": "underwear; undergarment; underclothes; lingerie", "th": "ชุดชั้นใน", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1349480:1", "en": "knowledge; awareness", "th": "การรู้, การทราบ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1349480:2", "en": "acceptance; consent; assent; agreement; compliance; acknowledgment; acknowledgement", "th": "การยินยอม, การรับทราบ", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1349480:1", "en": "knowledge; awareness", "th": "การรู้, การทราบ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1349480:3", "en": "forgiving; pardoning; excusing", "th": "การให้อภัย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1414920:1", "en": "considerably; greatly; a lot", "th": "ค่อนข้างมาก, มากทีเดียว", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1416700:1", "en": "shelf; ledge; rack", "th": "ชั้นวางของ", "note": null, "status": "auto_checked", "v": 1}
@@ -776,8 +776,8 @@
 {"id": "w:1352290:24", "en": "to be complete; to finish", "th": "〜เสร็จ, 〜ให้เสร็จ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1352290:25", "en": "adds the connotation of an action happening strongly or violently", "th": "(เติมท้ายกริยา) ให้ความหมายว่าทำอย่างรุนแรง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1352290:26", "en": "above; north of", "th": "ทางเหนือของ〜 (ในเกียวโต)", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1223660:1", "en": "to raise; to raise up; to set up; to pick up; to stand (something) up", "th": "ยกขึ้น, ตั้งขึ้น, พยุงขึ้น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1223660:2", "en": "to wake; to wake up; to waken; to awaken", "th": "ปลุก", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1223660:1", "en": "to raise; to raise up; to set up; to pick up; to stand (something) up", "th": "ยกขึ้น, ตั้งขึ้น, พยุงขึ้น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1223660:3", "en": "to cause; to bring about; to lead to; to trigger; to give rise to; to create; to generate (e.g. heat, electricity); to produce", "th": "ก่อให้เกิด, ทำให้เกิด", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1223660:4", "en": "to start; to begin; to launch; to establish; to found; to set up; to open", "th": "เริ่ม, ก่อตั้ง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1223660:5", "en": "to plough; to plow; to till", "th": "ไถ (ดิน)", "note": null, "status": "auto_checked", "v": 1}
@@ -798,14 +798,14 @@
 {"id": "w:1279680:3", "en": "to keep company; to care for; to look after; to entertain; to pay attention to; to spend time with", "th": "ดูแล, เอาใจใส่, ใช้เวลาด้วย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1279680:4", "en": "to interfere with; to meddle in", "th": "ยุ่ง, เข้าไปก้าวก่าย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1279680:5", "en": "to tease", "th": "แหย่, หยอกล้อ", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1279680:6", "en": "to banish; to prohibit", "th": "เนรเทศ, ห้าม", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1279680:6", "en": "to banish; to prohibit", "th": "เนรเทศ, ห้าม", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1591420:1", "en": "to be decided; to be settled; to be fixed; to be arranged", "th": "ถูกตัดสินใจ, ถูกกำหนด", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1591420:2", "en": "to be unchanging; to be the same (as always); to be fixed; to be set", "th": "เหมือนเดิมเสมอ, แน่นอนตายตัว", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1591420:3", "en": "to be a fixed rule; to be destined; to be a convention; to be a custom; to be common knowledge", "th": "เป็นกฎ, เป็นธรรมเนียม", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1591420:4", "en": "to be well executed (of a manoeuvre in a sport, game, etc.); to go well; to succeed; to connect (of a punch)", "th": "(ท่า) ได้ผล, สำเร็จ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1591420:5", "en": "to look good (of clothing); to look sharp; to be stylish; to suit one; to be held in place (of a hairdo)", "th": "ดูดี, เท่, เข้ากัน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1591420:6", "en": "to be struck and held (of a pose in kabuki)", "th": "(ท่าโพสในละครคาบุกิ) ตรึงนิ่ง", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1591420:7", "en": "to get high (on drugs)", "th": "เมา (ยา)", "note": "ภาษาสแลง", "status": "auto_checked", "v": 1}
+{"id": "w:1591420:7", "en": "to get high (on drugs)", "th": "เมา (ยา)", "note": "คำสแลง", "status": "auto_checked", "v": 1}
 {"id": "w:1250870:1", "en": "scenery; scene; landscape", "th": "ทิวทัศน์, วิว", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1260000:1", "en": "sightseeing; watching; viewing", "th": "การเที่ยวชม, การชม", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1260000:2", "en": "sightseer; spectator; viewer; onlooker", "th": "ผู้ชม, คนดู", "note": null, "status": "auto_checked", "v": 1}
@@ -835,14 +835,14 @@
 {"id": "w:1433030:11", "en": "to get across (e.g. of one's point); to be understood", "th": "(ความคิด) สื่อถึง, เข้าใจ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1433030:12", "en": "to pass for; to come across as; to seem like", "th": "ดูเหมือน〜", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1433030:13", "en": "to be straight (e.g. wood grain)", "th": "(ลายไม้) ตรง", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1433030:14", "en": "to be well-informed; to be wise", "th": "รอบรู้, ฉลาด", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1433030:14", "en": "to be well-informed; to be wise", "th": "รอบรู้, ฉลาด", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1433030:15", "en": "to do ... completely; to do ... thoroughly", "th": "〜จนตลอด, 〜อย่างทั่วถึง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1485520:1", "en": "airfield; airport; aerodrome", "th": "สนามบิน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1539040:1", "en": "tender; kind; gentle; graceful; affectionate; amiable", "th": "ใจดี, อ่อนโยน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1310050:1", "en": "(finger) ring", "th": "แหวน", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1165670:3", "en": "full; filled (with); brimming (with); crowded; packed", "th": "เต็ม, แน่น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1165670:1", "en": "one cup (of); one glass (of); one bowl (of); cupful; glassful; bowlful; spoonful", "th": "หนึ่งถ้วย, หนึ่งแก้ว, หนึ่งชาม", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1165670:2", "en": "one drink (of alcohol)", "th": "(เหล้า) หนึ่งแก้ว", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1165670:3", "en": "full; filled (with); brimming (with); crowded; packed", "th": "เต็ม, แน่น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1165670:4", "en": "fully; to capacity; to the maximum; as much as possible", "th": "เต็มที่, สุดความสามารถ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1165670:5", "en": "a lot; much; many", "th": "มาก, เยอะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1165670:6", "en": "all of ...; the entire ...", "th": "ตลอด〜, ทั้ง〜", "note": null, "status": "auto_checked", "v": 1}
@@ -951,12 +951,12 @@
 {"id": "w:1445690:2", "en": "to scold; to tell (someone) off", "th": "ดุ, ต่อว่า", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1192420:1", "en": "(my) wife", "th": "ภรรยา (ของผม)", "note": "คำถ่อมตัว ใช้เรียกภรรยาตัวเอง", "status": "auto_checked", "v": 1}
 {"id": "w:1192420:2", "en": "inside the home; one's family", "th": "ภายในบ้าน, ครอบครัว", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1432850:1", "en": "to go to and from (a place); to go back and forth between; to run between (e.g. bus, train, etc.); to ply between", "th": "ไปๆ มาๆ, (รถ) วิ่งระหว่าง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1432850:2", "en": "to go to (school, work, etc.); to attend; to commute; to frequent", "th": "ไป (โรงเรียน, ทำงาน) ประจำ, เดินทางไปกลับ", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1432850:1", "en": "to go to and from (a place); to go back and forth between; to run between (e.g. bus, train, etc.); to ply between", "th": "ไปๆ มาๆ, (รถ) วิ่งระหว่าง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1432850:3", "en": "to circulate (e.g. blood, electricity); to be communicated (e.g. thought)", "th": "(เลือด, ไฟฟ้า) ไหลเวียน, (ความคิด) สื่อถึงกัน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1432850:4", "en": "to resemble", "th": "คล้าย", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1228690:1", "en": "hurrying (to somewhere); rushing; hastening", "th": "การรีบไป, การเร่งรุด", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1228690:2", "en": "express (train)", "th": "รถไฟด่วน", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1228690:1", "en": "hurrying (to somewhere); rushing; hastening", "th": "การรีบไป, การเร่งรุด", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1215260:1", "en": "to be in time (for)", "th": "ทันเวลา", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1215260:2", "en": "to serve (suit, meet) the purpose; to be good enough; to be enough; to manage; to make do", "th": "ใช้ได้, พอใช้, พอเพียง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1605630:1", "en": "soft; tender; supple; flexible; limber; limp", "th": "นุ่ม, อ่อน, ยืดหยุ่น", "note": null, "status": "auto_checked", "v": 1}
@@ -1040,9 +1040,9 @@
 {"id": "w:1151120:4", "en": "courtesy visit (to offer condolences, say congratulations, pay respect, introduce oneself, etc.)", "th": "การไปเยี่ยมเพื่อแสดงความเคารพ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1151120:5", "en": "revenge; retaliation", "th": "การแก้แค้น", "note": "ภาษาพูด", "status": "auto_checked", "v": 1}
 {"id": "w:1151120:6", "en": "a fine thing to say", "th": "พูดได้ดีนี่ (ประชด)", "note": "ใช้แบบขำๆ", "status": "auto_checked", "v": 1}
-{"id": "w:1151120:7", "en": "dialoging (with another Zen practitioner to ascertain their level of enlightenment)", "th": "การสนทนาธรรม (ในนิกายเซน)", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
-{"id": "w:1151120:8", "en": "relationship (between people); connection", "th": "ความสัมพันธ์", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
-{"id": "w:1151120:9", "en": "intervention; mediation; mediator", "th": "การไกล่เกลี่ย", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1151120:7", "en": "dialoging (with another Zen practitioner to ascertain their level of enlightenment)", "th": "การสนทนาธรรม (ในนิกายเซน)", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1151120:8", "en": "relationship (between people); connection", "th": "ความสัมพันธ์", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1151120:9", "en": "intervention; mediation; mediator", "th": "การไกล่เกลี่ย", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1421900:1", "en": "to do", "th": "ทำ", "note": "คำถ่อมตัว", "status": "auto_checked", "v": 1}
 {"id": "w:1588320:1", "en": "to copy; to duplicate; to reproduce; to trace; to transcribe", "th": "คัดลอก, ลอก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1588320:2", "en": "to describe; to depict; to portray; to express", "th": "บรรยาย, พรรณนา", "note": null, "status": "auto_checked", "v": 1}
@@ -1053,7 +1053,7 @@
 {"id": "w:1184160:3", "en": "to move back; to step back; to withdraw; to retire", "th": "ถอยหลัง, ถอยออก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1184160:4", "en": "to deteriorate; to fall off; to be downgraded", "th": "ตกต่ำ, ถูกลดระดับ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1184160:5", "en": "to get closer to the present day", "th": "ใกล้ปัจจุบันมากขึ้น", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1184160:6", "en": "to play a sagari; to extend downwards", "th": "(ซูโม่) ห้อยพู่ซาการิ", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1184160:6", "en": "to play a sagari; to extend downwards", "th": "เดินหมากลงด้านล่าง (ในหมากล้อม)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1365980:1", "en": "to advance (spatially); to go forward; to move forward", "th": "เดินหน้า, ก้าวไปข้างหน้า", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1365980:2", "en": "to precede; to go ahead (of); to be ahead (e.g. of the times); to advance (to the next stage); to move on (e.g. to the next grade); to enter (e.g. university)", "th": "นำหน้า, ขึ้นขั้นต่อไป, เข้า (มหาวิทยาลัย)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1365980:3", "en": "to make progress; to move ahead (e.g. of work); to continue; to progress; to advance; to get on (with)", "th": "คืบหน้า, ก้าวหน้า", "note": null, "status": "auto_checked", "v": 1}
@@ -1120,7 +1120,7 @@
 {"id": "w:1208640:4", "en": "to fail (an examination)", "th": "สอบตก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1208640:5", "en": "to lose (a position); to be demoted", "th": "เสียตำแหน่ง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1208640:6", "en": "to bomb (when telling a joke); to fall flat", "th": "(มุก) แป้ก", "note": "ภาษาพูด", "status": "auto_checked", "v": 1}
-{"id": "w:1208640:7", "en": "to slide (move)", "th": "เลื่อน (ขยับ)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1208640:7", "en": "to slide (move)", "th": "เดินหมากแบบไถล (ในหมากล้อม)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1474850:1", "en": "to stay at (e.g. hotel)", "th": "พัก, ค้างคืน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1474850:2", "en": "to be docked; to be berthed; to be moored", "th": "(เรือ) จอด", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1599760:1", "en": "smell; scent; odour; odor; stench", "th": "กลิ่น", "note": null, "status": "auto_checked", "v": 1}
@@ -1142,8 +1142,8 @@
 {"id": "w:1323010:1", "en": "to apologize (apologise)", "th": "ขอโทษ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1323010:2", "en": "to refuse; to decline", "th": "ปฏิเสธ", "note": "คำเก่า", "status": "auto_checked", "v": 1}
 {"id": "w:1323010:3", "en": "to be unable to bear; to be defeated (by); to be at a loss; to be stumped (by)", "th": "ทนไม่ไหว, จนปัญญา", "note": "คำเก่า", "status": "auto_checked", "v": 1}
-{"id": "w:1291270:1", "en": "to lift up; to hold up; to raise", "th": "ยกขึ้น, ชูขึ้น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1291270:2", "en": "to give; to present; to offer", "th": "ให้, มอบให้", "note": "คำถ่อมตัว", "status": "auto_checked", "v": 1}
+{"id": "w:1291270:1", "en": "to lift up; to hold up; to raise", "th": "ยกขึ้น, ชูขึ้น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1291270:3", "en": "to do (for someone)", "th": "ทำ〜ให้", "note": "คำถ่อมตัว", "status": "auto_checked", "v": 1}
 {"id": "w:1600280:1", "en": "throat", "th": "คอ, ลำคอ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1600280:2", "en": "singing voice", "th": "เสียงร้องเพลง", "note": null, "status": "auto_checked", "v": 1}
@@ -1238,7 +1238,7 @@
 {"id": "w:1529390:1", "en": "to sleep", "th": "นอนหลับ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1529390:2", "en": "to die; to rest (in peace); to lie (buried); to sleep (in the grave)", "th": "ตาย, หลับใหล (ในหลุมศพ)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1529390:3", "en": "to lie idle (e.g. of resources); to lie unused; to lie untapped; to lie untouched", "th": "(ทรัพยากร) ถูกทิ้งไว้ไม่ได้ใช้", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1529390:4", "en": "to close one's eyes", "th": "หลับตา", "note": "ภาษาโบราณ", "status": "auto_checked", "v": 1}
+{"id": "w:1529390:4", "en": "to close one's eyes", "th": "หลับตา", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1332570:1", "en": "to pick up; to gather", "th": "เก็บ (ของ)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1332570:2", "en": "to find (and pick up; something someone has dropped)", "th": "เก็บได้ (ของที่คนอื่นทำตก)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1332570:3", "en": "to select; to choose; to pick out", "th": "เลือก, คัด", "note": null, "status": "auto_checked", "v": 1}
@@ -1263,7 +1263,7 @@
 {"id": "w:1476430:1", "en": "should (be); bound (to be); expected (to be); must (be)", "th": "น่าจะ, ควรจะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1476430:2", "en": "nock (of a bow)", "th": "ปลายคันธนู (ที่คล้องสาย)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1476430:3", "en": "nock (of an arrow)", "th": "ปลายลูกธนู (ที่พาดสาย)", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1476430:4", "en": "nock-shaped grip (between thumb and forefinger)", "th": "ช่องระหว่างนิ้วโป้งกับนิ้วชี้", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1476430:4", "en": "nock-shaped grip (between thumb and forefinger)", "th": "ท่าจับด้วยง่ามนิ้วโป้งกับนิ้วชี้ (ซูโม่)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1476430:5", "en": "wooden frame on the tip of the mast of a Japanese ship that prevents the hawser from falling out", "th": "โครงไม้ปลายเสากระโดงเรือญี่ปุ่น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1535910:1", "en": "to receive; to take; to accept", "th": "ได้รับ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1535910:2", "en": "to get someone to do something", "th": "ให้ (คนอื่น) ทำ〜ให้", "note": null, "status": "auto_checked", "v": 1}
@@ -1277,8 +1277,8 @@
 {"id": "w:1447000:1", "en": "to throw; to hurl; to fling; to toss; to cast", "th": "ขว้าง, โยน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1447000:2", "en": "to give up; to abandon; to throw away", "th": "ยอมแพ้, ทิ้ง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1447000:3", "en": "to cast (a glance, shadow, doubt, etc.)", "th": "ทอด (สายตา, เงา), ทำให้เกิด (ความสงสัย)", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1535880:1", "en": "to turn back (e.g. half-way)", "th": "ย้อนกลับ (กลางทาง)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1535880:2", "en": "to return; to go back", "th": "กลับ, กลับไป", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1535880:1", "en": "to turn back (e.g. half-way)", "th": "ย้อนกลับ (กลางทาง)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1535880:3", "en": "to recover (e.g. something lost); to be returned", "th": "ได้คืน, คืนสู่สภาพเดิม", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1535880:4", "en": "to rebound; to spring back", "th": "เด้งกลับ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1390800:1", "en": "shallow; superficial", "th": "ตื้น, ผิวเผิน", "note": null, "status": "auto_checked", "v": 1}
@@ -1295,13 +1295,13 @@
 {"id": "w:1305700:5", "en": "to speak to (a large crowd at a theatre, etc.)", "th": "กล่าวต่อหน้าผู้ชม", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1408220:1", "en": "to put on weight; to gain weight; to grow fat; to get stout", "th": "อ้วนขึ้น, น้ำหนักขึ้น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1346370:1", "en": "to eat; to drink", "th": "ทาน, รับประทาน, ดื่ม", "note": "คำยกย่อง", "status": "auto_checked", "v": 1}
+{"id": "w:1219680:3", "en": "to stop by (while on one's way to another place); to drop by; to make a short visit", "th": "แวะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1219680:1", "en": "to approach; to draw near; to come near; to be close to", "th": "เข้าใกล้, เขยิบเข้าไป", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1219680:2", "en": "to gather (in one place); to come together; to meet", "th": "มารวมกัน, ชุมนุม", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1219680:3", "en": "to stop by (while on one's way to another place); to drop by; to make a short visit", "th": "แวะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1219680:4", "en": "to grow old; to grow high (number, etc.)", "th": "(อายุ) มากขึ้น, (ตัวเลข) สูงขึ้น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1219680:5", "en": "to grow (wrinkly)", "th": "(รอยย่น) เกิดขึ้น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1219680:6", "en": "to lean against; to recline on", "th": "พิง", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1219680:7", "en": "to push one's opponent while holding their belt", "th": "ดันคู่ต่อสู้ขณะจับเข็มขัด", "note": "ซูโม่", "status": "auto_checked", "v": 1}
+{"id": "w:1219680:7", "en": "to push one's opponent while holding their belt", "th": "ดันคู่ต่อสู้ขณะจับเข็มขัด (ซูโม่)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1219680:8", "en": "to decide on a price and come to a deal", "th": "ตกลงราคา", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1219680:9", "en": "to be swayed by (a person); to yield to", "th": "คล้อยตาม, ยอมตาม", "note": "คำโบราณ", "status": "auto_checked", "v": 1}
 {"id": "w:1222770:1", "en": "to pray; to say a prayer; to say grace", "th": "อธิษฐาน, สวดมนต์", "note": null, "status": "auto_checked", "v": 1}
@@ -1371,8 +1371,8 @@
 {"id": "w:1451210:4", "en": "to be touched; to be influenced", "th": "หวั่นไหว, ได้รับอิทธิพล", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1451210:5", "en": "to change; to vary; to fluctuate; to waver", "th": "เปลี่ยนแปลง, ผันผวน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1451210:6", "en": "to be transferred", "th": "ถูกย้าย (ตำแหน่ง)", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1310460:1", "en": "skillful; skilful; skilled; good; expert; clever (expression, trick, etc.); apt; appropriate", "th": "เก่ง, ชำนาญ, เหมาะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1310460:2", "en": "delicious; tasty; good; nice", "th": "อร่อย", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1310460:1", "en": "skillful; skilful; skilled; good; expert; clever (expression, trick, etc.); apt; appropriate", "th": "เก่ง, ชำนาญ, เหมาะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1310460:3", "en": "good (deal, idea, etc.); profitable; promising; lucky; fortunate; successful; satisfactory; splendid", "th": "ดี (ข้อเสนอ, ความคิด), โชคดี, ราบรื่น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1219510:1", "en": "happy; glad; pleased; delighted; overjoyed", "th": "ดีใจ, ยินดี", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1219510:2", "en": "joyful; delightful; gratifying; pleasant", "th": "น่ายินดี, น่าปลื้ม", "note": null, "status": "auto_checked", "v": 1}
@@ -1478,14 +1478,14 @@
 {"id": "w:1594400:2", "en": "strongly (built); solidly; sturdily; steadily", "th": "มั่นคง, แข็งแรง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1594400:3", "en": "properly; well; sufficiently; hard (working, etc.); fully; completely", "th": "อย่างเต็มที่, อย่างดี, อย่างจริงจัง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1594400:4", "en": "reliably; dependably; levelheadedly; shrewdly; wisely; cleverly", "th": "ไว้ใจได้, หนักแน่น, เฉลียวฉลาด", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1304420:1", "en": "for a moment; for a minute", "th": "สักครู่", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1304420:2", "en": "for a while; for some time", "th": "สักพัก, ระยะหนึ่ง", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1304420:1", "en": "for a moment; for a minute", "th": "สักครู่", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1304420:3", "en": "for the time being; for now", "th": "ในตอนนี้, ชั่วคราว", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1304420:4", "en": "it's been a long time; long time no see", "th": "ไม่ได้เจอกันนานเลย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1065680:1", "en": "jam", "th": "แยม", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1420410:1", "en": "to notify; to advise; to inform", "th": "แจ้ง, บอก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1066680:1", "en": "suit (clothing)", "th": "ชุดสูท", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1066680:2", "en": "suit", "th": "ชุด (ไพ่, เสื้อผ้า)", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1066680:2", "en": "suit", "th": "ชุดไพ่ (เช่น โพดำ, หัวใจ)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1066690:1", "en": "suitcase", "th": "กระเป๋าเดินทาง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1586265:1", "en": "to become less crowded; to thin out; to get empty", "th": "ว่าง, คนน้อยลง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1586265:2", "en": "to be hungry", "th": "หิว (ท้องว่าง)", "note": null, "status": "auto_checked", "v": 1}
@@ -1493,8 +1493,8 @@
 {"id": "w:1068550:2", "en": "curtain", "th": "ม่าน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1068550:3", "en": "raster", "th": "สกรีน (การพิมพ์)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1068550:4", "en": "room divider; partition wall", "th": "ฉากกั้นห้อง", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1374550:1", "en": "terrible; dreadful", "th": "น่ากลัว, น่าสยอง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1374550:2", "en": "amazing (e.g. of strength); great (e.g. of skills); wonderful; terrific", "th": "สุดยอด, เยี่ยม, เก่งมาก", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1374550:1", "en": "terrible; dreadful", "th": "น่ากลัว, น่าสยอง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1374550:3", "en": "to a great extent; vast (in numbers)", "th": "มหาศาล, อย่างมาก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1374550:4", "en": "awfully; very; immensely", "th": "มาก, สุดๆ", "note": "ภาษาพูด", "status": "auto_checked", "v": 1}
 {"id": "w:1006110:1", "en": "all; completely; totally; entirely; thoroughly", "th": "ทั้งหมด, อย่างสิ้นเชิง", "note": null, "status": "auto_checked", "v": 1}
@@ -1564,8 +1564,8 @@
 {"id": "w:1551530:27", "en": "to do ... vigorously; to do ... to the utmost; to do ... remarkably", "th": "〜อย่างหนัก, 〜อย่างเต็มที่", "note": "ใช้ต่อท้ายคำกริยา", "status": "auto_checked", "v": 1}
 {"id": "w:1257330:1", "en": "to build; to construct", "th": "สร้าง (อาคาร)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1634500:1", "en": "occasionally; once in a while; now and then", "th": "บางครั้ง, นานๆ ครั้ง", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1077550:1", "en": "check (pattern); plaid", "th": "ลายตาราง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1077550:2", "en": "check; inspection; examination; looking over; scrutinizing", "th": "ตรวจ, ตรวจสอบ", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1077550:1", "en": "check (pattern); plaid", "th": "ลายตาราง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1077550:3", "en": "check (mark); tick; marking with a check; checking off; ticking", "th": "เครื่องหมายถูก, ติ๊ก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1077550:4", "en": "checking (something) out; following (with interest); keeping one's eye on; keeping a close watch on", "th": "ติดตาม, จับตาดู", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1077550:5", "en": "check (bill of exchange); cheque", "th": "เช็ค (ตั๋วเงิน)", "note": null, "status": "auto_checked", "v": 1}
@@ -1608,8 +1608,8 @@
 {"id": "w:1405790:6", "en": "to hold out; to keep; to last", "th": "ทนได้, อยู่ได้", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1405800:1", "en": "to continue; to keep up; to keep on", "th": "ทำต่อ, ดำเนินต่อ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1405800:2", "en": "to continue ...; to keep on ...", "th": "〜ต่อไปเรื่อยๆ", "note": "ใช้ต่อท้ายคำกริยา", "status": "auto_checked", "v": 1}
-{"id": "w:1079290:1", "en": "text", "th": "ข้อความ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1079290:2", "en": "textbook", "th": "หนังสือเรียน, ตำรา", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1079290:1", "en": "text", "th": "ข้อความ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1080000:1", "en": "tennis", "th": "เทนนิส", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1438770:1", "en": "weather forecast; weather report", "th": "พยากรณ์อากาศ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1449890:1", "en": "finally; at last; in the end; ultimately", "th": "ในที่สุด", "note": null, "status": "auto_checked", "v": 1}
@@ -1626,8 +1626,8 @@
 {"id": "w:1310670:5", "en": "to notice; to be aware of; to concentrate on; to pay attention to; to remember; to bear in mind", "th": "ใส่ใจ, จดจำ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1310670:6", "en": "to fix (in place); to fasten; to tack; to pin; to nail; to button; to staple", "th": "ยึด, ติด, กลัด", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1310670:7", "en": "to detain; to keep in custody", "th": "กักตัว", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1009320:1", "en": "drumming (noise); beating; pounding; banging; booming; stamping", "th": "เสียงตึงๆ, ตีกลอง, ทุบ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1009320:2", "en": "rapidly; quickly; steadily", "th": "อย่างรวดเร็ว, เรื่อยๆ", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1009320:1", "en": "drumming (noise); beating; pounding; banging; booming; stamping", "th": "เสียงตึงๆ, ตีกลอง, ทุบ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1009320:3", "en": "continuously; one after the other; in succession", "th": "ติดต่อกัน, เรื่อยๆ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:2846390:1", "en": "to get mended; to be repaired; to be fixed", "th": "ถูกซ่อม, ซ่อมเสร็จ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:2846390:2", "en": "to return to normal; to recover (e.g. one's temper); to be restored; to improve; to rally; to come right", "th": "กลับเป็นปกติ, ดีขึ้น", "note": null, "status": "auto_checked", "v": 1}
@@ -1654,9 +1654,9 @@
 {"id": "w:1375820:1", "en": "I see; that's right; indeed", "th": "อ๋อ, จริงด้วย, เข้าใจแล้ว", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1360320:1", "en": "sleeping in late; oversleeping", "th": "ตื่นสาย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1360320:2", "en": "late riser; sleepyhead", "th": "คนขี้เซา", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1100810:3", "en": "part-time (work)", "th": "(งาน) พาร์ตไทม์", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1100810:1", "en": "part", "th": "ส่วน, ภาค", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1100810:2", "en": "part-timer", "th": "พนักงานพาร์ตไทม์", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1100810:3", "en": "part-time (work)", "th": "(งาน) พาร์ตไทม์", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1101570:1", "en": "personal computer; PC", "th": "คอมพิวเตอร์ส่วนตัว", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1010150:1", "en": "clearly; plainly; distinctly", "th": "ชัดเจน, ชัดๆ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1010150:2", "en": "to be clear; to be definite; to be certain; to be exact; to become clear; to clear up", "th": "ชัดเจน, แน่นอน, กระจ่าง", "note": null, "status": "auto_checked", "v": 1}
@@ -1669,9 +1669,9 @@
 {"id": "w:1484930:1", "en": "very; extremely; exceedingly", "th": "อย่างยิ่ง, มาก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1226360:1", "en": "to be surprised; to be amazed; to be frightened; to be astonished; to get startled; to jump", "th": "ตกใจ, สะดุ้ง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1226360:2", "en": "surprise (e.g. surprise party)", "th": "(ปาร์ตี้) เซอร์ไพรส์", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1602060:3", "en": "very bad; terrible; awful", "th": "แย่มาก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1602060:1", "en": "cruel; heartless; hard; harsh; severe", "th": "ใจร้าย, โหดร้าย", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1602060:2", "en": "violent; intense; strong; heavy; extreme", "th": "รุนแรง, หนัก", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1602060:3", "en": "very bad; terrible; awful", "th": "แย่มาก", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1602060:4", "en": "excessive; exorbitant; unreasonable; outrageous; unfair; unjust", "th": "เกินไป, ไม่ยุติธรรม", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1202440:1", "en": "to open; to undo; to unseal; to unpack", "th": "เปิด, แกะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1202440:2", "en": "to bloom; to unfold; to spread out", "th": "(ดอกไม้) บาน, กางออก", "note": null, "status": "auto_checked", "v": 1}
@@ -1688,13 +1688,13 @@
 {"id": "w:1202440:13", "en": "to change (kanji into hiragana)", "th": "เปลี่ยน (คันจิ) เป็นฮิรางานะ", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1202440:14", "en": "to flare (e.g. skirt)", "th": "(กระโปรง) บาน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1202440:15", "en": "to slacken (into a poor posture)", "th": "(ท่าทาง) หย่อนยาน", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1202440:16", "en": "to extend", "th": "ยื่นออก", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1202440:16", "en": "to extend", "th": "ขยายแนวหมาก (ในหมากล้อม)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1106010:1", "en": "multi-floor building; multi-storey building", "th": "ตึก, อาคารหลายชั้น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1108180:1", "en": "fax; facsimile", "th": "แฟกซ์", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1108180:2", "en": "fax machine", "th": "เครื่องแฟกซ์", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1116840:1", "en": "present; gift", "th": "ของขวัญ", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1509430:1", "en": "distinction; difference; discrimination", "th": "ความแตกต่าง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1509430:2", "en": "separate; different; another; extra", "th": "แยก, ต่างหาก, อื่น", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1509430:1", "en": "distinction; difference; discrimination", "th": "ความแตกต่าง", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1509430:3", "en": "exception; exclusion", "th": "ข้อยกเว้น", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1509430:4", "en": "classified by; ranked by; according to", "th": "แยกตาม〜, จำแนกตาม〜", "note": "ใช้ต่อท้าย", "status": "auto_checked", "v": 1}
 {"id": "w:1120010:1", "en": "bell", "th": "กระดิ่ง, กริ่ง", "note": null, "status": "auto_checked", "v": 1}
@@ -1707,8 +1707,8 @@
 {"id": "w:1387240:4", "en": "anyway; at any rate; for now (at least); for the time being", "th": "อย่างไรก็ตาม, ตอนนี้", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1012500:1", "en": "if; in case; supposing", "th": "ถ้า, หาก, สมมติว่า", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1535780:1", "en": "of course; certainly; naturally", "th": "แน่นอน", "note": null, "status": "auto_checked", "v": 1}
-{"id": "w:1350600:1", "en": "to burn", "th": "เผา", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1350600:2", "en": "to roast; to broil; to grill; to bake; to toast; to barbecue", "th": "ย่าง, ปิ้ง, อบ", "note": null, "status": "auto_checked", "v": 1}
+{"id": "w:1350600:1", "en": "to burn", "th": "เผา", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1350600:3", "en": "to heat; to heat up", "th": "ทำให้ร้อน", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1350600:4", "en": "to make (charcoal, pottery, bricks, etc.); to bake; to fire; to burn", "th": "เผา (ถ่าน, เครื่องปั้น)", "note": null, "status": "auto_checked", "v": 1}
 {"id": "w:1350600:5", "en": "to tan (i.e. suntan); to burn", "th": "อาบแดด (ให้ผิวคล้ำ)", "note": null, "status": "auto_checked", "v": 1}
