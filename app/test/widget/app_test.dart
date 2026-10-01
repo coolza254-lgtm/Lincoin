@@ -238,10 +238,7 @@ void main() {
       await tester.pumpAndSettle();
     }
     expect(questions, greaterThanOrEqualTo(3));
-    expect(
-      StudyRepo(c.read(userDbProvider)).reviewRecords().length,
-      questions,
-    );
+    expect(StudyRepo(c.read(userDbProvider)).reviewRecords().length, questions);
   });
 
   testWidgets('controller: B goes back, shoulder buttons switch tabs', (
