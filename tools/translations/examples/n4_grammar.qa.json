@@ -2,16 +2,9 @@
   "translated": 262,
   "auto_checked": 262,
   "flagged": [],
-  "missing": [
-    "ex:187861",
-    "ex:182548",
-    "ex:235244",
-    "ex:78837",
-    "ex:74030",
-    "ex:149154",
-    "ex:4849",
-    "ex:236043"
-  ],
+  "missing": [],
   "unknown_ids": [],
+  "translated_elsewhere": 8,
+  "redundant_ids": [],
   "same_source_different_thai": {}
 }
