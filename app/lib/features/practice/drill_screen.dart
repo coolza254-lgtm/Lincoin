@@ -13,6 +13,7 @@ import '../../ui/widgets.dart';
 import '../study/item_details.dart';
 import '../study/question_body.dart';
 import 'drill_controller.dart';
+import '../../ui/input.dart';
 
 /// Plays one practice round or challenge round.
 class DrillScreen extends ConsumerStatefulWidget {
@@ -58,7 +59,7 @@ class _DrillScreenState extends ConsumerState<DrillScreen> {
                 onPressed: () => Navigator.pop(ctx, false),
                 child: Text(t.keepPlaying),
               ),
-              FilledButton(
+              PressFilledButton(
                 onPressed: () => Navigator.pop(ctx, true),
                 child: Text(t.forfeit),
               ),
@@ -270,7 +271,7 @@ class _QuestionArea extends StatelessWidget {
           child: feedback && practice
               ? SizedBox(
                   width: double.infinity,
-                  child: FilledButton(
+                  child: PressFilledButton(
                     autofocus: true,
                     onPressed: ctl.next,
                     child: Text(t.next),
@@ -489,7 +490,7 @@ class _Summary extends StatelessWidget {
           const Spacer(),
           SizedBox(
             width: double.infinity,
-            child: FilledButton(
+            child: PressFilledButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text(t.done),
             ),

@@ -6,6 +6,7 @@ import '../../state/providers.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
+import '../../ui/input.dart';
 
 const onboardedKey = 'onboarded';
 
@@ -218,7 +219,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   const SizedBox(height: LcTokens.spacingLg),
                   SizedBox(
                     width: double.infinity,
-                    child: FilledButton(
+                    child: PressFilledButton(
                       onPressed: _next,
                       child: Text(_page < 2 ? t.next : t.letsStart),
                     ),

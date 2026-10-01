@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,7 @@ import 'package:lincoin/app.dart';
 import 'package:lincoin/data/settings_repo.dart';
 import 'package:lincoin/data/study_repo.dart';
 import 'package:lincoin/data/user_db.dart';
+import 'package:lincoin/features/settings/settings_screen.dart';
 import 'package:lincoin/services/content_store.dart';
 import 'package:lincoin/services/files.dart';
 import 'package:lincoin/state/providers.dart';
@@ -198,5 +200,64 @@ void main() {
     await tester.tap(find.text('เครดิตและสัญญาอนุญาต'));
     await tester.pumpAndSettle();
     expect(find.text('Source jlpt'), findsOneWidget);
+  });
+
+  testWidgets('focus mode with a controller: answer with buttons', (
+    tester,
+  ) async {
+    final c = await start(
+      tester,
+      settings: const AppSettings(
+        includeKana: false,
+        vocabNewPerDay: 3,
+        reduceMotion: true,
+        quickAnswerButtons: true,
+      ),
+    );
+    await tester.tap(find.text('เริ่มเรียน').first);
+    await tester.pumpAndSettle();
+    var questions = 0;
+    for (var i = 0; i < 80; i++) {
+      if (find.text('กลับหน้าหลัก').evaluate().isNotEmpty) break;
+      if (find.text('จำแล้ว ไปต่อ').evaluate().isNotEmpty) {
+        await tester.tap(find.text('จำแล้ว ไปต่อ'));
+      } else if (find.text('ต่อไป').evaluate().isNotEmpty) {
+        // "Next" takes focus, so the confirm button moves on.
+        await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonA);
+      } else if (find.text('X').evaluate().isNotEmpty) {
+        // Quick-answer badges are shown; X picks the third answer.
+        questions++;
+        await tester.sendKeyEvent(
+          questions.isEven
+              ? LogicalKeyboardKey.gameButtonX
+              : LogicalKeyboardKey.digit1,
+        );
+      } else {
+        fail('unexpected screen at step $i');
+      }
+      await tester.pumpAndSettle();
+    }
+    expect(questions, greaterThanOrEqualTo(3));
+    expect(
+      StudyRepo(c.read(userDbProvider)).reviewRecords().length,
+      questions,
+    );
+  });
+
+  testWidgets('controller: B goes back, shoulder buttons switch tabs', (
+    tester,
+  ) async {
+    await start(tester);
+    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonRight1);
+    await tester.pumpAndSettle();
+    expect(find.text('ฝึก'), findsWidgets);
+    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonLeft1);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('ตั้งค่า'));
+    await tester.pumpAndSettle();
+    expect(find.byType(SettingsScreen), findsOneWidget);
+    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonB);
+    await tester.pumpAndSettle();
+    expect(find.byType(SettingsScreen), findsNothing);
   });
 }

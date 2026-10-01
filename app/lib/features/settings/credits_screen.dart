@@ -6,6 +6,7 @@ import '../../state/providers.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
+import '../../ui/input.dart';
 
 /// Credits for every content source (read from content.db, so they always
 /// match the installed content), fonts and software licences.
@@ -95,7 +96,7 @@ class CreditsScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: LcTokens.spacingLg),
-            OutlinedButton(
+            PressOutlinedButton(
               onPressed: () => showLicensePage(
                 context: context,
                 applicationName: 'Lincoin',

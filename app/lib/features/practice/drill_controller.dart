@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 
+import '../../ui/input.dart';
 import '../../data/catalog.dart';
 import '../../data/user_db.dart';
 import '../../services/challenge_service.dart';
@@ -207,10 +207,10 @@ class DrillController extends ChangeNotifier {
       correct++;
       combo++;
       bestCombo = math.max(bestCombo, combo);
-      HapticFeedback.lightImpact();
+      Feel.light();
     } else {
       combo = 0;
-      HapticFeedback.mediumImpact();
+      Feel.medium();
     }
     final a = practice.record(
       q: question!,

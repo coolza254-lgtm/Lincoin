@@ -18,6 +18,10 @@ class AppSettings {
   final bool onlineUpdateCheck;
   final bool reduceMotion;
   final bool autoPlayAudio;
+  final bool haptics;
+  final bool controller;
+  final bool swapAB;
+  final bool quickAnswerButtons;
 
   const AppSettings({
     this.theme = LcTokens.defaultTheme,
@@ -31,7 +35,14 @@ class AppSettings {
     this.onlineUpdateCheck = true,
     this.reduceMotion = false,
     this.autoPlayAudio = false,
+    this.haptics = true,
+    this.controller = true,
+    this.swapAB = false,
+    this.quickAnswerButtons = false,
   });
+
+  /// Animations on (the setting is stored as its opposite, reduce_motion).
+  bool get animations => !reduceMotion;
 
   static const newPerDayMax = 50;
   static const grammarNewPerDayMax = 10;
@@ -48,6 +59,10 @@ class AppSettings {
     bool? onlineUpdateCheck,
     bool? reduceMotion,
     bool? autoPlayAudio,
+    bool? haptics,
+    bool? controller,
+    bool? swapAB,
+    bool? quickAnswerButtons,
   }) => AppSettings(
     theme: theme ?? this.theme,
     vocabRetention: vocabRetention ?? this.vocabRetention,
@@ -60,6 +75,10 @@ class AppSettings {
     onlineUpdateCheck: onlineUpdateCheck ?? this.onlineUpdateCheck,
     reduceMotion: reduceMotion ?? this.reduceMotion,
     autoPlayAudio: autoPlayAudio ?? this.autoPlayAudio,
+    haptics: haptics ?? this.haptics,
+    controller: controller ?? this.controller,
+    swapAB: swapAB ?? this.swapAB,
+    quickAnswerButtons: quickAnswerButtons ?? this.quickAnswerButtons,
   );
 
   Map<String, String> toMap() => {
@@ -74,6 +93,10 @@ class AppSettings {
     'update.online_check': '$onlineUpdateCheck',
     'reduce_motion': '$reduceMotion',
     'audio.autoplay': '$autoPlayAudio',
+    'input.haptics': '$haptics',
+    'input.controller': '$controller',
+    'input.swap_ab': '$swapAB',
+    'input.quick_answer': '$quickAnswerButtons',
   };
 
   /// Unknown or out-of-range values fall back to defaults, so a setting
@@ -132,6 +155,10 @@ class AppSettings {
       onlineUpdateCheck: b('update.online_check', d.onlineUpdateCheck),
       reduceMotion: b('reduce_motion', d.reduceMotion),
       autoPlayAudio: b('audio.autoplay', d.autoPlayAudio),
+      haptics: b('input.haptics', d.haptics),
+      controller: b('input.controller', d.controller),
+      swapAB: b('input.swap_ab', d.swapAB),
+      quickAnswerButtons: b('input.quick_answer', d.quickAnswerButtons),
     );
   }
 }

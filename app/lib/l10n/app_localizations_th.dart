@@ -299,9 +299,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get theme => 'ธีม';
 
   @override
-  String get reduceMotion => 'ลดแอนิเมชัน';
-
-  @override
   String get updates => 'อัปเดต';
 
   @override
@@ -937,4 +934,68 @@ class AppLocalizationsTh extends AppLocalizations {
   String grammarLevelProgress(String level, int done, int total) {
     return 'ไวยากรณ์ $level · เริ่มแล้ว $done/$total หัวข้อ';
   }
+
+  @override
+  String get animations => 'แอนิเมชัน';
+
+  @override
+  String get animationsHelp =>
+      'ปิดเพื่อโหมดโฟกัส: ไม่มีการเคลื่อนไหว ปุ่มไม่ยุบ เปลี่ยนข้อทันที';
+
+  @override
+  String get sectionInput => 'อินพุต';
+
+  @override
+  String get haptics => 'การสั่นเมื่อกดและตอบ';
+
+  @override
+  String get controller => 'รองรับจอยเกมและคีย์บอร์ด';
+
+  @override
+  String get controllerHelp =>
+      'ปุ่มลูกศรเลื่อนเลือก, ปุ่มยืนยันกด, ปุ่มย้อนกลับถอยหลัง, L1/R1 เปลี่ยนแท็บ';
+
+  @override
+  String get swapAB => 'สลับปุ่ม A/B (แบบ Nintendo)';
+
+  @override
+  String get swapABHelp => 'ใช้ B เป็นปุ่มยืนยัน และ A เป็นปุ่มย้อนกลับ';
+
+  @override
+  String get quickAnswer => 'ตอบด้วยปุ่มหน้าจอย';
+
+  @override
+  String get quickAnswerHelp =>
+      'ปุ่ม A, B, X, Y เลือกตัวเลือกที่ 1–4 ได้ทันที (คีย์บอร์ดกด 1–4 ได้เสมอ)';
+
+  @override
+  String get controllerMap => 'ปุ่มควบคุม';
+
+  @override
+  String get controllerMapDpad => 'ปุ่มลูกศร / สติ๊ก';
+
+  @override
+  String get controllerMapDpadDo => 'เลื่อนไปยังปุ่มถัดไป';
+
+  @override
+  String get controllerMapConfirmDo => 'กดปุ่มที่เลือก / ไปข้อถัดไป';
+
+  @override
+  String get controllerMapBackDo => 'ย้อนกลับ';
+
+  @override
+  String get controllerMapShoulder => 'L1 / R1';
+
+  @override
+  String get controllerMapShoulderDo => 'เปลี่ยนแท็บ';
+
+  @override
+  String get controllerMapQuickDo =>
+      'ตอบตัวเลือกที่ 1–4 (เมื่อเปิดตอบด้วยปุ่มหน้าจอย)';
+
+  @override
+  String get controllerMapKeys => 'คีย์บอร์ด 1–4';
+
+  @override
+  String get controllerMapKeysDo => 'ตอบตัวเลือกที่ 1–4';
 }

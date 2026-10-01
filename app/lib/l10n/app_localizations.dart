@@ -628,12 +628,6 @@ abstract class AppLocalizations {
   /// **'ธีม'**
   String get theme;
 
-  /// No description provided for @reduceMotion.
-  ///
-  /// In th, this message translates to:
-  /// **'ลดแอนิเมชัน'**
-  String get reduceMotion;
-
   /// No description provided for @updates.
   ///
   /// In th, this message translates to:
@@ -1713,6 +1707,126 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'ไวยากรณ์ {level} · เริ่มแล้ว {done}/{total} หัวข้อ'**
   String grammarLevelProgress(String level, int done, int total);
+
+  /// No description provided for @animations.
+  ///
+  /// In th, this message translates to:
+  /// **'แอนิเมชัน'**
+  String get animations;
+
+  /// No description provided for @animationsHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'ปิดเพื่อโหมดโฟกัส: ไม่มีการเคลื่อนไหว ปุ่มไม่ยุบ เปลี่ยนข้อทันที'**
+  String get animationsHelp;
+
+  /// No description provided for @sectionInput.
+  ///
+  /// In th, this message translates to:
+  /// **'อินพุต'**
+  String get sectionInput;
+
+  /// No description provided for @haptics.
+  ///
+  /// In th, this message translates to:
+  /// **'การสั่นเมื่อกดและตอบ'**
+  String get haptics;
+
+  /// No description provided for @controller.
+  ///
+  /// In th, this message translates to:
+  /// **'รองรับจอยเกมและคีย์บอร์ด'**
+  String get controller;
+
+  /// No description provided for @controllerHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'ปุ่มลูกศรเลื่อนเลือก, ปุ่มยืนยันกด, ปุ่มย้อนกลับถอยหลัง, L1/R1 เปลี่ยนแท็บ'**
+  String get controllerHelp;
+
+  /// No description provided for @swapAB.
+  ///
+  /// In th, this message translates to:
+  /// **'สลับปุ่ม A/B (แบบ Nintendo)'**
+  String get swapAB;
+
+  /// No description provided for @swapABHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'ใช้ B เป็นปุ่มยืนยัน และ A เป็นปุ่มย้อนกลับ'**
+  String get swapABHelp;
+
+  /// No description provided for @quickAnswer.
+  ///
+  /// In th, this message translates to:
+  /// **'ตอบด้วยปุ่มหน้าจอย'**
+  String get quickAnswer;
+
+  /// No description provided for @quickAnswerHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'ปุ่ม A, B, X, Y เลือกตัวเลือกที่ 1–4 ได้ทันที (คีย์บอร์ดกด 1–4 ได้เสมอ)'**
+  String get quickAnswerHelp;
+
+  /// No description provided for @controllerMap.
+  ///
+  /// In th, this message translates to:
+  /// **'ปุ่มควบคุม'**
+  String get controllerMap;
+
+  /// No description provided for @controllerMapDpad.
+  ///
+  /// In th, this message translates to:
+  /// **'ปุ่มลูกศร / สติ๊ก'**
+  String get controllerMapDpad;
+
+  /// No description provided for @controllerMapDpadDo.
+  ///
+  /// In th, this message translates to:
+  /// **'เลื่อนไปยังปุ่มถัดไป'**
+  String get controllerMapDpadDo;
+
+  /// No description provided for @controllerMapConfirmDo.
+  ///
+  /// In th, this message translates to:
+  /// **'กดปุ่มที่เลือก / ไปข้อถัดไป'**
+  String get controllerMapConfirmDo;
+
+  /// No description provided for @controllerMapBackDo.
+  ///
+  /// In th, this message translates to:
+  /// **'ย้อนกลับ'**
+  String get controllerMapBackDo;
+
+  /// No description provided for @controllerMapShoulder.
+  ///
+  /// In th, this message translates to:
+  /// **'L1 / R1'**
+  String get controllerMapShoulder;
+
+  /// No description provided for @controllerMapShoulderDo.
+  ///
+  /// In th, this message translates to:
+  /// **'เปลี่ยนแท็บ'**
+  String get controllerMapShoulderDo;
+
+  /// No description provided for @controllerMapQuickDo.
+  ///
+  /// In th, this message translates to:
+  /// **'ตอบตัวเลือกที่ 1–4 (เมื่อเปิดตอบด้วยปุ่มหน้าจอย)'**
+  String get controllerMapQuickDo;
+
+  /// No description provided for @controllerMapKeys.
+  ///
+  /// In th, this message translates to:
+  /// **'คีย์บอร์ด 1–4'**
+  String get controllerMapKeys;
+
+  /// No description provided for @controllerMapKeysDo.
+  ///
+  /// In th, this message translates to:
+  /// **'ตอบตัวเลือกที่ 1–4'**
+  String get controllerMapKeysDo;
 }
 
 class _AppLocalizationsDelegate

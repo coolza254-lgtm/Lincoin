@@ -9,6 +9,7 @@ import '../../state/providers.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
 import 'updates_screen.dart' show formatBytes;
+import '../../ui/input.dart';
 
 class BackupScreen extends ConsumerStatefulWidget {
   const BackupScreen({super.key});
@@ -88,7 +89,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                 onPressed: () => Navigator.pop(ctx, false),
                 child: Text(t.cancel),
               ),
-              FilledButton(
+              PressFilledButton(
                 onPressed: () => Navigator.pop(ctx, true),
                 child: Text(t.confirm),
               ),
@@ -117,13 +118,13 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
           children: [
             Text(t.backupHelp, style: tt.bodyMedium),
             const SizedBox(height: LcTokens.spacingLg),
-            FilledButton.icon(
+            PressFilledButton.icon(
               icon: const Icon(Icons.ios_share_rounded),
               label: Text(t.exportBackup),
               onPressed: _busy ? null : _export,
             ),
             const SizedBox(height: LcTokens.spacingMd),
-            OutlinedButton.icon(
+            PressOutlinedButton.icon(
               icon: const Icon(Icons.restore_rounded),
               label: Text(t.importBackup),
               onPressed: _busy ? null : _import,

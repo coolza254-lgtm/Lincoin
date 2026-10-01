@@ -144,7 +144,6 @@
     }
   },
   "theme": "ธีม",
-  "reduceMotion": "ลดแอนิเมชัน",
   "updates": "อัปเดต",
   "backup": "สำรองข้อมูล",
   "credits": "เครดิตและสัญญาอนุญาต",
@@ -620,5 +619,25 @@
         "type": "int"
       }
     }
-  }
+  },
+  "animations": "แอนิเมชัน",
+  "animationsHelp": "ปิดเพื่อโหมดโฟกัส: ไม่มีการเคลื่อนไหว ปุ่มไม่ยุบ เปลี่ยนข้อทันที",
+  "sectionInput": "อินพุต",
+  "haptics": "การสั่นเมื่อกดและตอบ",
+  "controller": "รองรับจอยเกมและคีย์บอร์ด",
+  "controllerHelp": "ปุ่มลูกศรเลื่อนเลือก, ปุ่มยืนยันกด, ปุ่มย้อนกลับถอยหลัง, L1/R1 เปลี่ยนแท็บ",
+  "swapAB": "สลับปุ่ม A/B (แบบ Nintendo)",
+  "swapABHelp": "ใช้ B เป็นปุ่มยืนยัน และ A เป็นปุ่มย้อนกลับ",
+  "quickAnswer": "ตอบด้วยปุ่มหน้าจอย",
+  "quickAnswerHelp": "ปุ่ม A, B, X, Y เลือกตัวเลือกที่ 1–4 ได้ทันที (คีย์บอร์ดกด 1–4 ได้เสมอ)",
+  "controllerMap": "ปุ่มควบคุม",
+  "controllerMapDpad": "ปุ่มลูกศร / สติ๊ก",
+  "controllerMapDpadDo": "เลื่อนไปยังปุ่มถัดไป",
+  "controllerMapConfirmDo": "กดปุ่มที่เลือก / ไปข้อถัดไป",
+  "controllerMapBackDo": "ย้อนกลับ",
+  "controllerMapShoulder": "L1 / R1",
+  "controllerMapShoulderDo": "เปลี่ยนแท็บ",
+  "controllerMapQuickDo": "ตอบตัวเลือกที่ 1–4 (เมื่อเปิดตอบด้วยปุ่มหน้าจอย)",
+  "controllerMapKeys": "คีย์บอร์ด 1–4",
+  "controllerMapKeysDo": "ตอบตัวเลือกที่ 1–4"
 }

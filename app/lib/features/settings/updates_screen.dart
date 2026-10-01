@@ -8,6 +8,7 @@ import '../../state/update_controller.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
+import '../../ui/input.dart';
 
 String formatBytes(int b) => b >= 1 << 20
     ? '${(b / (1 << 20)).toStringAsFixed(1)} MB'
@@ -81,7 +82,7 @@ class UpdatesScreen extends ConsumerWidget {
               ),
               const SizedBox(height: LcTokens.spacingLg),
             ],
-            FilledButton.icon(
+            PressFilledButton.icon(
               icon: const Icon(Icons.cloud_download_outlined),
               label: Text(t.checkForUpdates),
               onPressed: u.busy || !settings.onlineUpdateCheck
@@ -92,7 +93,7 @@ class UpdatesScreen extends ConsumerWidget {
                     },
             ),
             const SizedBox(height: LcTokens.spacingMd),
-            OutlinedButton.icon(
+            PressOutlinedButton.icon(
               icon: const Icon(Icons.folder_open_rounded),
               label: Text(t.updateFromFile),
               onPressed: u.busy ? null : () => _fromFile(context, ref),
@@ -238,7 +239,7 @@ class UpdatesScreen extends ConsumerWidget {
                 onPressed: () => Navigator.pop(ctx, false),
                 child: Text(t.cancel),
               ),
-              FilledButton(
+              PressFilledButton(
                 onPressed: () => Navigator.pop(ctx, true),
                 child: Text(t.confirm),
               ),
@@ -306,7 +307,10 @@ class _ReleaseCard extends StatelessWidget {
             const SizedBox(height: LcTokens.spacingMd),
             SizedBox(
               width: double.infinity,
-              child: FilledButton(onPressed: onPressed, child: Text(button)),
+              child: PressFilledButton(
+                onPressed: onPressed,
+                child: Text(button),
+              ),
             ),
           ],
         ),

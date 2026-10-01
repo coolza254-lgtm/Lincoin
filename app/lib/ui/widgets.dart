@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/content_db.dart';
+import 'input.dart';
 import 'theme.dart';
 import 'tokens.g.dart';
 
@@ -27,32 +28,36 @@ class LcCard extends StatelessWidget {
     final radius = BorderRadius.circular(
       large ? LcTokens.radiusCardLarge : LcTokens.radiusCard,
     );
-    return Container(
-      decoration: BoxDecoration(
-        color: color ?? c.surface,
-        borderRadius: radius,
-        boxShadow: c.dark
-            ? null
-            : [
-                BoxShadow(
-                  color: c.ink.withValues(alpha: 0.04),
-                  blurRadius: 2,
-                  offset: const Offset(0, 1),
-                ),
-                BoxShadow(
-                  color: c.ink.withValues(alpha: 0.05),
-                  blurRadius: 16,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-        border: c.dark ? Border.all(color: c.line) : null,
-      ),
-      child: Material(
-        type: MaterialType.transparency,
-        child: InkWell(
+    return PressScale(
+      enabled: onTap != null,
+      scale: 0.98,
+      child: Container(
+        decoration: BoxDecoration(
+          color: color ?? c.surface,
           borderRadius: radius,
-          onTap: onTap,
-          child: Padding(padding: padding, child: child),
+          boxShadow: c.dark
+              ? null
+              : [
+                  BoxShadow(
+                    color: c.ink.withValues(alpha: 0.04),
+                    blurRadius: 2,
+                    offset: const Offset(0, 1),
+                  ),
+                  BoxShadow(
+                    color: c.ink.withValues(alpha: 0.05),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+          border: c.dark ? Border.all(color: c.line) : null,
+        ),
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            borderRadius: radius,
+            onTap: onTap,
+            child: Padding(padding: padding, child: child),
+          ),
         ),
       ),
     );
@@ -376,17 +381,21 @@ class Reveal extends StatelessWidget {
   const Reveal({super.key, required this.shown, required this.child});
 
   @override
-  Widget build(BuildContext context) => AnimatedSize(
-    duration: context.motionNormal,
-    curve: Curves.easeOutCubic,
-    alignment: Alignment.topCenter,
-    child: AnimatedOpacity(
-      duration: context.motionNormal,
-      curve: Curves.easeOut,
-      opacity: shown ? 1 : 0,
-      child: child,
-    ),
-  );
+  Widget build(BuildContext context) => context.reduceMotion
+      // AnimatedSize cannot run with a zero duration; without motion the
+      // child simply appears.
+      ? (shown ? child : const SizedBox.shrink())
+      : AnimatedSize(
+          duration: context.motionNormal,
+          curve: Curves.easeOutCubic,
+          alignment: Alignment.topCenter,
+          child: AnimatedOpacity(
+            duration: context.motionNormal,
+            curve: Curves.easeOut,
+            opacity: shown ? 1 : 0,
+            child: child,
+          ),
+        );
 }
 
 /// Scales its child in with a small overshoot.

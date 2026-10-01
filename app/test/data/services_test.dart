@@ -274,6 +274,23 @@ void main() {
     expect(s.furigana, FuriganaMode.never);
   });
 
+  test('settings: input and motion options round-trip', () {
+    const s = AppSettings(
+      reduceMotion: true,
+      haptics: false,
+      controller: false,
+      swapAB: true,
+      quickAnswerButtons: true,
+    );
+    final back = AppSettings.fromMap(s.toMap());
+    expect(back.animations, isFalse);
+    expect(back.haptics, isFalse);
+    expect(back.controller, isFalse);
+    expect(back.swapAB, isTrue);
+    expect(back.quickAnswerButtons, isTrue);
+    expect(AppSettings.fromMap(const {}).controller, isTrue);
+  });
+
   test('migration from an empty file and version guard', () {
     final path = '${tmp.path}/m.db';
     var called = false;

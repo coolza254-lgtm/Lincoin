@@ -1,4 +1,7 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lincoin_core/lincoin_core.dart';
 
 import '../../data/catalog.dart';
@@ -9,6 +12,7 @@ import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
 import '../grammar/grammar_lesson.dart' show ClozeSentence;
+import '../../ui/input.dart';
 
 /// Prompt and answer area of one question. Shared by study sessions,
 /// practice and challenges, so every mode asks questions the same way.
@@ -148,105 +152,130 @@ class _QuestionBodyState extends State<QuestionBody> {
         ? null
         : (widget.revealTyped! ? c.good : c.warn);
 
-    return Column(
-      children: [
-        LcPill(label),
-        const SizedBox(height: LcTokens.spacingXxl),
-        Semantics(header: true, child: prompt),
-        const SizedBox(height: LcTokens.spacingXxl),
-        if (q.choices != null)
-          for (final (i, o) in q.choices!.options.indexed)
-            _collapsible(
-              context,
-              hidden:
-                  widget.collapseOthers &&
-                  widget.revealChosen != null &&
-                  i != q.choices!.correctIndex &&
-                  i != widget.revealChosen,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: LcTokens.spacingMd),
-                child: _Option(
-                  text: o,
-                  japanese: q.form.japaneseOptions,
-                  state: widget.revealChosen == null
-                      ? _OptionState.idle
-                      : i == q.choices!.correctIndex
-                      ? _OptionState.right
-                      : i == widget.revealChosen
-                      ? _OptionState.wrong
-                      : _OptionState.dim,
-                  onPressed: widget.revealChosen == null
-                      ? () => widget.onChoose(i)
-                      : null,
+    return Focus(
+      canRequestFocus: false,
+      skipTraversal: true,
+      onKeyEvent: _onKey,
+      child: Column(
+        children: [
+          LcPill(label),
+          const SizedBox(height: LcTokens.spacingXxl),
+          Semantics(header: true, child: prompt),
+          const SizedBox(height: LcTokens.spacingXxl),
+          if (q.choices != null)
+            for (final (i, o) in q.choices!.options.indexed)
+              _collapsible(
+                context,
+                hidden:
+                    widget.collapseOthers &&
+                    widget.revealChosen != null &&
+                    i != q.choices!.correctIndex &&
+                    i != widget.revealChosen,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: LcTokens.spacingMd),
+                  child: _Option(
+                    autofocus: i == 0 && widget.revealChosen == null,
+                    badge: Pad.enabled && Pad.quickAnswer && i < 4
+                        ? Pad.answerKeys(Pad.swapAB)[i].$2
+                        : null,
+                    text: o,
+                    japanese: q.form.japaneseOptions,
+                    state: widget.revealChosen == null
+                        ? _OptionState.idle
+                        : i == q.choices!.correctIndex
+                        ? _OptionState.right
+                        : i == widget.revealChosen
+                        ? _OptionState.wrong
+                        : _OptionState.dim,
+                    onPressed: widget.revealChosen == null
+                        ? () => widget.onChoose(i)
+                        : null,
+                  ),
+                ),
+              )
+          // Gave up without typing: nothing to show in the field.
+          else if (revealed && _input.text.isEmpty)
+            const SizedBox.shrink()
+          else ...[
+            TextField(
+              controller: _input,
+              focusNode: _focus,
+              readOnly: revealed,
+              autocorrect: false,
+              enableSuggestions: false,
+              textInputAction: TextInputAction.done,
+              style: jpStyle(24, 500, typedColor ?? c.ink),
+              textAlign: TextAlign.center,
+              // Empty on purpose: no example text that could hint at the answer.
+              decoration: typedColor == null
+                  ? const InputDecoration()
+                  : InputDecoration(
+                      fillColor: widget.revealTyped! ? c.goodSoft : c.warnSoft,
+                      enabledBorder: _border(typedColor),
+                      focusedBorder: _border(typedColor),
+                      suffixIcon: Icon(
+                        widget.revealTyped!
+                            ? Icons.check_circle_rounded
+                            : Icons.cancel_rounded,
+                        color: typedColor,
+                      ),
+                    ),
+              onSubmitted: revealed ? null : widget.onSubmit,
+            ),
+            const SizedBox(height: LcTokens.spacingSm),
+            if (q.form == QuestionForm.readingType && _input.text.isNotEmpty)
+              Text(
+                normalizeReading(_input.text),
+                style: jpStyle(20, 500, c.muted),
+                semanticsLabel: t.kanaPreview,
+              ),
+            if (hint != null)
+              Padding(
+                padding: const EdgeInsets.only(top: LcTokens.spacingSm),
+                child: Text(t.hintStartsWith(hint), style: tt.bodyMedium),
+              ),
+            if (widget.synonymHint)
+              Padding(
+                padding: const EdgeInsets.only(top: LcTokens.spacingSm),
+                child: LcPill(
+                  t.synonymTryAgain,
+                  bg: c.coinSoft,
+                  fg: c.coin,
+                  icon: Icons.info_outline_rounded,
                 ),
               ),
-            )
-        // Gave up without typing: nothing to show in the field.
-        else if (revealed && _input.text.isEmpty)
-          const SizedBox.shrink()
-        else ...[
-          TextField(
-            controller: _input,
-            focusNode: _focus,
-            readOnly: revealed,
-            autocorrect: false,
-            enableSuggestions: false,
-            textInputAction: TextInputAction.done,
-            style: jpStyle(24, 500, typedColor ?? c.ink),
-            textAlign: TextAlign.center,
-            // Empty on purpose: no example text that could hint at the answer.
-            decoration: typedColor == null
-                ? const InputDecoration()
-                : InputDecoration(
-                    fillColor: widget.revealTyped! ? c.goodSoft : c.warnSoft,
-                    enabledBorder: _border(typedColor),
-                    focusedBorder: _border(typedColor),
-                    suffixIcon: Icon(
-                      widget.revealTyped!
-                          ? Icons.check_circle_rounded
-                          : Icons.cancel_rounded,
-                      color: typedColor,
-                    ),
-                  ),
-            onSubmitted: revealed ? null : widget.onSubmit,
-          ),
-          const SizedBox(height: LcTokens.spacingSm),
-          if (q.form == QuestionForm.readingType && _input.text.isNotEmpty)
-            Text(
-              normalizeReading(_input.text),
-              style: jpStyle(20, 500, c.muted),
-              semanticsLabel: t.kanaPreview,
-            ),
-          if (hint != null)
-            Padding(
-              padding: const EdgeInsets.only(top: LcTokens.spacingSm),
-              child: Text(t.hintStartsWith(hint), style: tt.bodyMedium),
-            ),
-          if (widget.synonymHint)
-            Padding(
-              padding: const EdgeInsets.only(top: LcTokens.spacingSm),
-              child: LcPill(
-                t.synonymTryAgain,
-                bg: c.coinSoft,
-                fg: c.coin,
-                icon: Icons.info_outline_rounded,
+            if (!revealed) ...[
+              const SizedBox(height: LcTokens.spacingLg),
+              SizedBox(
+                width: double.infinity,
+                child: PressFilledButton(
+                  onPressed: _input.text.trim().isEmpty
+                      ? null
+                      : () => widget.onSubmit(_input.text),
+                  child: Text(t.checkAnswer),
+                ),
               ),
-            ),
-          if (!revealed) ...[
-            const SizedBox(height: LcTokens.spacingLg),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: _input.text.trim().isEmpty
-                    ? null
-                    : () => widget.onSubmit(_input.text),
-                child: Text(t.checkAnswer),
-              ),
-            ),
+            ],
           ],
         ],
-      ],
+      ),
     );
+  }
+
+  /// Keys 1–4 pick an answer; in quick-answer mode so do the controller's
+  /// face buttons (A, B, X, Y by position).
+  KeyEventResult _onKey(FocusNode node, KeyEvent e) {
+    final choices = widget.question.choices;
+    if (e is! KeyDownEvent || choices == null || widget.revealChosen != null) {
+      return KeyEventResult.ignored;
+    }
+    var i = Pad.digitKeys.indexOf(e.logicalKey);
+    if (i < 0 && Pad.enabled && Pad.quickAnswer) {
+      i = Pad.answerKeys(Pad.swapAB).indexWhere((k) => k.$1 == e.logicalKey);
+    }
+    if (i < 0 || i >= choices.options.length) return KeyEventResult.ignored;
+    widget.onChoose(i);
+    return KeyEventResult.handled;
   }
 
   OutlineInputBorder _border(Color color) => OutlineInputBorder(
@@ -284,11 +313,15 @@ class _Option extends StatelessWidget {
   final bool japanese;
   final _OptionState state;
   final VoidCallback? onPressed;
+  final String? badge;
+  final bool autofocus;
   const _Option({
+    this.autofocus = false,
     required this.text,
     required this.japanese,
     required this.state,
     required this.onPressed,
+    this.badge,
   });
 
   @override
@@ -301,7 +334,7 @@ class _Option extends StatelessWidget {
       _OptionState.dim => (c.surface, c.muted, null),
       _OptionState.idle => (c.surface, c.ink, null),
     };
-    return OutlinedButton(
+    final button = OutlinedButton(
       style: OutlinedButton.styleFrom(
         minimumSize: const Size.fromHeight(56),
         backgroundColor: bg,
@@ -314,6 +347,7 @@ class _Option extends StatelessWidget {
         ),
       ),
       onPressed: onPressed,
+      autofocus: autofocus,
       child: Row(
         children: [
           Expanded(
@@ -324,9 +358,72 @@ class _Option extends StatelessWidget {
                   : tt.bodyLarge?.copyWith(color: fg),
             ),
           ),
+          if (badge != null)
+            Padding(
+              padding: const EdgeInsets.only(left: LcTokens.spacingSm),
+              child: _ButtonBadge(badge!),
+            ),
           if (icon != null) Icon(icon, color: fg),
         ],
       ),
+    );
+    return _RevealMotion(
+      state: state,
+      child: PressScale(enabled: onPressed != null, child: button),
+    );
+  }
+}
+
+/// Controller button glyph shown on an answer in quick-answer mode.
+class _ButtonBadge extends StatelessWidget {
+  final String label;
+  const _ButtonBadge(this.label);
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.lc;
+    return Container(
+      width: 26,
+      height: 26,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: c.track),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 13,
+          color: c.muted,
+        ),
+      ),
+    );
+  }
+}
+
+/// A right answer pops once; a wrong one gives a short shake.
+class _RevealMotion extends StatelessWidget {
+  final _OptionState state;
+  final Widget child;
+  const _RevealMotion({required this.state, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final active = state == _OptionState.right || state == _OptionState.wrong;
+    if (!active || context.reduceMotion) return child;
+    final wrong = state == _OptionState.wrong;
+    return TweenAnimationBuilder<double>(
+      key: ValueKey(state),
+      tween: Tween(begin: 0, end: 1),
+      duration: Duration(milliseconds: wrong ? 420 : 360),
+      child: child,
+      builder: (context, t, child) {
+        if (wrong) {
+          // Damped side-to-side shake.
+          final dx = 8 * (1 - t) * math.sin(t * math.pi * 6);
+          return Transform.translate(offset: Offset(dx, 0), child: child);
+        }
+        final s = 1 + 0.05 * math.sin(t * math.pi);
+        return Transform.scale(scale: s, child: child);
+      },
     );
   }
 }

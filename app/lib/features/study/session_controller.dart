@@ -1,7 +1,7 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lincoin_core/lincoin_core.dart';
 
+import '../../ui/input.dart';
 import '../../data/user_db.dart';
 import '../../services/study_service.dart';
 import '../../state/providers.dart';
@@ -235,7 +235,7 @@ class SessionController extends Notifier<SessionState> {
     if (result.outcome.after.inSteps) {
       _queue.requeue(q.cardId, result.outcome.after.due!);
     }
-    correct ? HapticFeedback.lightImpact() : HapticFeedback.mediumImpact();
+    correct ? Feel.light() : Feel.medium();
     _feedbackTimer
       ..reset()
       ..start();

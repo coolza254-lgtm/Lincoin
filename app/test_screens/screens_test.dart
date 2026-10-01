@@ -266,6 +266,25 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('ตั้งค่า'));
     await snap('9-settings');
+    await tester.scrollUntilVisible(find.text('ปุ่มควบคุม'), 300);
+    container
+        .read(settingsProvider.notifier)
+        .update((x) => x.copyWith(quickAnswerButtons: true));
+    await snap('9b-settings-input');
+    await tester.tap(find.text('ปุ่มควบคุม'));
+    await snap('9c-controller-map');
+    await tester.tap(find.text('ปิด').last);
+    await tester.pumpAndSettle();
+    // A drill question driven by a controller: focus ring and A/B/X/Y.
+    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonB);
+    await tester.pumpAndSettle();
+    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonRight1);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('เริ่มฝึก 10 ข้อ'));
+    await tester.pumpAndSettle();
+    // Any controller key switches the app to showing focus rings.
+    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonSelect);
+    await snap('4f-drill-controller');
   }
 
   for (final theme in ['matcha', 'sakura', 'mono', 'dark']) {

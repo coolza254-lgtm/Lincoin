@@ -9,6 +9,7 @@ import '../../state/providers.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
+import '../../ui/input.dart';
 
 class ShopData {
   final List<Reward> rewards;
@@ -83,7 +84,7 @@ class ShopScreen extends ConsumerWidget {
               padding: const EdgeInsets.only(bottom: LcTokens.spacingMd),
               child: _RewardCard(reward: r, balance: balance),
             ),
-          OutlinedButton.icon(
+          PressOutlinedButton.icon(
             icon: const Icon(Icons.add_rounded),
             label: Text(t.addReward),
             onPressed: () => editReward(context, ref, null),
@@ -167,7 +168,7 @@ class _RewardCard extends ConsumerWidget {
           Row(
             children: [
               Expanded(child: Text(status, style: tt.bodySmall)),
-              FilledButton(
+              PressFilledButton(
                 onPressed: block == RedeemBlock.none
                     ? () => _redeem(context, ref)
                     : null,
@@ -192,7 +193,7 @@ class _RewardCard extends ConsumerWidget {
             onPressed: () => Navigator.pop(ctx, false),
             child: Text(t.cancel),
           ),
-          FilledButton(
+          PressFilledButton(
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(t.redeem),
           ),
@@ -320,7 +321,7 @@ Future<void> editReward(BuildContext context, WidgetRef ref, Reward? r) async {
                     child: Text(t.cancel),
                   ),
                   const SizedBox(width: LcTokens.spacingSm),
-                  FilledButton(
+                  PressFilledButton(
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         Navigator.pop(ctx, 'save');

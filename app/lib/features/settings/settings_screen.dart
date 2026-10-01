@@ -12,6 +12,51 @@ import 'backup_screen.dart';
 import 'credits_screen.dart';
 import 'updates_screen.dart';
 
+void _showControllerMap(BuildContext context, AppSettings s) {
+  final t = AppLocalizations.of(context);
+  final tt = Theme.of(context).textTheme;
+  final confirm = s.swapAB ? 'B' : 'A';
+  final back = s.swapAB ? 'A' : 'B';
+  final rows = [
+    (t.controllerMapDpad, t.controllerMapDpadDo),
+    (confirm, t.controllerMapConfirmDo),
+    (back, t.controllerMapBackDo),
+    (t.controllerMapShoulder, t.controllerMapShoulderDo),
+    if (s.quickAnswerButtons)
+      (s.swapAB ? 'B A X Y' : 'A B X Y', t.controllerMapQuickDo),
+    (t.controllerMapKeys, t.controllerMapKeysDo),
+  ];
+  showDialog<void>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(t.controllerMap),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (final (k, v) in rows)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(width: 110, child: Text(k, style: tt.titleMedium)),
+                  Expanded(child: Text(v, style: tt.bodyMedium)),
+                ],
+              ),
+            ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          autofocus: true,
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(t.close),
+        ),
+      ],
+    ),
+  );
+}
+
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -157,11 +202,47 @@ class SettingsScreen extends ConsumerWidget {
                 ),
               ),
               SwitchListTile(
-                title: Text(t.reduceMotion),
-                value: s.reduceMotion,
+                title: Text(t.animations),
+                subtitle: Text(t.animationsHelp),
+                value: s.animations,
                 onChanged: (v) =>
-                    set.update((x) => x.copyWith(reduceMotion: v)),
+                    set.update((x) => x.copyWith(reduceMotion: !v)),
               ),
+            ]),
+            SectionLabel(t.sectionInput),
+            card([
+              SwitchListTile(
+                title: Text(t.haptics),
+                value: s.haptics,
+                onChanged: (v) => set.update((x) => x.copyWith(haptics: v)),
+              ),
+              SwitchListTile(
+                title: Text(t.controller),
+                subtitle: Text(t.controllerHelp),
+                value: s.controller,
+                onChanged: (v) => set.update((x) => x.copyWith(controller: v)),
+              ),
+              if (s.controller) ...[
+                SwitchListTile(
+                  title: Text(t.swapAB),
+                  subtitle: Text(t.swapABHelp),
+                  value: s.swapAB,
+                  onChanged: (v) => set.update((x) => x.copyWith(swapAB: v)),
+                ),
+                SwitchListTile(
+                  title: Text(t.quickAnswer),
+                  subtitle: Text(t.quickAnswerHelp),
+                  value: s.quickAnswerButtons,
+                  onChanged: (v) =>
+                      set.update((x) => x.copyWith(quickAnswerButtons: v)),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.sports_esports_rounded),
+                  title: Text(t.controllerMap),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () => _showControllerMap(context, s),
+                ),
+              ],
             ]),
             SectionLabel(t.sectionApp),
             card([

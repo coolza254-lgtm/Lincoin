@@ -14,6 +14,7 @@ import '../../ui/widgets.dart';
 import 'item_details.dart';
 import 'question_body.dart';
 import 'session_controller.dart';
+import '../../ui/input.dart';
 
 class StudyScreen extends ConsumerWidget {
   /// 'vocab' or 'grammar'.
@@ -159,7 +160,7 @@ class _Intro extends ConsumerWidget {
         ],
       ),
       actions: [
-        FilledButton(
+        PressFilledButton(
           onPressed: ref.read(sessionProvider(deck).notifier).finishIntro,
           child: Text(t.gotIt),
         ),
@@ -244,7 +245,7 @@ class _QuestionView extends ConsumerWidget {
       ),
       actions: [
         if (fb)
-          FilledButton(
+          PressFilledButton(
             // Takes focus from the answer field, which closes the keyboard.
             autofocus: true,
             onPressed: ctl.next,
@@ -290,7 +291,7 @@ class _QuestionView extends ConsumerWidget {
             onPressed: () => Navigator.pop(ctx, false),
             child: Text(t.cancel),
           ),
-          FilledButton(
+          PressFilledButton(
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(t.send),
           ),
@@ -457,7 +458,7 @@ class _Done extends ConsumerWidget {
         ],
       ),
       actions: [
-        FilledButton(
+        PressFilledButton(
           onPressed: () => Navigator.of(context).maybePop(),
           child: Text(t.backHome),
         ),

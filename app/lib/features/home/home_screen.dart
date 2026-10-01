@@ -12,6 +12,7 @@ import '../grammar/grammar_lesson.dart';
 import '../settings/settings_screen.dart';
 import '../settings/updates_screen.dart';
 import '../study/study_screen.dart';
+import '../../ui/input.dart';
 
 String levelName(AppLocalizations t, String level) =>
     level == 'kana' ? t.levelKana : level.toUpperCase();
@@ -91,7 +92,7 @@ class HomeScreen extends ConsumerWidget {
                 icon: Icons.inventory_2_outlined,
                 title: t.noContentTitle,
                 body: t.noContentBody,
-                action: FilledButton(
+                action: PressFilledButton(
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const UpdatesScreen()),
                   ),
@@ -199,7 +200,7 @@ class _DeckCard extends ConsumerWidget {
             const SizedBox(height: LcTokens.spacingLg),
             SizedBox(
               width: double.infinity,
-              child: FilledButton(
+              child: PressFilledButton(
                 onPressed: plan.isEmpty
                     ? null
                     : () => Navigator.of(context).push(

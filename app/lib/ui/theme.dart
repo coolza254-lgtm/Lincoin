@@ -113,8 +113,20 @@ ThemeData buildTheme(LcPalette p, {bool reduceMotion = false}) {
     borderRadius: BorderRadius.circular(LcTokens.radiusButton),
   );
   const minSize = Size(LcTokens.touchTargetMin, LcTokens.touchTargetMin + 8);
+  // A thick ring on the focused control, so a controller or keyboard user
+  // always sees where they are.
+  WidgetStateProperty<BorderSide?> ring(Color color, BorderSide? rest) =>
+      WidgetStateProperty.resolveWith(
+        (s) => s.contains(WidgetState.focused)
+            ? BorderSide(color: color, width: 3)
+            : rest,
+      );
   return ThemeData(
     useMaterial3: true,
+    focusColor: p.accent.withValues(alpha: 0.16),
+    // Material 3 already uses the sparkle ripple on Android; with animations
+    // off there is no ripple at all.
+    splashFactory: reduceMotion ? NoSplash.splashFactory : null,
     colorScheme: scheme,
     scaffoldBackgroundColor: p.bg,
     fontFamily: fontThai,
@@ -139,16 +151,15 @@ ThemeData buildTheme(LcPalette p, {bool reduceMotion = false}) {
         minimumSize: minSize,
         shape: buttonShape,
         textStyle: t(LcTokens.bodySize, 600),
-      ),
+      ).copyWith(side: ring(p.ink, null)),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: p.ink,
-        side: BorderSide(color: p.line, width: 1.5),
         minimumSize: minSize,
         shape: buttonShape,
         textStyle: t(LcTokens.bodySize, 500),
-      ),
+      ).copyWith(side: ring(p.accent, BorderSide(color: p.line, width: 1.5))),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(

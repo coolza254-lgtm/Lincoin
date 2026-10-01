@@ -9,6 +9,7 @@ import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
 import 'drill_controller.dart';
 import 'drill_screen.dart';
+import '../../ui/input.dart';
 
 class PracticeOverview {
   final int items;
@@ -185,7 +186,7 @@ class _PracticePanel extends ConsumerWidget {
           const SizedBox(height: LcTokens.spacingLg),
           SizedBox(
             width: double.infinity,
-            child: FilledButton(
+            child: PressFilledButton(
               onPressed: ready
                   ? () => Navigator.of(context).push(
                       MaterialPageRoute(
@@ -420,7 +421,7 @@ Future<void> showChallengeSetup(
                 ),
               ],
               const SizedBox(height: LcTokens.spacingLg),
-              FilledButton(
+              PressFilledButton(
                 onPressed: o.affordable
                     ? () {
                         try {
