@@ -55,6 +55,8 @@ def check(path: Path, report=None) -> list[str]:
 
     if report is not None and report.override_errors:
         errors.append(f"JLPT overrides that did not resolve to exactly one entry: {report.override_errors}")
+    if report is not None and report.primary_sense_errors:
+        errors.append(f"primary senses that did not match exactly one sense: {report.primary_sense_errors}")
     if report is not None and report.missing_in_jmdict:
         errors.append(f"{len(report.missing_in_jmdict)} JLPT list entries not found in JMdict "
                       f"(first: {report.missing_in_jmdict[:5]})")

@@ -1,0 +1,265 @@
+{
+  "_comment": "The sense taught first and asked in questions, where JMdict's first sense is not the meaning a learner meets first (reviewed against the JLPT list definitions). 'gloss' is a regex that must match exactly one sense of the entry, or the build fails.",
+  "primary": [
+    {
+      "seq": 1165970,
+      "gloss": "^best(;|$)",
+      "reason": "一番: \"best; most\" is how learners meet it (一番好き)"
+    },
+    {
+      "seq": 1264540,
+      "gloss": "^word(;|$)",
+      "reason": "言葉: \"word\" is the everyday meaning"
+    },
+    {
+      "seq": 1415000,
+      "gloss": "^difficult(;|$)",
+      "reason": "大変: \"hard; tough\" (大変ですね), not the adverb \"very\""
+    },
+    {
+      "seq": 1180570,
+      "gloss": "^beside(;|$)",
+      "reason": "横: \"beside; next to\" (駅の横), not \"horizontal\""
+    },
+    {
+      "seq": 1463520,
+      "gloss": "^meat(;|$)",
+      "reason": "肉: \"meat\", not body flesh"
+    },
+    {
+      "seq": 1260720,
+      "gloss": "^healthy(;|$)",
+      "reason": "元気: \"healthy; well\" (お元気ですか)"
+    },
+    {
+      "seq": 1589500,
+      "gloss": "^to\\ alight\\ \\(e\\.g\\.\\ from\\ bus\\)(;|$)",
+      "reason": "降りる: get off a vehicle (バスを降りる)"
+    },
+    {
+      "seq": 1444610,
+      "gloss": "^to\\ hand\\ over(;|$)",
+      "reason": "渡す: hand over, not ferry across"
+    },
+    {
+      "seq": 1584930,
+      "gloss": "^\\(not\\)\\ very(;|$)",
+      "reason": "あまり: \"(not) very\" (あまり〜ない)"
+    },
+    {
+      "seq": 1404975,
+      "gloss": "^early(;|$)",
+      "reason": "早い (this spelling): \"early\"; \"fast\" is 速い"
+    },
+    {
+      "seq": 1227560,
+      "gloss": "^to\\ rest(;|$)",
+      "reason": "休む: \"to rest\""
+    },
+    {
+      "seq": 1239730,
+      "gloss": "^to\\ turn(;|$)",
+      "reason": "曲がる: \"to turn\" (角を曲がる)"
+    },
+    {
+      "seq": 1352320,
+      "gloss": "^to\\ give(;|$)",
+      "reason": "あげる: N5 \"to give\""
+    },
+    {
+      "seq": 1387210,
+      "gloss": "^first(;|$)",
+      "reason": "先: \"ahead; first\" (先に), not \"tip\""
+    },
+    {
+      "seq": 2147990,
+      "gloss": "^height(;|$)",
+      "reason": "背: \"height\" (背が高い)"
+    },
+    {
+      "seq": 1516925,
+      "gloss": "^person(;|$)",
+      "reason": "方 (かた): polite \"person\" (あの方)"
+    },
+    {
+      "seq": 1042610,
+      "gloss": "^kilogram(;|$)",
+      "reason": "キロ: kilogram, not the prefix"
+    },
+    {
+      "seq": 1466940,
+      "gloss": "^why(;|$)",
+      "reason": "どうして: \"why\""
+    },
+    {
+      "seq": 1590480,
+      "gloss": "^appearance(;|$)",
+      "reason": "格好: appearance, outfit"
+    },
+    {
+      "seq": 1426530,
+      "gloss": "^care(;|$)",
+      "reason": "注意: \"care; caution\" (注意してください)"
+    },
+    {
+      "seq": 1467710,
+      "gloss": "^fever(;|$)",
+      "reason": "熱: \"fever\" (熱がある)"
+    },
+    {
+      "seq": 1604290,
+      "gloss": "^surroundings(;|$)",
+      "reason": "周り: surroundings, not circumference"
+    },
+    {
+      "seq": 1530970,
+      "gloss": "^impossible(;|$)",
+      "reason": "無理: \"impossible\""
+    },
+    {
+      "seq": 1489340,
+      "gloss": "^face\\ \\(i\\.e\\.\\ the\\ visible\\ side\\ of\\ an\\ object\\)(;|$)",
+      "reason": "表: the front / visible side"
+    },
+    {
+      "seq": 1284430,
+      "gloss": "^to\\ fit(;|$)",
+      "reason": "合う: \"to fit; to match\""
+    },
+    {
+      "seq": 1349480,
+      "gloss": "^acceptance(;|$)",
+      "reason": "承知: consent, understood (承知しました)"
+    },
+    {
+      "seq": 1223660,
+      "gloss": "^to\\ wake(;|$)",
+      "reason": "起こす: \"to wake (someone)\""
+    },
+    {
+      "seq": 1165670,
+      "gloss": "^full(;|$)",
+      "reason": "いっぱい: \"full\""
+    },
+    {
+      "seq": 1432850,
+      "gloss": "^to\\ go\\ to\\ \\(school,\\ work,\\ etc\\.\\)(;|$)",
+      "reason": "通う: commute, attend (学校に通う)"
+    },
+    {
+      "seq": 1291270,
+      "gloss": "^to\\ give(;|$)",
+      "reason": "差し上げる: humble \"to give\""
+    },
+    {
+      "seq": 1219680,
+      "gloss": "^to\\ stop\\ by\\ \\(while\\ on\\ one's\\ way\\ to\\ another\\ place\\)(;|$)",
+      "reason": "寄る: \"to stop by\""
+    },
+    {
+      "seq": 1310460,
+      "gloss": "^delicious(;|$)",
+      "reason": "うまい: N4 list gives \"delicious\""
+    },
+    {
+      "seq": 1304420,
+      "gloss": "^for\\ a\\ while(;|$)",
+      "reason": "しばらく: \"for a while\""
+    },
+    {
+      "seq": 1374550,
+      "gloss": "^amazing\\ \\(e\\.g\\.\\ of\\ strength\\)(;|$)",
+      "reason": "すごい: \"amazing\""
+    },
+    {
+      "seq": 1602060,
+      "gloss": "^very\\ bad(;|$)",
+      "reason": "ひどい: \"terrible; awful\""
+    },
+    {
+      "seq": 1509430,
+      "gloss": "^separate(;|$)",
+      "reason": "別: \"separate; different; another\""
+    },
+    {
+      "seq": 1350600,
+      "gloss": "^to\\ roast(;|$)",
+      "reason": "焼く: \"to grill; to bake\""
+    },
+    {
+      "seq": 1291330,
+      "gloss": "^to hold up \\(an umbrella",
+      "reason": "さす: N5 \"to put up (an umbrella)\" (傘をさす)"
+    },
+    {
+      "seq": 1207610,
+      "gloss": "^to make \\(a call\\)",
+      "reason": "かける: N5 \"to make (a call)\" (電話をかける)"
+    },
+    {
+      "seq": 1495770,
+      "gloss": "^to turn on \\(a light\\)",
+      "reason": "つける: N5 \"to turn on (a light)\""
+    },
+    {
+      "seq": 1591110,
+      "gloss": "^to listen \\(e\\.g\\. to music\\)",
+      "reason": "聞く: \"to listen\" is the everyday use (音楽を聞く)"
+    },
+    {
+      "seq": 1061520,
+      "gloss": "^shirt \\(outerwear",
+      "reason": "シャツ: a shirt worn outside, not an undershirt"
+    },
+    {
+      "seq": 1203260,
+      "gloss": "^another \\(person or thing\\)",
+      "reason": "他: \"other; another\" (他の人)"
+    },
+    {
+      "seq": 1172830,
+      "gloss": "^driving \\(a vehicle\\)",
+      "reason": "運転: \"driving\" (車を運転する)"
+    },
+    {
+      "seq": 1157080,
+      "gloss": "^sake; purpose",
+      "reason": "ため: \"for the sake of; in order to\""
+    },
+    {
+      "seq": 1184170,
+      "gloss": "^to lower; to reduce",
+      "reason": "下げる: \"to lower\""
+    },
+    {
+      "seq": 1009320,
+      "gloss": "^rapidly; quickly; steadily",
+      "reason": "どんどん: \"rapidly; more and more\", not a drumming sound"
+    },
+    {
+      "seq": 1077550,
+      "gloss": "^check; inspection",
+      "reason": "チェック: \"to check\", not the plaid pattern"
+    },
+    {
+      "seq": 1100810,
+      "gloss": "^part-time \\(work\\)",
+      "reason": "パート: part-time work"
+    },
+    {
+      "seq": 1535880,
+      "gloss": "^to return; to go back",
+      "reason": "戻る: \"to return; to go back\""
+    },
+    {
+      "seq": 1079290,
+      "gloss": "^textbook",
+      "reason": "テキスト: textbook"
+    },
+    {
+      "seq": 1228690,
+      "gloss": "^express \\(train\\)",
+      "reason": "急行: express train"
+    }
+  ]
+}

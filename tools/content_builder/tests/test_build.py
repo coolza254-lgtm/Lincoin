@@ -2,6 +2,7 @@ import bz2
 import gzip
 import io
 import json
+import re
 import shutil
 import sqlite3
 import tarfile
@@ -64,7 +65,7 @@ class BuildTest(unittest.TestCase):
         cls.cache = make_cache(cls.tmp)
         cls.out = cls.tmp / "content.db"
         cls.report = build(cls.cache, cls.out, ["n5", "n4"], translations_root=FIX / "translations",
-                           overrides_path=FIX / "overrides.json")
+                           overrides_path=FIX / "overrides.json", primary_path=None)
         cls.db = sqlite3.connect(cls.out)
 
     @classmethod
@@ -179,6 +180,35 @@ class BuildTest(unittest.TestCase):
             self.assertTrue(any("overrides" in e for e in check(out, report)))
         finally:
             shutil.rmtree(tmp)
+
+    def test_primary_sense_is_taught_first(self):
+        with tempfile.TemporaryDirectory() as d:
+            ps = Path(d) / "primary.json"
+            ps.write_text(json.dumps({"primary": [
+                {"seq": 1198180, "gloss": "^to have an accident", "reason": "test"}]}))
+            out = Path(d) / "c.db"
+            report = build(self.cache, out, ["n5"], with_examples=False, translations_root=None,
+                           overrides_path=None, primary_path=ps)
+            self.assertEqual(report.primary_senses_applied, 1)
+            db = sqlite3.connect(out)
+            rows = db.execute("SELECT id, ord FROM senses WHERE word_id='w:1198180' ORDER BY ord").fetchall()
+            db.close()
+            # ids keep JMdict's numbering, ord is the teaching order
+            self.assertEqual(rows[:2], [("w:1198180:2", 1), ("w:1198180:1", 2)])
+            self.assertEqual(check(out, report), [])
+
+            ps.write_text(json.dumps({"primary": [{"seq": 1198180, "gloss": "^nothing like this", "reason": "x"}]}))
+            report = build(self.cache, out, ["n5"], with_examples=False, translations_root=None,
+                           overrides_path=None, primary_path=ps)
+            self.assertTrue(any("primary senses" in e for e in check(out, report)))
+
+    def test_real_primary_senses_file_is_valid(self):
+        data = json.loads((Path(__file__).resolve().parent.parent / "primary_senses.json").read_text())
+        seqs = [p["seq"] for p in data["primary"]]
+        self.assertEqual(len(seqs), len(set(seqs)))
+        for p in data["primary"]:
+            re.compile(p["gloss"])
+            self.assertTrue(p["reason"])
 
     def test_kana_table(self):
         self.assertEqual(self.q("SELECT COUNT(*) FROM kana"), [(208,)])

@@ -42,6 +42,8 @@ class BuildReport:
     translations: dict = field(default_factory=dict)
     overrides_applied: list[dict] = field(default_factory=list)
     override_errors: list[dict] = field(default_factory=list)
+    primary_senses_applied: int = 0
+    primary_sense_errors: list[dict] = field(default_factory=list)
     grammar_points: int = 0
     grammar_examples: int = 0
     grammar_points_few_examples: list[str] = field(default_factory=list)
@@ -92,6 +94,34 @@ def load_overrides(path: Path | None) -> list[dict]:
 
 
 OVERRIDES = Path(__file__).resolve().parent.parent / "jlpt_overrides.json"
+PRIMARY_SENSES = Path(__file__).resolve().parent.parent / "primary_senses.json"
+
+
+def load_primary_senses(path: Path | None) -> dict[int, dict]:
+    """seq → {gloss pattern, reason}: the sense taught first (and asked in
+    questions) when JMdict's first sense is not the one a learner needs."""
+    if path is None or not path.exists():
+        return {}
+    return {p["seq"]: p for p in json.loads(path.read_text(encoding="utf-8"))["primary"]}
+
+
+def sense_order(seq: int, senses: list, primary: dict[int, dict], report: "BuildReport") -> list[int]:
+    """Indexes of [senses] in teaching order: the reviewed primary sense
+    first (found by its gloss pattern, so JMdict renumbering cannot move it
+    silently), then the rest in dictionary order."""
+    order = [i for i, s in enumerate(senses) if s.glosses]
+    p = primary.get(seq)
+    if p is None:
+        return order
+    rx = re.compile(p["gloss"])
+    hits = [i for i in order if rx.search("; ".join(senses[i].glosses))]
+    if len(hits) != 1:
+        report.primary_sense_errors.append({"seq": seq, "gloss": p["gloss"], "matches": len(hits)})
+        return order
+    report.primary_senses_applied += 1
+    return [hits[0]] + [i for i in order if i != hits[0]]
+
+
 EXAMPLE_FILTER = Path(__file__).resolve().parent.parent / "example_filter.json"
 
 
@@ -111,6 +141,7 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
           sources: dict[str, Source] | None = None,
           translations_root: Path | None = translations.ROOT,
           overrides_path: Path | None = OVERRIDES,
+          primary_path: Path | None = PRIMARY_SENSES,
           example_filter: ExampleFilter | None = None,
           grammar_root: Path = grammar.GRAMMAR_DIR) -> BuildReport:
     sources = sources or load_sources()
@@ -218,13 +249,15 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
         db.execute("INSERT INTO sources VALUES (?,?,?,?,?,?,?,?)",
                    (s.id, s.name, s.homepage, s.license, s.license_url, s.attribution, version, _j(files)))
 
+    primary_senses = load_primary_senses(primary_path)
     for seq in sorted(order, key=lambda s: (-items[s].level, order[s])):
         e, it = entries[seq], items[seq]
         wid = f"w:{seq}"
         primary_k, primary_r = primaries[seq]
         tags = (["uk"] if e.usually_kana else []) + (["common"] if e.common else [])
+        taught = sense_order(seq, e.senses, primary_senses, report)
         db.execute("INSERT INTO words VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-                   (wid, it.level, order[seq], _j(e.senses[0].pos if e.senses else []), _j(tags),
+                   (wid, it.level, order[seq], _j(e.senses[taught[0]].pos if taught else []), _j(tags),
                     int(e.common), e.freq_rank(), "jmdict", "jlpt_jmdict_match", it.definition,
                     _j(list_readings.get(seq, [it.kana]))))
         report.words += 1
@@ -241,11 +274,12 @@ def build(cache: Cache, out: Path, levels: list[str], with_examples: bool = True
             db.execute("INSERT INTO word_forms VALUES (?,?,?,?,?,?,?,?,?,?)",
                        (wid, "kana", i, r.text, None, _j(r.restr) if r.restr else None, _j(r.info),
                         int(r.text == primary_r), int(r.common), int("sk" not in r.info)))
-        for i, s in enumerate(e.senses):
-            if not s.glosses:
-                continue
+        # Sense ids keep JMdict's numbering (translations are keyed on it);
+        # ord is the teaching order.
+        for pos, i in enumerate(taught):
+            s = e.senses[i]
             db.execute("INSERT INTO senses VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                       (f"{wid}:{i + 1}", wid, i + 1, _j(s.pos), _j(s.misc), _j(s.field_), _j(s.info),
+                       (f"{wid}:{i + 1}", wid, pos + 1, _j(s.pos), _j(s.misc), _j(s.field_), _j(s.info),
                         _j(s.stagk + s.stagr), "; ".join(s.glosses), None, None, "missing", 0))
             report.senses += 1
 
