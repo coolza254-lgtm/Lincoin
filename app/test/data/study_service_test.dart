@@ -256,4 +256,42 @@ void main() {
     ];
     expect(ids.where((i) => i.endsWith('#recall')), isEmpty);
   });
+
+  test('one level at a time, each with its own new cards per day', () {
+    StudyService at(String level) => StudyService(
+      db: db,
+      catalog: catalog,
+      settings: const AppSettings(vocabNewPerDay: 2),
+      clock: Clock(() => now, () => tz),
+      level: level,
+    );
+    final kana = at('kana').plan().queue.newCards.map((c) => c.cardId);
+    expect(kana, ['k:hira.a#kana', 'k:hira.i#kana']);
+    final n5 = at('n5');
+    expect(n5.plan().queue.newCards.map((c) => c.cardId), [
+      'w:1#recog',
+      'w:2#recog',
+    ]);
+    // Using up N5's new words leaves kana's untouched.
+    for (final c in n5.plan().queue.newCards) {
+      final q = n5.question(c.cardId);
+      n5.introduce(q);
+      n5.answer(
+        q,
+        const AnswerEvent(isCorrect: true, responseMs: 3000),
+        selfRating: Rating.good,
+      );
+    }
+    expect(n5.plan().newCount, 0);
+    expect(at('kana').plan().newCount, 2);
+    expect(at('n4').plan().isEmpty, isTrue);
+  });
+
+  test('kana are flashcards too: no typing exercises in a session', () {
+    final s = service(const AppSettings());
+    final q = s.question(s.plan().queue.newCards.first.cardId);
+    expect(q.item, isA<KanaStudy>());
+    expect(q.isFlashcard, isTrue);
+    expect(q.isTyped, isFalse);
+  });
 }

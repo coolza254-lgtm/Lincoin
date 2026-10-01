@@ -136,6 +136,36 @@ void main() {
     expect(log.every((r) => r.cardId.endsWith('#recog')), isTrue);
   });
 
+  testWidgets('levels N5 → N1 are listed; one level can be played', (
+    tester,
+  ) async {
+    final c = await start(tester);
+    await tester.scrollUntilVisible(find.text('JLPT N1'), 300);
+    await tester.pumpAndSettle();
+    for (final l in ['N5', 'N4', 'N3', 'N2', 'N1']) {
+      expect(find.text('JLPT $l'), findsOneWidget);
+    }
+    // Levels without content yet say so instead of offering to play.
+    expect(find.text('เร็วๆ นี้'), findsNWidgets(4));
+    await tester.ensureVisible(find.text('JLPT N5'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('JLPT N5'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('แสดงคำตอบ'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('ดี'));
+    await tester.pumpAndSettle();
+    final log = StudyRepo(c.read(userDbProvider)).reviewRecords();
+    // N5 starts with words even though the whole path begins with kana.
+    expect(log.single.cardId, 'w:1#recog');
+    // Practice no longer shows challenges.
+    await tester.tap(find.byTooltip('ปิด'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('ฝึก').last);
+    await tester.pumpAndSettle();
+    expect(find.text('ท้าทาย'), findsNothing);
+  });
+
   testWidgets('a full study session records reviews', (tester) async {
     final c = await start(
       tester,
@@ -181,6 +211,10 @@ void main() {
       tester,
       settings: const AppSettings(includeKana: false, grammarNewPerDay: 1),
     );
+    // The grammar deck sits below the level list.
+    await tester.scrollUntilVisible(find.text('ไวยากรณ์'), 300);
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, -200));
+    await tester.pumpAndSettle();
     expect(find.text('ไวยากรณ์'), findsWidgets);
     await tester.tap(find.text('เริ่มเรียน').last);
     await tester.pumpAndSettle();
@@ -201,7 +235,7 @@ void main() {
   testWidgets('every theme renders all tabs', (tester) async {
     for (final theme in LcTokens.themes.keys) {
       await start(tester, settings: AppSettings(theme: theme));
-      for (final tab in ['ฝึก & ท้าทาย', 'สถิติ', 'ร้าน', 'หน้าหลัก']) {
+      for (final tab in ['ฝึก', 'สถิติ', 'ร้าน', 'หน้าหลัก']) {
         await tester.tap(find.text(tab).last);
         await tester.pumpAndSettle();
       }

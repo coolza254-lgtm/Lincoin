@@ -101,7 +101,7 @@ enum QuestionForm {
     'kana.type' => kanaType,
     'kana.choice' => kanaChoice,
     'cloze.choice' => cloze,
-    'recog.flash' || 'recall.flash' => flashcard,
+    'recog.flash' || 'recall.flash' || 'kana.flash' => flashcard,
     _ => meaningChoice,
   };
 
@@ -150,6 +150,9 @@ class StudyService {
   /// 'vocab' or 'grammar': which items, schedule settings and daily bonus.
   final String deck;
 
+  /// Only this level ('kana', 'n5' …); null for the whole path.
+  final String? level;
+
   late final SrsScheduler scheduler = SrsScheduler(
     deck == grammarDeck ? config.grammar : config.vocab,
   );
@@ -168,6 +171,7 @@ class StudyService {
     required this.settings,
     this.clock = const Clock(),
     this.deck = vocabDeck,
+    this.level,
     EngineConfig? config,
   }) : config =
            config ??
@@ -176,7 +180,7 @@ class StudyService {
              grammar: SrsConfig(desiredRetention: settings.grammarRetention),
            );
 
-  /// Words are reviewed as self-rated flashcards.
+  /// Words and kana are reviewed as self-rated flashcards.
   bool get flashcards => deck == vocabDeck && settings.flashcards;
 
   int get _newPerDay =>
@@ -201,8 +205,10 @@ class StudyService {
     // are all the queue can use; the rest of the path is skipped.
     var freshLeft = _newPerDay;
     for (final item in catalog.itemsOf(deck)) {
+      if (level != null && item.level != level) continue;
       final ids = item.cardIds;
-      if (item is KanaStudy && !settings.includeKana) {
+      // Choosing the kana level studies kana even with the setting off.
+      if (item is KanaStudy && !settings.includeKana && level != 'kana') {
         // Kana already started keep their schedule.
         final s = stored[ids.first];
         if (s != null && !s.state.isNew) out.add(_fromStored(s, item, 0));
@@ -214,16 +220,16 @@ class StudyService {
       }
       for (var f = 0; f < ids.length; f++) {
         final facet = item.facets[f];
+        // Flashcards are one card per word, like Kaishi: reverse (typing)
+        // cards are left out, even ones started in quiz mode.
+        if (flashcards && facet == Facet.recall) continue;
         final id = ids[f];
         final s = stored[id];
         final order = item.pathOrder * 4 + f;
         if (s != null) {
           out.add(_fromStored(s, item, order));
         } else if (facet == Facet.recall &&
-            (flashcards ||
-                !stored.containsKey(cardIdFor(item.id, Facet.recog)))) {
-          // Flashcards are one card per word, like Kaishi: no new reverse
-          // cards (ones already started keep their schedule).
+            !stored.containsKey(cardIdFor(item.id, Facet.recog))) {
           continue;
         } else {
           out.add(
@@ -251,7 +257,14 @@ class StudyService {
   TodayPlan plan() {
     final now = clock.nowUtc();
     final day = studyDay(now);
-    final introduced = repo.introducedOn(day, deck);
+    // New cards per day count per level when one level is studied, so
+    // finishing N5's new words does not use up N4's.
+    final introduced = level == null
+        ? repo.introducedOn(day, deck)
+        : repo
+              .introducedItemsOn(day, deck)
+              .where((id) => catalog.byId[id]?.level == level)
+              .length;
     final q = QueueBuilder(scheduler, _queueSettings).build(
       cards: _queueCards(repo.cards(deck: deck)),
       nowUtc: now,
@@ -301,7 +314,7 @@ class StudyService {
     final reps = s?.state.reps ?? 0;
     // Recall of an already introduced word needs no introduction.
     final needsIntro = s == null && facet != Facet.recall;
-    if (flashcards && item is WordStudy) {
+    if (flashcards && item is! GrammarStudy) {
       // The back of the card is the introduction.
       return Question(
         cardId: cardId,

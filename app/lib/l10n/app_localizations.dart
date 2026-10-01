@@ -103,7 +103,7 @@ abstract class AppLocalizations {
   /// No description provided for @tabPractice.
   ///
   /// In th, this message translates to:
-  /// **'ฝึก & ท้าทาย'**
+  /// **'ฝึก'**
   String get tabPractice;
 
   /// No description provided for @tabStats.
@@ -1864,12 +1864,6 @@ abstract class AppLocalizations {
   /// **'นึกความหมายในใจ แล้วแตะการ์ดเพื่อพลิก'**
   String get flashFrontHint;
 
-  /// No description provided for @flashRecallHint.
-  ///
-  /// In th, this message translates to:
-  /// **'นึกคำภาษาญี่ปุ่น แล้วแตะการ์ดเพื่อพลิก'**
-  String get flashRecallHint;
-
   /// No description provided for @rateAgain.
   ///
   /// In th, this message translates to:
@@ -1941,6 +1935,54 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'การ์ด: พลิก แล้วกด 1–4 ให้คะแนน (อีกครั้ง/ยาก/ดี/ง่าย)'**
   String get controllerMapFlashDo;
+
+  /// No description provided for @flashKanaHint.
+  ///
+  /// In th, this message translates to:
+  /// **'นึกเสียงอ่านในใจ แล้วแตะการ์ดเพื่อพลิก'**
+  String get flashKanaHint;
+
+  /// No description provided for @levelsTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'เลือกระดับ JLPT'**
+  String get levelsTitle;
+
+  /// No description provided for @levelsHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'เล่นการ์ดทีละระดับ เริ่มจาก N5 (ง่ายสุด) ไป N1 แต่ละระดับมีคำใหม่ต่อวันแยกกัน'**
+  String get levelsHelp;
+
+  /// No description provided for @levelWords.
+  ///
+  /// In th, this message translates to:
+  /// **'{learned}/{total}'**
+  String levelWords(int learned, int total);
+
+  /// No description provided for @levelDueNew.
+  ///
+  /// In th, this message translates to:
+  /// **'ทบทวน {due} · ใหม่ {fresh}'**
+  String levelDueNew(int due, int fresh);
+
+  /// No description provided for @levelSoon.
+  ///
+  /// In th, this message translates to:
+  /// **'เร็วๆ นี้'**
+  String get levelSoon;
+
+  /// No description provided for @levelPlay.
+  ///
+  /// In th, this message translates to:
+  /// **'เล่น'**
+  String get levelPlay;
+
+  /// No description provided for @levelDone.
+  ///
+  /// In th, this message translates to:
+  /// **'ครบวันนี้'**
+  String get levelDone;
 }
 
 class _AppLocalizationsDelegate

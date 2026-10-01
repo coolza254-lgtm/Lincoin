@@ -129,7 +129,13 @@ class SessionController extends Notifier<SessionState> {
     _queue = SessionQueue(initial: svc.sessionOrder(plan));
     _sessionId = UserDb.newId();
     final now = svc.clock.nowUtc();
-    svc.repo.startSession(_sessionId, 'study', deck, now, svc.studyDay(now));
+    svc.repo.startSession(
+      _sessionId,
+      'study',
+      svc.deck,
+      now,
+      svc.studyDay(now),
+    );
     ref.onDispose(_saveSession);
     return _advance(const SessionState(phase: SessionPhase.question));
   }
@@ -201,8 +207,13 @@ class SessionController extends Notifier<SessionState> {
     if (!q.isFlashcard) return;
     Feel.selection();
     state = state.copyWith(flipped: true, intervals: _svc.intervals(q));
-    if (ref.read(settingsProvider).autoPlayAudio && q.item is WordStudy) {
-      ref.read(ttsProvider).speak((q.item as WordStudy).word.reading).ignore();
+    final say = switch (q.item) {
+      WordStudy(:final word) => word.reading,
+      KanaStudy(:final kana) => kana.char,
+      _ => null,
+    };
+    if (say != null && ref.read(settingsProvider).autoPlayAudio) {
+      ref.read(ttsProvider).speak(say).ignore();
     }
   }
 

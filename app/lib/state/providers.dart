@@ -144,11 +144,14 @@ class DataVersion extends Notifier<int> {
 
 final dataVersionProvider = NotifierProvider<DataVersion, int>(DataVersion.new);
 
-/// Study rules for one deck ('vocab' / 'grammar'); null without content.
-final deckServiceProvider = Provider.family<StudyService?, String>((ref, deck) {
+/// Study rules for one deck ('vocab' / 'grammar'), or one level of it
+/// ([studyKey]); null without content.
+final deckServiceProvider = Provider.family<StudyService?, String>((ref, key) {
   final catalog = ref.watch(catalogProvider);
   if (catalog == null) return null;
+  final (deck, level) = parseStudyKey(key);
   return StudyService(
+    level: level,
     db: ref.watch(userDbProvider),
     catalog: catalog,
     settings: ref.watch(settingsProvider),
@@ -174,6 +177,26 @@ final coverageProvider = Provider.family<Map<String, double>, String>((
   ref.watch(dataVersionProvider);
   return ref.watch(deckServiceProvider(deck))?.coverage() ?? const {};
 });
+
+/// Words (or kana) started and total per vocabulary level.
+final levelProgressProvider = Provider<Map<String, ({int learned, int total})>>(
+  (ref) {
+    ref.watch(dataVersionProvider);
+    final svc = ref.watch(deckServiceProvider(vocabDeck));
+    if (svc == null) return const {};
+    final started = <String, int>{};
+    for (final c in svc.repo.cards(deck: vocabDeck).values) {
+      if (c.state.isNew || c.id.endsWith('#recall')) continue;
+      final level = svc.catalog.byId[c.itemId]?.level;
+      if (level != null) started[level] = (started[level] ?? 0) + 1;
+    }
+    final totals = svc.catalog.itemsPerLevel(vocabDeck);
+    return {
+      for (final l in vocabLevels)
+        l: (learned: started[l] ?? 0, total: totals[l] ?? 0),
+    };
+  },
+);
 
 final balanceProvider = Provider<int>((ref) {
   ref.watch(dataVersionProvider);

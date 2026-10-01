@@ -9,6 +9,17 @@ const grammarLevels = ['n5', 'n4', 'n3', 'n2', 'n1'];
 const vocabDeck = 'vocab';
 const grammarDeck = 'grammar';
 
+/// What a study session covers: a deck, optionally narrowed to one level
+/// ('vocab@n4'). Used as the key of the per-deck providers.
+String studyKey(String deck, [String? level]) =>
+    level == null ? deck : '$deck@$level';
+
+/// The deck and level of a [studyKey].
+(String, String?) parseStudyKey(String key) {
+  final i = key.indexOf('@');
+  return i < 0 ? (key, null) : (key.substring(0, i), key.substring(i + 1));
+}
+
 /// Something that can be studied: a kana character or a word.
 sealed class StudyItem {
   String get id;

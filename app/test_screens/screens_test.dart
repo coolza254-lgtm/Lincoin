@@ -172,24 +172,20 @@ void main() {
     }
 
     await snap('1-home');
+    await tester.scrollUntilVisible(find.text('JLPT N1'), 300);
+    await snap('1b-levels');
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, 3000));
+    await tester.pumpAndSettle();
     for (final (tab, name) in [
       ('สถิติ', '2-stats'),
       ('ร้าน', '3-shop'),
-      ('ฝึก & ท้าทาย', '4-practice'),
+      ('ฝึก', '4-practice'),
     ]) {
       await tester.tap(find.text(tab).last);
       await snap(name);
     }
     if (theme != 'matcha') return;
-    // Challenge tab + setup sheet, then a practice round.
-    await tester.tap(find.text('ท้าทาย'));
-    await snap('4b-challenges');
-    await tester.tap(find.text('สปีดรอบ'));
-    await snap('4c-challenge-setup');
-    await tester.tapAt(const Offset(10, 10));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('ฝึก').first);
-    await tester.pumpAndSettle();
+    // A practice round.
     await tester.tap(find.text('เริ่มฝึก 10 ข้อ'));
     await tester.pumpAndSettle();
     await snap('4d-drill');
@@ -255,7 +251,10 @@ void main() {
     }
     await tester.tap(find.byTooltip('ปิด'));
     await tester.pumpAndSettle();
-    // Grammar: lesson, cloze, feedback.
+    // Grammar: lesson, cloze, feedback (below the level list).
+    await tester.scrollUntilVisible(find.text('ดูทั้งหมด'), 300);
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, -200));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('เริ่มเรียน').last);
     await tester.pumpAndSettle();
     await snap('10-grammar-lesson');
@@ -277,6 +276,8 @@ void main() {
     await tester.tap(find.byType(OutlinedButton).first);
     await snap('12-grammar-feedback');
     await tester.tap(find.byTooltip('ปิด'));
+    await tester.pumpAndSettle();
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, 3000));
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('ตั้งค่า'));
     await snap('9-settings');

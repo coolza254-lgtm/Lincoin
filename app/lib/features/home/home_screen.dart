@@ -103,6 +103,7 @@ class HomeScreen extends ConsumerWidget {
           else ...[
             const _TodayStrip(),
             const _DeckCard(deck: vocabDeck, large: true),
+            const _LevelList(),
             const SizedBox(height: LcTokens.spacingLg),
             const _DeckCard(deck: grammarDeck),
             SectionLabel(t.coverageTitle),
@@ -214,6 +215,128 @@ class _DeckCard extends ConsumerWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+/// Every vocabulary level, N5 → N1, each with its own session.
+class _LevelList extends ConsumerWidget {
+  const _LevelList();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = AppLocalizations.of(context);
+    final tt = Theme.of(context).textTheme;
+    final progress = ref.watch(levelProgressProvider);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SectionLabel(t.levelsTitle),
+        LcCard(
+          padding: const EdgeInsets.symmetric(vertical: LcTokens.spacingSm),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  LcTokens.spacingLg,
+                  LcTokens.spacingSm,
+                  LcTokens.spacingLg,
+                  LcTokens.spacingXs,
+                ),
+                child: Text(t.levelsHelp, style: tt.bodySmall),
+              ),
+              for (final level in vocabLevels)
+                _LevelRow(level: level, progress: progress[level]),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _LevelRow extends ConsumerWidget {
+  final String level;
+  final ({int learned, int total})? progress;
+  const _LevelRow({required this.level, required this.progress});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = AppLocalizations.of(context);
+    final tt = Theme.of(context).textTheme;
+    final c = context.lc;
+    final total = progress?.total ?? 0;
+    final learned = progress?.learned ?? 0;
+    final key = studyKey(vocabDeck, level);
+    final plan = total == 0 ? null : ref.watch(todayPlanProvider(key));
+    final open = plan != null && !plan.isEmpty;
+    void play() => Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (_) => StudyScreen(deck: key),
+      ),
+    );
+    final kana = level == 'kana';
+    return InkWell(
+      onTap: open ? play : null,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: LcTokens.spacingLg,
+          vertical: LcTokens.spacingMd,
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 52,
+              height: 52,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: total == 0 ? c.track : c.accentSoft,
+                borderRadius: BorderRadius.circular(LcTokens.radiusControl),
+              ),
+              child: Text(
+                kana ? 'あ' : level.toUpperCase(),
+                style: kana
+                    ? jpStyle(24, 700, c.accent)
+                    : tt.titleMedium?.copyWith(
+                        color: total == 0 ? c.muted : c.accent,
+                        fontWeight: FontWeight.w800,
+                      ),
+              ),
+            ),
+            const SizedBox(width: LcTokens.spacingMd),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    kana ? t.levelKana : 'JLPT ${level.toUpperCase()}',
+                    style: tt.titleMedium,
+                  ),
+                  if (total == 0)
+                    Text(t.levelSoon, style: tt.bodySmall)
+                  else ...[
+                    const SizedBox(height: 6),
+                    LcProgressBar(learned / total, height: 6),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${t.levelWords(learned, total)}'
+                      '${plan == null ? '' : ' · ${t.levelDueNew(plan.dueCount, plan.newCount)}'}',
+                      style: tt.bodySmall,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            const SizedBox(width: LcTokens.spacingMd),
+            if (total > 0)
+              open
+                  ? PressFilledButton(onPressed: play, child: Text(t.levelPlay))
+                  : Text(t.levelDone, style: tt.bodySmall),
+          ],
+        ),
       ),
     );
   }

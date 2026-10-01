@@ -13,7 +13,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get tabHome => 'หน้าหลัก';
 
   @override
-  String get tabPractice => 'ฝึก & ท้าทาย';
+  String get tabPractice => 'ฝึก';
 
   @override
   String get tabStats => 'สถิติ';
@@ -1019,9 +1019,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get flashFrontHint => 'นึกความหมายในใจ แล้วแตะการ์ดเพื่อพลิก';
 
   @override
-  String get flashRecallHint => 'นึกคำภาษาญี่ปุ่น แล้วแตะการ์ดเพื่อพลิก';
-
-  @override
   String get rateAgain => 'อีกครั้ง';
 
   @override
@@ -1067,4 +1064,33 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get controllerMapFlashDo =>
       'การ์ด: พลิก แล้วกด 1–4 ให้คะแนน (อีกครั้ง/ยาก/ดี/ง่าย)';
+
+  @override
+  String get flashKanaHint => 'นึกเสียงอ่านในใจ แล้วแตะการ์ดเพื่อพลิก';
+
+  @override
+  String get levelsTitle => 'เลือกระดับ JLPT';
+
+  @override
+  String get levelsHelp =>
+      'เล่นการ์ดทีละระดับ เริ่มจาก N5 (ง่ายสุด) ไป N1 แต่ละระดับมีคำใหม่ต่อวันแยกกัน';
+
+  @override
+  String levelWords(int learned, int total) {
+    return '$learned/$total';
+  }
+
+  @override
+  String levelDueNew(int due, int fresh) {
+    return 'ทบทวน $due · ใหม่ $fresh';
+  }
+
+  @override
+  String get levelSoon => 'เร็วๆ นี้';
+
+  @override
+  String get levelPlay => 'เล่น';
+
+  @override
+  String get levelDone => 'ครบวันนี้';
 }

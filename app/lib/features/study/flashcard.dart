@@ -129,8 +129,24 @@ class _Front extends StatelessWidget {
     final t = AppLocalizations.of(context);
     final tt = Theme.of(context).textTheme;
     final c = context.lc;
-    final w = (q.item as WordStudy).word;
-    final recall = q.facet == Facet.recall;
+    final item = q.item;
+    final kana = item is KanaStudy;
+    final (String level, Widget face, String hint) = switch (item) {
+      KanaStudy(:final kana) => (
+        kana.script == 'hiragana' ? t.hiragana : t.katakana,
+        Text(kana.char, style: jpStyle(120, 700, c.ink)),
+        t.flashKanaHint,
+      ),
+      WordStudy(:final word) => (
+        'N${word.level}',
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Furigana(word.headwordFurigana, size: 56, showReading: false),
+        ),
+        t.flashFrontHint,
+      ),
+      GrammarStudy() => throw StateError('grammar is not a flashcard'),
+    };
     return Semantics(
       button: true,
       hint: t.showAnswer,
@@ -146,31 +162,16 @@ class _Front extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (isNew)
-                LcPill(t.newWord, icon: Icons.auto_awesome_rounded)
-              else
-                LcPill('N${w.level}', bg: c.track, fg: c.muted),
-              const SizedBox(height: LcTokens.spacingXxl),
-              if (recall)
-                Text(
-                  w.shortMeaning,
-                  style: tt.headlineMedium,
-                  textAlign: TextAlign.center,
+                LcPill(
+                  kana ? t.newKana : t.newWord,
+                  icon: Icons.auto_awesome_rounded,
                 )
               else
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Furigana(
-                    w.headwordFurigana,
-                    size: 56,
-                    showReading: false,
-                  ),
-                ),
+                LcPill(level, bg: c.track, fg: c.muted),
               const SizedBox(height: LcTokens.spacingXxl),
-              Text(
-                recall ? t.flashRecallHint : t.flashFrontHint,
-                style: tt.bodySmall,
-                textAlign: TextAlign.center,
-              ),
+              face,
+              const SizedBox(height: LcTokens.spacingXxl),
+              Text(hint, style: tt.bodySmall, textAlign: TextAlign.center),
             ],
           ),
         ),

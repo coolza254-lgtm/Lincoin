@@ -1,7 +1,7 @@
 {
   "@@locale": "th",
   "tabHome": "หน้าหลัก",
-  "tabPractice": "ฝึก & ท้าทาย",
+  "tabPractice": "ฝึก",
   "tabStats": "สถิติ",
   "tabShop": "ร้าน",
   "settings": "ตั้งค่า",
@@ -646,7 +646,6 @@
   "autoPlayAudioHelp": "ใช้เสียงภาษาญี่ปุ่นของเครื่อง",
   "showAnswer": "แสดงคำตอบ",
   "flashFrontHint": "นึกความหมายในใจ แล้วแตะการ์ดเพื่อพลิก",
-  "flashRecallHint": "นึกคำภาษาญี่ปุ่น แล้วแตะการ์ดเพื่อพลิก",
   "rateAgain": "อีกครั้ง",
   "rateHard": "ยาก",
   "rateGood": "ดี",
@@ -693,5 +692,33 @@
       }
     }
   },
-  "controllerMapFlashDo": "การ์ด: พลิก แล้วกด 1–4 ให้คะแนน (อีกครั้ง/ยาก/ดี/ง่าย)"
+  "controllerMapFlashDo": "การ์ด: พลิก แล้วกด 1–4 ให้คะแนน (อีกครั้ง/ยาก/ดี/ง่าย)",
+  "flashKanaHint": "นึกเสียงอ่านในใจ แล้วแตะการ์ดเพื่อพลิก",
+  "levelsTitle": "เลือกระดับ JLPT",
+  "levelsHelp": "เล่นการ์ดทีละระดับ เริ่มจาก N5 (ง่ายสุด) ไป N1 แต่ละระดับมีคำใหม่ต่อวันแยกกัน",
+  "levelWords": "{learned}/{total}",
+  "@levelWords": {
+    "placeholders": {
+      "learned": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "levelDueNew": "ทบทวน {due} · ใหม่ {fresh}",
+  "@levelDueNew": {
+    "placeholders": {
+      "due": {
+        "type": "int"
+      },
+      "fresh": {
+        "type": "int"
+      }
+    }
+  },
+  "levelSoon": "เร็วๆ นี้",
+  "levelPlay": "เล่น",
+  "levelDone": "ครบวันนี้"
 }

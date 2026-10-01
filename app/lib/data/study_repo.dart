@@ -195,6 +195,15 @@ class StudyRepo {
               .columnAt(0)
           as int;
 
+  /// Items whose cards were first introduced on [studyDay].
+  List<String> introducedItemsOn(int studyDay, String deck) => [
+    for (final r in u.db.select(
+      'SELECT item_id FROM cards WHERE introduced_day = ? AND deck = ?',
+      [studyDay, deck],
+    ))
+      r['item_id'] as String,
+  ];
+
   Set<String> itemsReviewedOn(int studyDay, String deck) => {
     for (final r in u.db.select(
       'SELECT DISTINCT card_id FROM review_log '
