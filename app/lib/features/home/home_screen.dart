@@ -9,6 +9,7 @@ import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
 import '../grammar/grammar_lesson.dart';
+import '../library/library_screen.dart';
 import '../settings/settings_screen.dart';
 import '../settings/updates_screen.dart';
 import '../study/study_screen.dart';
@@ -68,10 +69,25 @@ class HomeScreen extends ConsumerWidget {
                 excludeFromSemantics: true,
               ),
               const SizedBox(width: LcTokens.spacingSm),
-              Text('Lincoin', style: tt.titleLarge),
-              const Spacer(),
+              Expanded(
+                child: Text(
+                  'Lincoin',
+                  style: tt.titleLarge,
+                  maxLines: 1,
+                  overflow: TextOverflow.fade,
+                  softWrap: false,
+                ),
+              ),
               CoinChip(balance, large: true),
               const SizedBox(width: LcTokens.spacingXs),
+              if (catalog != null)
+                IconButton(
+                  tooltip: t.library,
+                  icon: const Icon(Icons.search_rounded),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const LibraryScreen()),
+                  ),
+                ),
               IconButton(
                 tooltip: t.settings,
                 icon: Badge(
@@ -331,6 +347,17 @@ class _LevelRow extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: LcTokens.spacingMd),
+            if (total > 0)
+              IconButton(
+                tooltip: t.levelWordsList,
+                icon: const Icon(Icons.list_alt_rounded),
+                color: c.muted,
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => LibraryScreen(level: level),
+                  ),
+                ),
+              ),
             if (total > 0)
               open
                   ? PressFilledButton(onPressed: play, child: Text(t.levelPlay))

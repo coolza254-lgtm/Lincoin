@@ -18,6 +18,7 @@ import 'package:lincoin/data/content_db.dart';
 import 'package:lincoin/data/settings_repo.dart';
 import 'package:lincoin/data/shop_repo.dart';
 import 'package:lincoin/data/user_db.dart';
+import 'package:lincoin/features/library/library_screen.dart';
 import 'package:lincoin/services/content_store.dart';
 import 'package:lincoin/services/files.dart';
 import 'package:lincoin/services/study_service.dart';
@@ -175,6 +176,25 @@ void main() {
     await tester.scrollUntilVisible(find.text('JLPT N1'), 300);
     await snap('1b-levels');
     await tester.drag(find.byType(Scrollable).first, const Offset(0, 3000));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('คลังคำศัพท์'));
+    await snap('1c-library');
+    final chip = find.widgetWithText(ChoiceChip, 'กำลังจำ');
+    await tester.ensureVisible(chip);
+    await tester.pumpAndSettle();
+    await tester.tap(chip);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(LibraryRow).first);
+    await snap('1d-word-progress');
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    final all = find.widgetWithText(ChoiceChip, 'ทั้งหมด').last;
+    await tester.ensureVisible(all);
+    await tester.pumpAndSettle();
+    await tester.tap(all);
+    await tester.enterText(find.byType(TextField), 'taberu');
+    await snap('1e-library-search');
+    await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
     for (final (tab, name) in [
       ('สถิติ', '2-stats'),

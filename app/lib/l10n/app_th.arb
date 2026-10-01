@@ -720,5 +720,76 @@
   },
   "levelSoon": "เร็วๆ นี้",
   "levelPlay": "เล่น",
-  "levelDone": "ครบวันนี้"
+  "levelDone": "ครบวันนี้",
+  "library": "คลังคำศัพท์",
+  "librarySearchHint": "ค้นหา: คันจิ, คานะ, โรมาจิ หรือคำแปล",
+  "libraryAll": "ทั้งหมด",
+  "libraryCount": "{n} คำ",
+  "@libraryCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "libraryEmpty": "ไม่พบคำที่ค้นหา",
+  "libraryDue": "ถึงรอบทวน",
+  "progNotStarted": "ยังไม่เริ่ม",
+  "progLearning": "กำลังเรียน",
+  "progRelearning": "ลืม กำลังทวนใหม่",
+  "progReview": "กำลังจำ",
+  "progMastered": "จำได้แล้ว",
+  "wordProgress": "ความคืบหน้าของคำ",
+  "wordProgressOpen": "ดูความคืบหน้าของคำนี้",
+  "statRecall": "โอกาสจำได้ตอนนี้",
+  "statRecallHelp": "คำนวณจากประวัติการตอบ ยิ่งนานไม่ได้ทวนยิ่งลดลง",
+  "statNext": "ทบทวนครั้งถัดไป",
+  "statNextIn": "อีก {when} ({date})",
+  "@statNextIn": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "statNextNow": "ถึงเวลาแล้ว",
+  "statStability": "ความจำคงทน",
+  "statStabilityValue": "~{when}",
+  "@statStabilityValue": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "statStabilityHelp": "เวลาที่โอกาสจำได้จะลดลงเหลือราว 90% ยิ่งยาวยิ่งดี",
+  "statDifficulty": "ความยากของคำนี้",
+  "statReps": "ทบทวนไปแล้ว",
+  "statLapses": "ลืมไปแล้ว",
+  "statTimes": "{n} ครั้ง",
+  "@statTimes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "statFirstSeen": "เริ่มเรียนเมื่อ",
+  "statLeech": "คำนี้ลืมบ่อย ลองอ่านประโยคตัวอย่างและออกเสียงตามดู",
+  "historyTitle": "ประวัติการตอบ",
+  "historyEmpty": "ยังไม่เคยทบทวนคำนี้",
+  "historyRecall": "ก่อนตอบ โอกาสจำ {pct}%",
+  "@historyRecall": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "notStartedBody": "คำนี้ยังไม่ได้เริ่มเรียน จะมาในการ์ดเมื่อถึงลำดับของระดับนี้",
+  "leechTag": "ลืมบ่อย",
+  "levelWordsList": "ดูคำในระดับนี้"
 }

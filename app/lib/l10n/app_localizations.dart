@@ -1983,6 +1983,204 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'ครบวันนี้'**
   String get levelDone;
+
+  /// No description provided for @library.
+  ///
+  /// In th, this message translates to:
+  /// **'คลังคำศัพท์'**
+  String get library;
+
+  /// No description provided for @librarySearchHint.
+  ///
+  /// In th, this message translates to:
+  /// **'ค้นหา: คันจิ, คานะ, โรมาจิ หรือคำแปล'**
+  String get librarySearchHint;
+
+  /// No description provided for @libraryAll.
+  ///
+  /// In th, this message translates to:
+  /// **'ทั้งหมด'**
+  String get libraryAll;
+
+  /// No description provided for @libraryCount.
+  ///
+  /// In th, this message translates to:
+  /// **'{n} คำ'**
+  String libraryCount(int n);
+
+  /// No description provided for @libraryEmpty.
+  ///
+  /// In th, this message translates to:
+  /// **'ไม่พบคำที่ค้นหา'**
+  String get libraryEmpty;
+
+  /// No description provided for @libraryDue.
+  ///
+  /// In th, this message translates to:
+  /// **'ถึงรอบทวน'**
+  String get libraryDue;
+
+  /// No description provided for @progNotStarted.
+  ///
+  /// In th, this message translates to:
+  /// **'ยังไม่เริ่ม'**
+  String get progNotStarted;
+
+  /// No description provided for @progLearning.
+  ///
+  /// In th, this message translates to:
+  /// **'กำลังเรียน'**
+  String get progLearning;
+
+  /// No description provided for @progRelearning.
+  ///
+  /// In th, this message translates to:
+  /// **'ลืม กำลังทวนใหม่'**
+  String get progRelearning;
+
+  /// No description provided for @progReview.
+  ///
+  /// In th, this message translates to:
+  /// **'กำลังจำ'**
+  String get progReview;
+
+  /// No description provided for @progMastered.
+  ///
+  /// In th, this message translates to:
+  /// **'จำได้แล้ว'**
+  String get progMastered;
+
+  /// No description provided for @wordProgress.
+  ///
+  /// In th, this message translates to:
+  /// **'ความคืบหน้าของคำ'**
+  String get wordProgress;
+
+  /// No description provided for @wordProgressOpen.
+  ///
+  /// In th, this message translates to:
+  /// **'ดูความคืบหน้าของคำนี้'**
+  String get wordProgressOpen;
+
+  /// No description provided for @statRecall.
+  ///
+  /// In th, this message translates to:
+  /// **'โอกาสจำได้ตอนนี้'**
+  String get statRecall;
+
+  /// No description provided for @statRecallHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'คำนวณจากประวัติการตอบ ยิ่งนานไม่ได้ทวนยิ่งลดลง'**
+  String get statRecallHelp;
+
+  /// No description provided for @statNext.
+  ///
+  /// In th, this message translates to:
+  /// **'ทบทวนครั้งถัดไป'**
+  String get statNext;
+
+  /// No description provided for @statNextIn.
+  ///
+  /// In th, this message translates to:
+  /// **'อีก {when} ({date})'**
+  String statNextIn(String when, String date);
+
+  /// No description provided for @statNextNow.
+  ///
+  /// In th, this message translates to:
+  /// **'ถึงเวลาแล้ว'**
+  String get statNextNow;
+
+  /// No description provided for @statStability.
+  ///
+  /// In th, this message translates to:
+  /// **'ความจำคงทน'**
+  String get statStability;
+
+  /// No description provided for @statStabilityValue.
+  ///
+  /// In th, this message translates to:
+  /// **'~{when}'**
+  String statStabilityValue(String when);
+
+  /// No description provided for @statStabilityHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'เวลาที่โอกาสจำได้จะลดลงเหลือราว 90% ยิ่งยาวยิ่งดี'**
+  String get statStabilityHelp;
+
+  /// No description provided for @statDifficulty.
+  ///
+  /// In th, this message translates to:
+  /// **'ความยากของคำนี้'**
+  String get statDifficulty;
+
+  /// No description provided for @statReps.
+  ///
+  /// In th, this message translates to:
+  /// **'ทบทวนไปแล้ว'**
+  String get statReps;
+
+  /// No description provided for @statLapses.
+  ///
+  /// In th, this message translates to:
+  /// **'ลืมไปแล้ว'**
+  String get statLapses;
+
+  /// No description provided for @statTimes.
+  ///
+  /// In th, this message translates to:
+  /// **'{n} ครั้ง'**
+  String statTimes(int n);
+
+  /// No description provided for @statFirstSeen.
+  ///
+  /// In th, this message translates to:
+  /// **'เริ่มเรียนเมื่อ'**
+  String get statFirstSeen;
+
+  /// No description provided for @statLeech.
+  ///
+  /// In th, this message translates to:
+  /// **'คำนี้ลืมบ่อย ลองอ่านประโยคตัวอย่างและออกเสียงตามดู'**
+  String get statLeech;
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'ประวัติการตอบ'**
+  String get historyTitle;
+
+  /// No description provided for @historyEmpty.
+  ///
+  /// In th, this message translates to:
+  /// **'ยังไม่เคยทบทวนคำนี้'**
+  String get historyEmpty;
+
+  /// No description provided for @historyRecall.
+  ///
+  /// In th, this message translates to:
+  /// **'ก่อนตอบ โอกาสจำ {pct}%'**
+  String historyRecall(int pct);
+
+  /// No description provided for @notStartedBody.
+  ///
+  /// In th, this message translates to:
+  /// **'คำนี้ยังไม่ได้เริ่มเรียน จะมาในการ์ดเมื่อถึงลำดับของระดับนี้'**
+  String get notStartedBody;
+
+  /// No description provided for @leechTag.
+  ///
+  /// In th, this message translates to:
+  /// **'ลืมบ่อย'**
+  String get leechTag;
+
+  /// No description provided for @levelWordsList.
+  ///
+  /// In th, this message translates to:
+  /// **'ดูคำในระดับนี้'**
+  String get levelWordsList;
 }
 
 class _AppLocalizationsDelegate

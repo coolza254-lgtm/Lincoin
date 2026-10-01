@@ -4,6 +4,7 @@ import 'package:lincoin/data/content_db.dart';
 import 'package:lincoin/data/settings_repo.dart';
 import 'package:lincoin/data/study_repo.dart';
 import 'package:lincoin/data/user_db.dart';
+import 'package:lincoin/services/library_service.dart';
 import 'package:lincoin/services/study_service.dart';
 import 'package:lincoin_core/lincoin_core.dart';
 
@@ -293,5 +294,35 @@ void main() {
     expect(q.item, isA<KanaStudy>());
     expect(q.isFlashcard, isTrue);
     expect(q.isTyped, isFalse);
+  });
+
+  test('library: search by kanji, kana, romaji, Thai; progress per word', () {
+    final s = service(const AppSettings(includeKana: false));
+    final lib = LibraryService(s);
+    List<String> find(String q) => [
+      for (final e in lib.entries())
+        if (LibraryService.matches(e.item, q)) e.item.id,
+    ];
+    expect(find('食べる'), ['w:3']);
+    expect(find('たべ'), ['w:3']);
+    expect(find('taberu'), ['w:3']);
+    expect(find('tabe'), ['w:3']);
+    expect(find('コーヒー'), ['w:7']);
+    expect(find('こーひー'), ['w:7']);
+    expect(find('กิน'), ['w:3']);
+    expect(find('drink'), ['w:4']);
+    expect(find('ka'), contains('k:hira.ka'));
+    expect(lib.entry('w:3')!.progress, WordProgress.notStarted);
+    final q = s.question('w:3#recog');
+    s.introduce(q);
+    s.answer(
+      q,
+      const AnswerEvent(isCorrect: true, responseMs: 3000),
+      selfRating: Rating.good,
+    );
+    final e = lib.entry('w:3')!;
+    expect(e.progress, WordProgress.learning);
+    expect(e.recall, isNotNull);
+    expect(lib.history('w:3#recog').single.rating, Rating.good);
   });
 }

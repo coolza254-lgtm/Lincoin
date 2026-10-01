@@ -9,6 +9,7 @@ import '../data/study_repo.dart';
 import '../data/user_db.dart';
 import '../services/backup_service.dart';
 import '../services/challenge_service.dart';
+import '../services/library_service.dart';
 import '../services/practice_service.dart';
 import '../services/content_store.dart';
 import '../services/files.dart';
@@ -197,6 +198,13 @@ final levelProgressProvider = Provider<Map<String, ({int learned, int total})>>(
     };
   },
 );
+
+/// The word library (search and per-word progress).
+final libraryProvider = Provider<LibraryService?>((ref) {
+  ref.watch(dataVersionProvider);
+  final s = ref.watch(deckServiceProvider(vocabDeck));
+  return s == null ? null : LibraryService(s);
+});
 
 final balanceProvider = Provider<int>((ref) {
   ref.watch(dataVersionProvider);

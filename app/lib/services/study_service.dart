@@ -287,9 +287,16 @@ class StudyService {
 
   /// Order for a session: steps, then reviews with new cards spread among
   /// them so a session does not end with a block of unfamiliar items.
+  /// Steps not due yet are left out: they wait in the session (see
+  /// [laterSteps]) so cards just answered do not come straight back first
+  /// when a session is resumed.
   List<String> sessionOrder(TodayPlan p) {
     final q = p.queue;
-    final out = [for (final c in q.steps) c.cardId];
+    final now = clock.nowUtc();
+    final out = [
+      for (final c in q.steps)
+        if (!c.state.due!.isAfter(now)) c.cardId,
+    ];
     final reviews = [for (final c in q.reviews) c.cardId];
     final fresh = [for (final c in q.newCards) c.cardId];
     if (fresh.isEmpty) return out..addAll(reviews);
@@ -303,6 +310,27 @@ class StudyService {
     }
     out.addAll(reviews.skip(r));
     return out;
+  }
+
+  /// Learning steps of [p] due later in the session window.
+  List<QueueCard> laterSteps(TodayPlan p) {
+    final now = clock.nowUtc();
+    return [
+      for (final c in p.queue.steps)
+        if (c.state.due!.isAfter(now)) c,
+    ];
+  }
+
+  /// Cards of this deck (and level) answered today, before this session.
+  int answeredToday() {
+    final day = studyDay();
+    return repo
+        .reviewRecords(deck: deck, fromDay: day)
+        .where(
+          (r) =>
+              level == null || catalog.byId[itemIdOf(r.cardId)]?.level == level,
+        )
+        .length;
   }
 
   StoredCard? stored(String cardId) => repo.card(cardId);

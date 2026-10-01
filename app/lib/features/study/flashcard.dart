@@ -13,6 +13,7 @@ import '../../ui/input.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
+import '../library/word_progress_screen.dart';
 import 'item_details.dart';
 import 'session_controller.dart';
 
@@ -68,6 +69,19 @@ class FlashcardView extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     LcCard(large: true, child: ItemDetails(item: q.item)),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton.icon(
+                        icon: const Icon(Icons.insights_rounded, size: 18),
+                        label: Text(t.wordProgressOpen),
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                WordProgressScreen(itemId: q.item.id),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

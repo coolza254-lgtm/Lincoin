@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:lincoin_core/lincoin_core.dart' show Rating;
 import 'package:lincoin/app.dart';
+import 'package:lincoin/features/study/session_controller.dart';
+import 'package:lincoin/data/catalog.dart';
 import 'package:lincoin/data/settings_repo.dart';
 import 'package:lincoin/data/study_repo.dart';
 import 'package:lincoin/data/user_db.dart';
@@ -164,6 +166,48 @@ void main() {
     await tester.tap(find.text('ฝึก').last);
     await tester.pumpAndSettle();
     expect(find.text('ท้าทาย'), findsNothing);
+  });
+
+  testWidgets('quit midway, come back: carry on where you left off', (
+    tester,
+  ) async {
+    final c = await start(
+      tester,
+      settings: const AppSettings(includeKana: false, vocabNewPerDay: 5),
+    );
+    String current() => c.read(sessionProvider(vocabDeck)).question!.cardId;
+    await tester.tap(find.text('เริ่มเรียน').first);
+    await tester.pumpAndSettle();
+    final seen = <String>[];
+    for (var i = 0; i < 2; i++) {
+      seen.add(current());
+      await tester.tap(find.text('แสดงคำตอบ'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('ดี'));
+      await tester.pumpAndSettle();
+    }
+    await tester.tap(find.byTooltip('ปิด'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('เริ่มเรียน').first);
+    await tester.pumpAndSettle();
+    // The two cards just answered wait for their step; the next new word
+    // comes first, and the bar starts from today's work.
+    expect(seen, isNot(contains(current())));
+    expect(c.read(sessionProvider(vocabDeck)).doneBefore, 2);
+    expect(c.read(sessionProvider(vocabDeck)).progress, greaterThan(0));
+  });
+
+  testWidgets('library: search a word and open its progress', (tester) async {
+    await start(tester);
+    await tester.tap(find.byTooltip('คลังคำศัพท์'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'taberu');
+    await tester.pumpAndSettle();
+    expect(find.text('1 คำ'), findsOneWidget);
+    await tester.tap(find.text('กิน'));
+    await tester.pumpAndSettle();
+    expect(find.text('ความคืบหน้าของคำ'), findsOneWidget);
+    expect(find.text('ยังไม่เริ่ม'), findsOneWidget);
   });
 
   testWidgets('a full study session records reviews', (tester) async {

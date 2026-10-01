@@ -1093,4 +1093,115 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get levelDone => 'ครบวันนี้';
+
+  @override
+  String get library => 'คลังคำศัพท์';
+
+  @override
+  String get librarySearchHint => 'ค้นหา: คันจิ, คานะ, โรมาจิ หรือคำแปล';
+
+  @override
+  String get libraryAll => 'ทั้งหมด';
+
+  @override
+  String libraryCount(int n) {
+    return '$n คำ';
+  }
+
+  @override
+  String get libraryEmpty => 'ไม่พบคำที่ค้นหา';
+
+  @override
+  String get libraryDue => 'ถึงรอบทวน';
+
+  @override
+  String get progNotStarted => 'ยังไม่เริ่ม';
+
+  @override
+  String get progLearning => 'กำลังเรียน';
+
+  @override
+  String get progRelearning => 'ลืม กำลังทวนใหม่';
+
+  @override
+  String get progReview => 'กำลังจำ';
+
+  @override
+  String get progMastered => 'จำได้แล้ว';
+
+  @override
+  String get wordProgress => 'ความคืบหน้าของคำ';
+
+  @override
+  String get wordProgressOpen => 'ดูความคืบหน้าของคำนี้';
+
+  @override
+  String get statRecall => 'โอกาสจำได้ตอนนี้';
+
+  @override
+  String get statRecallHelp => 'คำนวณจากประวัติการตอบ ยิ่งนานไม่ได้ทวนยิ่งลดลง';
+
+  @override
+  String get statNext => 'ทบทวนครั้งถัดไป';
+
+  @override
+  String statNextIn(String when, String date) {
+    return 'อีก $when ($date)';
+  }
+
+  @override
+  String get statNextNow => 'ถึงเวลาแล้ว';
+
+  @override
+  String get statStability => 'ความจำคงทน';
+
+  @override
+  String statStabilityValue(String when) {
+    return '~$when';
+  }
+
+  @override
+  String get statStabilityHelp =>
+      'เวลาที่โอกาสจำได้จะลดลงเหลือราว 90% ยิ่งยาวยิ่งดี';
+
+  @override
+  String get statDifficulty => 'ความยากของคำนี้';
+
+  @override
+  String get statReps => 'ทบทวนไปแล้ว';
+
+  @override
+  String get statLapses => 'ลืมไปแล้ว';
+
+  @override
+  String statTimes(int n) {
+    return '$n ครั้ง';
+  }
+
+  @override
+  String get statFirstSeen => 'เริ่มเรียนเมื่อ';
+
+  @override
+  String get statLeech => 'คำนี้ลืมบ่อย ลองอ่านประโยคตัวอย่างและออกเสียงตามดู';
+
+  @override
+  String get historyTitle => 'ประวัติการตอบ';
+
+  @override
+  String get historyEmpty => 'ยังไม่เคยทบทวนคำนี้';
+
+  @override
+  String historyRecall(int pct) {
+    return 'ก่อนตอบ โอกาสจำ $pct%';
+  }
+
+  @override
+  String get notStartedBody =>
+      'คำนี้ยังไม่ได้เริ่มเรียน จะมาในการ์ดเมื่อถึงลำดับของระดับนี้';
+
+  @override
+  String get leechTag => 'ลืมบ่อย';
+
+  @override
+  String get levelWordsList => 'ดูคำในระดับนี้';
 }

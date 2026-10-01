@@ -32,6 +32,9 @@ class SessionState {
   /// Learning steps due later than the session window.
   final int laterSteps;
 
+  /// Cards answered earlier today (a resumed session continues the bar).
+  final int doneBefore;
+
   /// Flashcard turned over (answer side showing).
   final bool flipped;
 
@@ -56,6 +59,7 @@ class SessionState {
     this.laterSteps = 0,
     this.flipped = false,
     this.intervals,
+    this.doneBefore = 0,
   });
 
   SessionState copyWith({
@@ -93,12 +97,15 @@ class SessionState {
     remaining: remaining ?? this.remaining,
     bonus: bonus ?? this.bonus,
     laterSteps: laterSteps ?? this.laterSteps,
+    doneBefore: doneBefore,
     flipped: flipped ?? (clearAnswer ? false : this.flipped),
     intervals: clearAnswer ? null : (intervals ?? this.intervals),
   );
 
-  double get progress =>
-      answered + remaining == 0 ? 0 : answered / (answered + remaining);
+  double get progress {
+    final done = doneBefore + answered;
+    return done + remaining == 0 ? 0 : done / (done + remaining);
+  }
 }
 
 /// One vocabulary session: builds the queue, times answers, grades them
@@ -116,6 +123,9 @@ class SessionController extends Notifier<SessionState> {
   final Stopwatch _feedbackTimer = Stopwatch();
   int _activeMs = 0;
 
+  /// Answered earlier today: a resumed session's progress bar continues.
+  int _doneBefore = 0;
+
   /// Response time counts at most this much toward "active" study time.
   static const _activeCapMs = 60000;
   static const _feedbackCapMs = 30000;
@@ -127,6 +137,10 @@ class SessionController extends Notifier<SessionState> {
     _svc = svc;
     final plan = svc.plan();
     _queue = SessionQueue(initial: svc.sessionOrder(plan));
+    for (final c in svc.laterSteps(plan)) {
+      _queue.requeue(c.cardId, c.state.due!);
+    }
+    _doneBefore = svc.answeredToday();
     _sessionId = UserDb.newId();
     final now = svc.clock.nowUtc();
     svc.repo.startSession(
@@ -137,7 +151,9 @@ class SessionController extends Notifier<SessionState> {
       svc.studyDay(now),
     );
     ref.onDispose(_saveSession);
-    return _advance(const SessionState(phase: SessionPhase.question));
+    return _advance(
+      SessionState(phase: SessionPhase.question, doneBefore: _doneBefore),
+    );
   }
 
   SessionState _advance(SessionState s) {

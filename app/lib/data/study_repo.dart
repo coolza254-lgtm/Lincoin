@@ -296,9 +296,17 @@ class StudyRepo {
   }
 
   /// Review history for metrics (oldest first).
-  List<ReviewRecord> reviewRecords({String? deck, int? fromDay}) {
+  List<ReviewRecord> reviewRecords({
+    String? deck,
+    int? fromDay,
+    String? cardId,
+  }) {
     final where = <String>[];
     final args = <Object?>[];
+    if (cardId != null) {
+      where.add('card_id = ?');
+      args.add(cardId);
+    }
     if (deck != null) {
       where.add('deck = ?');
       args.add(deck);
