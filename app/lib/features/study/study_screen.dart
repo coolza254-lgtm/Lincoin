@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lincoin_core/lincoin_core.dart';
 
 import '../../data/catalog.dart';
 import '../../data/settings_repo.dart';
@@ -49,7 +48,18 @@ class StudyScreen extends ConsumerWidget {
                     ),
                     Expanded(child: LcProgressBar(s.progress)),
                     const SizedBox(width: LcTokens.spacingMd),
-                    CoinChip(s.coins),
+                    // Cards left in this session.
+                    if (s.phase != SessionPhase.done)
+                      Semantics(
+                        label: t.cardsLeft(s.remaining),
+                        excludeSemantics: true,
+                        child: LcPill(
+                          '${s.remaining}',
+                          icon: Icons.style_rounded,
+                          bg: context.lc.track,
+                          fg: context.lc.muted,
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -371,8 +381,6 @@ class _ResultBanner extends StatelessWidget {
                   ],
                 ),
               ),
-              if (r.coinTotal > 0)
-                PopIn(child: CoinChip(r.coinTotal, signed: true)),
             ],
           ),
         ),
@@ -421,32 +429,7 @@ class _Done extends ConsumerWidget {
                 children: [
                   StatTile('${s.answered}', t.answeredLabel),
                   StatTile('$acc%', t.accuracyLabel),
-                  Column(
-                    children: [
-                      CountUpCoins(s.coins, large: true),
-                      const SizedBox(height: 4),
-                      Text(t.coinsEarned, style: tt.bodySmall),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          for (final e in s.bonus?.entries ?? const <LedgerEntry>[])
-            Padding(
-              padding: const EdgeInsets.only(top: LcTokens.spacingMd),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Text(
-                      e.reason == LedgerReason.dailyClear
-                          ? t.bonusDailyClear
-                          : t.bonusCoverage,
-                      style: tt.bodyLarge,
-                    ),
-                  ),
-                  const SizedBox(width: LcTokens.spacingSm),
-                  CoinChip(e.delta, signed: true),
+                  StatTile('${s.fresh}', t.newWordsLabel),
                 ],
               ),
             ),

@@ -130,7 +130,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           ),
           const SizedBox(height: LcTokens.spacingXxl),
           bullet(Icons.event_repeat_rounded, t.welcome1),
-          bullet(Icons.card_giftcard_rounded, t.welcome2),
+          bullet(Icons.style_rounded, t.welcome2),
           bullet(Icons.favorite_border_rounded, t.welcome3),
         ],
       ),

@@ -412,7 +412,7 @@ class _ThemeSwatch extends StatelessWidget {
                 children: [
                   for (final col in [
                     palette.accent,
-                    palette.coin,
+                    palette.warn,
                     palette.good,
                   ])
                     Container(

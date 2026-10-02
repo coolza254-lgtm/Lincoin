@@ -26,6 +26,9 @@ class SessionState {
   final int answered;
   final int correctCount;
   final int coins;
+
+  /// Words met for the first time in this session.
+  final int fresh;
   final int remaining;
   final SessionBonus? bonus;
 
@@ -54,6 +57,7 @@ class SessionState {
     this.answered = 0,
     this.correctCount = 0,
     this.coins = 0,
+    this.fresh = 0,
     this.remaining = 0,
     this.bonus,
     this.laterSteps = 0,
@@ -75,6 +79,7 @@ class SessionState {
     int? answered,
     int? correctCount,
     int? coins,
+    int? fresh,
     int? remaining,
     SessionBonus? bonus,
     int? laterSteps,
@@ -94,6 +99,7 @@ class SessionState {
     answered: answered ?? this.answered,
     correctCount: correctCount ?? this.correctCount,
     coins: coins ?? this.coins,
+    fresh: fresh ?? this.fresh,
     remaining: remaining ?? this.remaining,
     bonus: bonus ?? this.bonus,
     laterSteps: laterSteps ?? this.laterSteps,
@@ -213,7 +219,7 @@ class SessionController extends Notifier<SessionState> {
     _svc.introduce(q);
     _activeMs += _answerTimer.elapsedMilliseconds.clamp(0, _activeCapMs);
     _queue.afterIntro(q.cardId, _svc.clock.nowUtc());
-    state = _advance(state);
+    state = _advance(state.copyWith(fresh: state.fresh + 1));
   }
 
   /// Turns a flashcard over.
@@ -243,7 +249,8 @@ class SessionController extends Notifier<SessionState> {
         !state.flipped) {
       return;
     }
-    if (_svc.stored(q.cardId) == null) _svc.introduce(q);
+    final isNew = _svc.stored(q.cardId) == null;
+    if (isNew) _svc.introduce(q);
     _answerTimer.stop();
     final ms = _answerTimer.elapsedMilliseconds;
     _activeMs += ms.clamp(0, _activeCapMs);
@@ -262,6 +269,7 @@ class SessionController extends Notifier<SessionState> {
     state = _advance(
       state.copyWith(
         answered: state.answered + 1,
+        fresh: state.fresh + (isNew ? 1 : 0),
         correctCount: state.correctCount + (ok ? 1 : 0),
         coins: state.coins + result.coinTotal,
         result: result,

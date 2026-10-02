@@ -108,8 +108,7 @@ class _DrillScreenState extends ConsumerState<DrillScreen> {
                             '${ctl.score} / ${ch.threshold}',
                             icon: Icons.flag_rounded,
                           ),
-                        ] else
-                          CoinChip(ctl.coins),
+                        ],
                       ],
                     ),
                   ),
@@ -200,19 +199,10 @@ class _QuestionArea extends StatelessWidget {
                                     PopIn(
                                       child: LcPill(
                                         t.combo(ctl.combo),
-                                        bg: c.coinSoft,
-                                        fg: c.coin,
+                                        bg: c.warnSoft,
+                                        fg: c.warn,
                                       ),
                                     ),
-                                  if (ctl.lastCoins > 0) ...[
-                                    const SizedBox(width: LcTokens.spacingSm),
-                                    PopIn(
-                                      child: CoinChip(
-                                        ctl.lastCoins,
-                                        signed: true,
-                                      ),
-                                    ),
-                                  ],
                                 ],
                               ),
                             ),
@@ -351,7 +341,7 @@ class _TimeLeftState extends State<_TimeLeft>
                       FractionallySizedBox(
                         alignment: Alignment.centerLeft,
                         widthFactor: 1 - used,
-                        child: ColoredBox(color: urgent ? c.warn : c.coin),
+                        child: ColoredBox(color: urgent ? c.warn : c.accent),
                       ),
                     ],
                   ),
@@ -448,37 +438,10 @@ class _Summary extends StatelessWidget {
                   r == null ? t.correctCount : t.scoreLabel(r.threshold),
                 ),
                 if (r == null) StatTile('$acc%', t.accuracyLabel),
-                if (r == null)
-                  StatTile('${ctl.bestCombo}', t.bestCombo)
-                else
-                  Column(
-                    children: [
-                      CoinChip(
-                        won ? r.payout : -r.stake,
-                        signed: true,
-                        large: true,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        won ? t.payoutLabel : t.stakeLost,
-                        style: tt.bodySmall,
-                      ),
-                    ],
-                  ),
+                StatTile('${ctl.bestCombo}', t.bestCombo),
               ],
             ),
           ),
-          if (r == null && ctl.coins > 0) ...[
-            const SizedBox(height: LcTokens.spacingLg),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(t.coinsEarned, style: tt.bodyLarge),
-                const SizedBox(width: LcTokens.spacingSm),
-                CoinChip(ctl.coins, signed: true),
-              ],
-            ),
-          ],
           if (r != null && r.type != ChallengeType.weekly) ...[
             const SizedBox(height: LcTokens.spacingLg),
             Text(

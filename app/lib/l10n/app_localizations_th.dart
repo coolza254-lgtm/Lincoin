@@ -390,7 +390,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get backupHelp =>
-      'ข้อมูลการเรียน Lincoin และรางวัลทั้งหมดอยู่ในไฟล์เดียว ส่งออกเก็บไว้ใน Drive หรือเครื่องอื่นได้ แอปสำรองให้อัตโนมัติก่อนอัปเดตทุกครั้ง';
+      'ข้อมูลการเรียนทั้งหมดอยู่ในไฟล์เดียว ส่งออกเก็บไว้ใน Drive หรือเครื่องอื่นได้ แอปสำรองให้อัตโนมัติก่อนอัปเดตทุกครั้ง';
 
   @override
   String get exportBackup => 'ส่งออกไฟล์สำรอง';
@@ -608,7 +608,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get practiceBody =>
-      'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ Lincoin แบบลดหลั่นต่อวัน';
+      'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน เหมาะกับวอร์มก่อนสอบหรือตอนว่าง';
 
   @override
   String get challengeTitle => 'ท้าทาย';
@@ -847,7 +847,8 @@ class AppLocalizationsTh extends AppLocalizations {
       'ทบทวนทุกวันตามตารางที่คำนวณให้ จำได้นานโดยไม่ต้องท่องซ้ำเกินจำเป็น';
 
   @override
-  String get welcome2 => 'เรียนแล้วได้ Lincoin เอาไปแลกรางวัลจริงที่คุณตั้งเอง';
+  String get welcome2 =>
+      'เห็นคำ นึกความหมาย พลิกการ์ด แล้วให้คะแนนตัวเอง แอปจะเลือกเวลาทวนที่เหมาะให้แต่ละคำ';
 
   @override
   String get welcome3 =>
@@ -1082,7 +1083,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String levelDueNew(int due, int fresh) {
-    return 'ทบทวน $due · ใหม่ $fresh';
+    return 'ทวน $due · ใหม่ $fresh';
   }
 
   @override
@@ -1204,4 +1205,38 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get levelWordsList => 'ดูคำในระดับนี้';
+
+  @override
+  String get tabLibrary => 'คลังคำ';
+
+  @override
+  String get todayTitle => 'วันนี้';
+
+  @override
+  String ringOf(int n) {
+    return 'จาก $n';
+  }
+
+  @override
+  String ringDue(int n) {
+    return 'ทบทวน $n ใบ';
+  }
+
+  @override
+  String ringNew(int n) {
+    return 'คำใหม่ $n คำ';
+  }
+
+  @override
+  String ringMinutes(int n) {
+    return 'ราว $n นาที';
+  }
+
+  @override
+  String get newWordsLabel => 'คำใหม่';
+
+  @override
+  String cardsLeft(int n) {
+    return 'เหลืออีก $n ใบ';
+  }
 }

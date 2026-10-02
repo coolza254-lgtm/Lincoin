@@ -27,7 +27,6 @@ class HomeScreen extends ConsumerWidget {
     final tt = Theme.of(context).textTheme;
     final c = context.lc;
     final catalog = ref.watch(catalogProvider);
-    final balance = ref.watch(balanceProvider);
     final vocabCov = ref.watch(coverageProvider(vocabDeck));
     final grammarCov = ref.watch(coverageProvider(grammarDeck));
     final updateDot = ref.watch(updateControllerProvider).hasUpdate;
@@ -78,16 +77,6 @@ class HomeScreen extends ConsumerWidget {
                   softWrap: false,
                 ),
               ),
-              CoinChip(balance, large: true),
-              const SizedBox(width: LcTokens.spacingXs),
-              if (catalog != null)
-                IconButton(
-                  tooltip: t.library,
-                  icon: const Icon(Icons.search_rounded),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const LibraryScreen()),
-                  ),
-                ),
               IconButton(
                 tooltip: t.settings,
                 icon: Badge(
@@ -193,18 +182,26 @@ class _DeckCard extends ConsumerWidget {
             )
           else if (plan != null) ...[
             const SizedBox(height: LcTokens.spacingLg),
-            Row(
-              children: [
-                Expanded(child: StatTile('${plan.dueCount}', t.dueLabel)),
-                Expanded(child: StatTile('${plan.newCount}', t.newLabel)),
-                Expanded(
-                  child: StatTile(
-                    plan.isEmpty ? '–' : '~${plan.estimatedMinutes}',
-                    t.minutesLabel,
+            if (large)
+              _TodayRing(
+                done: ref.watch(todayDoneProvider(deck)),
+                due: plan.dueCount,
+                fresh: plan.newCount,
+                minutes: plan.estimatedMinutes,
+              )
+            else
+              Row(
+                children: [
+                  Expanded(child: StatTile('${plan.dueCount}', t.dueLabel)),
+                  Expanded(child: StatTile('${plan.newCount}', t.newLabel)),
+                  Expanded(
+                    child: StatTile(
+                      plan.isEmpty ? '–' : '~${plan.estimatedMinutes}',
+                      t.minutesLabel,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
             if (plan.queue.newCardsPausedForBacklog) ...[
               const SizedBox(height: LcTokens.spacingMd),
               LcPill(
@@ -232,6 +229,89 @@ class _DeckCard extends ConsumerWidget {
           ],
         ],
       ),
+    );
+  }
+}
+
+/// Today's progress as a ring (done of done + left), with what is left.
+class _TodayRing extends StatelessWidget {
+  final int done;
+  final int due;
+  final int fresh;
+  final int minutes;
+  const _TodayRing({
+    required this.done,
+    required this.due,
+    required this.fresh,
+    required this.minutes,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+    final tt = Theme.of(context).textTheme;
+    final c = context.lc;
+    final total = done + due + fresh;
+    final v = total == 0 ? 1.0 : done / total;
+    Widget line(IconData icon, String text) => Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: c.muted),
+          const SizedBox(width: LcTokens.spacingSm),
+          Expanded(child: Text(text, style: tt.bodyLarge)),
+        ],
+      ),
+    );
+    return Row(
+      children: [
+        SizedBox(
+          width: 104,
+          height: 104,
+          child: TweenAnimationBuilder<double>(
+            tween: Tween(end: v),
+            duration: context.motionNormal * 2,
+            curve: Curves.easeOutCubic,
+            builder: (context, x, _) => Stack(
+              fit: StackFit.expand,
+              children: [
+                CircularProgressIndicator(
+                  value: x,
+                  strokeWidth: 10,
+                  strokeCap: StrokeCap.round,
+                  backgroundColor: c.track,
+                  color: total > 0 && done >= total ? c.good : c.accent,
+                ),
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('$done', style: tt.headlineMedium),
+                      Text(t.ringOf(total), style: tt.bodySmall),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: LcTokens.spacingXl),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(t.todayTitle, style: tt.titleMedium),
+              const SizedBox(height: LcTokens.spacingXs),
+              line(Icons.replay_rounded, t.ringDue(due)),
+              line(Icons.auto_awesome_rounded, t.ringNew(fresh)),
+              line(
+                Icons.schedule_rounded,
+                due + fresh == 0 ? t.allDoneToday : t.ringMinutes(minutes),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -360,8 +440,17 @@ class _LevelRow extends ConsumerWidget {
               ),
             if (total > 0)
               open
-                  ? PressFilledButton(onPressed: play, child: Text(t.levelPlay))
-                  : Text(t.levelDone, style: tt.bodySmall),
+                  ? PressScale(
+                      child: IconButton.filled(
+                        tooltip: t.levelPlay,
+                        onPressed: play,
+                        icon: const Icon(Icons.play_arrow_rounded),
+                      ),
+                    )
+                  : Tooltip(
+                      message: t.levelDone,
+                      child: Icon(Icons.check_circle_rounded, color: c.good),
+                    ),
           ],
         ),
       ),
@@ -390,8 +479,8 @@ class _TodayStrip extends ConsumerWidget {
               child: LcPill(
                 t.streakDays(streak.days),
                 icon: Icons.local_fire_department_rounded,
-                bg: streak.today ? c.coinSoft : c.track,
-                fg: streak.today ? c.coin : c.muted,
+                bg: streak.today ? c.warnSoft : c.track,
+                fg: streak.today ? c.warn : c.muted,
               ),
             ),
             const SizedBox(width: LcTokens.spacingMd),
@@ -404,7 +493,6 @@ class _TodayStrip extends ConsumerWidget {
               style: tt.bodyMedium?.copyWith(color: c.muted),
             ),
           ),
-          if (today.coins > 0) CoinChip(today.coins, signed: true),
         ],
       ),
     );

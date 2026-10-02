@@ -775,7 +775,7 @@ abstract class AppLocalizations {
   /// No description provided for @backupHelp.
   ///
   /// In th, this message translates to:
-  /// **'ข้อมูลการเรียน Lincoin และรางวัลทั้งหมดอยู่ในไฟล์เดียว ส่งออกเก็บไว้ใน Drive หรือเครื่องอื่นได้ แอปสำรองให้อัตโนมัติก่อนอัปเดตทุกครั้ง'**
+  /// **'ข้อมูลการเรียนทั้งหมดอยู่ในไฟล์เดียว ส่งออกเก็บไว้ใน Drive หรือเครื่องอื่นได้ แอปสำรองให้อัตโนมัติก่อนอัปเดตทุกครั้ง'**
   String get backupHelp;
 
   /// No description provided for @exportBackup.
@@ -1153,7 +1153,7 @@ abstract class AppLocalizations {
   /// No description provided for @practiceBody.
   ///
   /// In th, this message translates to:
-  /// **'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน ได้ Lincoin แบบลดหลั่นต่อวัน'**
+  /// **'เล่นได้ไม่จำกัดจากคำที่เรียนแล้ว รอบละ 10 ข้อ ไม่กระทบตารางทบทวน เหมาะกับวอร์มก่อนสอบหรือตอนว่าง'**
   String get practiceBody;
 
   /// No description provided for @challengeTitle.
@@ -1561,7 +1561,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcome2.
   ///
   /// In th, this message translates to:
-  /// **'เรียนแล้วได้ Lincoin เอาไปแลกรางวัลจริงที่คุณตั้งเอง'**
+  /// **'เห็นคำ นึกความหมาย พลิกการ์ด แล้วให้คะแนนตัวเอง แอปจะเลือกเวลาทวนที่เหมาะให้แต่ละคำ'**
   String get welcome2;
 
   /// No description provided for @welcome3.
@@ -1963,7 +1963,7 @@ abstract class AppLocalizations {
   /// No description provided for @levelDueNew.
   ///
   /// In th, this message translates to:
-  /// **'ทบทวน {due} · ใหม่ {fresh}'**
+  /// **'ทวน {due} · ใหม่ {fresh}'**
   String levelDueNew(int due, int fresh);
 
   /// No description provided for @levelSoon.
@@ -2181,6 +2181,54 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'ดูคำในระดับนี้'**
   String get levelWordsList;
+
+  /// No description provided for @tabLibrary.
+  ///
+  /// In th, this message translates to:
+  /// **'คลังคำ'**
+  String get tabLibrary;
+
+  /// No description provided for @todayTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'วันนี้'**
+  String get todayTitle;
+
+  /// No description provided for @ringOf.
+  ///
+  /// In th, this message translates to:
+  /// **'จาก {n}'**
+  String ringOf(int n);
+
+  /// No description provided for @ringDue.
+  ///
+  /// In th, this message translates to:
+  /// **'ทบทวน {n} ใบ'**
+  String ringDue(int n);
+
+  /// No description provided for @ringNew.
+  ///
+  /// In th, this message translates to:
+  /// **'คำใหม่ {n} คำ'**
+  String ringNew(int n);
+
+  /// No description provided for @ringMinutes.
+  ///
+  /// In th, this message translates to:
+  /// **'ราว {n} นาที'**
+  String ringMinutes(int n);
+
+  /// No description provided for @newWordsLabel.
+  ///
+  /// In th, this message translates to:
+  /// **'คำใหม่'**
+  String get newWordsLabel;
+
+  /// No description provided for @cardsLeft.
+  ///
+  /// In th, this message translates to:
+  /// **'เหลืออีก {n} ใบ'**
+  String cardsLeft(int n);
 }
 
 class _AppLocalizationsDelegate

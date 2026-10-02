@@ -151,19 +151,6 @@ class _PracticePanel extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: LcTokens.spacingLg),
-          Row(
-            children: [
-              CoinChip(o.todayCoins),
-              const SizedBox(width: LcTokens.spacingSm),
-              Expanded(
-                child: Text(
-                  t.practiceRate((o.rate * 100).round()),
-                  style: tt.bodySmall,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: LcTokens.spacingLg),
           SizedBox(
             width: double.infinity,
             child: PressFilledButton(

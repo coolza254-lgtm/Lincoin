@@ -206,9 +206,10 @@ final libraryProvider = Provider<LibraryService?>((ref) {
   return s == null ? null : LibraryService(s);
 });
 
-final balanceProvider = Provider<int>((ref) {
+/// Cards of a deck (or level, see [studyKey]) answered today.
+final todayDoneProvider = Provider.family<int, String>((ref, key) {
   ref.watch(dataVersionProvider);
-  return LedgerRepo(ref.watch(userDbProvider)).balance();
+  return ref.watch(deckServiceProvider(key))?.answeredToday() ?? 0;
 });
 
 final statsProvider = Provider.family<StatsData?, String>((ref, deck) {

@@ -199,7 +199,7 @@ void main() {
 
   testWidgets('library: search a word and open its progress', (tester) async {
     await start(tester);
-    await tester.tap(find.byTooltip('คลังคำศัพท์'));
+    await tester.tap(find.text('คลังคำ').last);
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField), 'taberu');
     await tester.pumpAndSettle();
@@ -279,33 +279,12 @@ void main() {
   testWidgets('every theme renders all tabs', (tester) async {
     for (final theme in LcTokens.themes.keys) {
       await start(tester, settings: AppSettings(theme: theme));
-      for (final tab in ['ฝึก', 'สถิติ', 'ร้าน', 'หน้าหลัก']) {
+      for (final tab in ['คลังคำ', 'ฝึก', 'สถิติ', 'หน้าหลัก']) {
         await tester.tap(find.text(tab).last);
         await tester.pumpAndSettle();
       }
       await tester.pumpWidget(const SizedBox());
     }
-  });
-
-  testWidgets('shop: add a reward', (tester) async {
-    await start(tester);
-    await tester.tap(find.text('ร้าน').last);
-    await tester.pumpAndSettle();
-    expect(find.text('ยังไม่มีรางวัล'), findsOneWidget);
-    await tester.tap(find.text('เพิ่มรางวัล'));
-    await tester.pumpAndSettle();
-    await tester.enterText(
-      find.widgetWithText(TextFormField, 'ชื่อรางวัล'),
-      'ชานม',
-    );
-    await tester.enterText(
-      find.widgetWithText(TextFormField, 'ราคา (Lincoin)'),
-      '120',
-    );
-    await tester.tap(find.text('บันทึก'));
-    await tester.pumpAndSettle();
-    expect(find.text('ชานม'), findsOneWidget);
-    expect(find.text('อีก 120 Lincoin'), findsOneWidget);
   });
 
   testWidgets('settings open and change a value', (tester) async {

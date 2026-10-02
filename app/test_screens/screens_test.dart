@@ -16,7 +16,6 @@ import 'package:lincoin/app.dart';
 import 'package:lincoin/data/catalog.dart';
 import 'package:lincoin/data/content_db.dart';
 import 'package:lincoin/data/settings_repo.dart';
-import 'package:lincoin/data/shop_repo.dart';
 import 'package:lincoin/data/user_db.dart';
 import 'package:lincoin/features/library/library_screen.dart';
 import 'package:lincoin/services/content_store.dart';
@@ -101,38 +100,6 @@ void main() {
       svc.finishSession(answeredAny: true);
       t = DateTime.utc(t.year, t.month, t.day + 1, 5);
     }
-    final shop = ShopRepo(db);
-    shop.save(
-      const Reward(
-        id: 'a',
-        title: 'ชานมไข่มุก',
-        emoji: '🧋',
-        price: 150,
-        repeatable: true,
-        cooldownDays: 3,
-      ),
-      now,
-    );
-    shop.save(
-      const Reward(
-        id: 'b',
-        title: 'ดูหนังโรง 1 เรื่อง',
-        emoji: '🎬',
-        price: 600,
-        repeatable: true,
-      ),
-      now,
-    );
-    shop.save(
-      const Reward(
-        id: 'c',
-        title: 'หนังสือการ์ตูนญี่ปุ่นเล่มแรก',
-        emoji: '📚',
-        price: 2500,
-        repeatable: false,
-      ),
-      now,
-    );
     content.close();
     db.close();
   }
@@ -177,7 +144,7 @@ void main() {
     await snap('1b-levels');
     await tester.drag(find.byType(Scrollable).first, const Offset(0, 3000));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('คลังคำศัพท์'));
+    await tester.tap(find.text('คลังคำ').last);
     await snap('1c-library');
     final chip = find.widgetWithText(ChoiceChip, 'กำลังจำ');
     await tester.ensureVisible(chip);
@@ -194,13 +161,9 @@ void main() {
     await tester.tap(all);
     await tester.enterText(find.byType(TextField), 'taberu');
     await snap('1e-library-search');
-    await tester.tap(find.byType(BackButton));
+    await tester.tap(find.text('หน้าหลัก').last);
     await tester.pumpAndSettle();
-    for (final (tab, name) in [
-      ('สถิติ', '2-stats'),
-      ('ร้าน', '3-shop'),
-      ('ฝึก', '4-practice'),
-    ]) {
+    for (final (tab, name) in [('สถิติ', '2-stats'), ('ฝึก', '4-practice')]) {
       await tester.tap(find.text(tab).last);
       await snap(name);
     }
@@ -312,6 +275,9 @@ void main() {
     await tester.pumpAndSettle();
     // A drill question driven by a controller: focus ring and A/B/X/Y.
     await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonB);
+    await tester.pumpAndSettle();
+    // R1 twice: home → library → practice.
+    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonRight1);
     await tester.pumpAndSettle();
     await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonRight1);
     await tester.pumpAndSettle();

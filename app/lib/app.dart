@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'features/home/home_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
+import 'features/library/library_screen.dart';
 import 'features/practice/practice_screen.dart';
-import 'features/shop/shop_screen.dart';
 import 'features/stats/stats_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'state/providers.dart';
@@ -193,9 +193,9 @@ class _AppShellState extends ConsumerState<AppShell> {
             child: KeyedSubtree(
               key: ValueKey(_tab),
               child: switch (_tab) {
-                1 => const PracticeScreen(),
-                2 => const StatsScreen(),
-                3 => const ShopScreen(),
+                1 => const LibraryScreen(),
+                2 => const PracticeScreen(),
+                3 => const StatsScreen(),
                 _ => const HomeScreen(),
               },
             ),
@@ -210,6 +210,11 @@ class _AppShellState extends ConsumerState<AppShell> {
                 label: t.tabHome,
               ),
               NavigationDestination(
+                icon: const Icon(Icons.search_rounded),
+                selectedIcon: const Icon(Icons.manage_search_rounded),
+                label: t.tabLibrary,
+              ),
+              NavigationDestination(
                 icon: const Icon(Icons.bolt_outlined),
                 selectedIcon: const Icon(Icons.bolt_rounded),
                 label: t.tabPractice,
@@ -218,11 +223,6 @@ class _AppShellState extends ConsumerState<AppShell> {
                 icon: const Icon(Icons.insights_outlined),
                 selectedIcon: const Icon(Icons.insights_rounded),
                 label: t.tabStats,
-              ),
-              NavigationDestination(
-                icon: const Icon(Icons.storefront_outlined),
-                selectedIcon: const Icon(Icons.storefront_rounded),
-                label: t.tabShop,
               ),
             ],
           ),
