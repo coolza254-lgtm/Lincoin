@@ -84,6 +84,14 @@ void _registerFontLicenses() {
     for (final (name, file) in [
       ('IBM Plex Sans Thai', 'OFL-IBMPlexSansThai.txt'),
       ('Zen Maru Gothic', 'OFL-ZenMaruGothic.txt'),
+      ('Sarabun', 'OFL-Sarabun.txt'),
+      ('Klee One', 'OFL-KleeOne.txt'),
+      ('Trirong', 'OFL-Trirong.txt'),
+      ('Shippori Mincho', 'OFL-ShipporiMincho.txt'),
+      ('Mitr', 'OFL-Mitr.txt'),
+      ('M PLUS Rounded 1c', 'OFL-MPLUSRounded1c.txt'),
+      ('Kanit', 'OFL-Kanit.txt'),
+      ('M PLUS 1p', 'OFL-MPLUS1p.txt'),
     ]) {
       final text = await rootBundle.loadString('assets/licenses/$file');
       yield LicenseEntryWithLineBreaks([name], text);

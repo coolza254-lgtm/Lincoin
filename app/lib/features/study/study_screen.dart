@@ -29,6 +29,7 @@ class StudyScreen extends ConsumerWidget {
     return PopScope(
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) return;
+        ctl.stopAudio();
         ctl.quit();
         final data = ref.read(dataVersionProvider.notifier);
         Future.microtask(data.bump);
@@ -47,7 +48,10 @@ class StudyScreen extends ConsumerWidget {
                       onPressed: () => Navigator.of(context).maybePop(),
                     ),
                     Expanded(child: LcProgressBar(s.progress)),
-                    const SizedBox(width: LcTokens.spacingMd),
+                    if (s.question?.isFlashcard ?? false)
+                      _AutoPlayToggle()
+                    else
+                      const SizedBox(width: LcTokens.spacingMd),
                     // Cards left in this session.
                     if (s.phase != SessionPhase.done)
                       Semantics(
@@ -95,6 +99,28 @@ class StudyScreen extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Speaker in the top bar: turns reading aloud on flip on or off.
+class _AutoPlayToggle extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = AppLocalizations.of(context);
+    final on = ref.watch(settingsProvider.select((s) => s.autoPlayAudio));
+    return IconButton(
+      tooltip: on ? t.autoPlayOff : t.autoPlayOn,
+      isSelected: on,
+      icon: const Icon(Icons.volume_off_rounded),
+      selectedIcon: const Icon(Icons.volume_up_rounded),
+      color: context.lc.muted,
+      onPressed: () {
+        ref
+            .read(settingsProvider.notifier)
+            .update((x) => x.copyWith(autoPlayAudio: !on));
+        if (on) ref.read(ttsProvider).stop();
+      },
     );
   }
 }

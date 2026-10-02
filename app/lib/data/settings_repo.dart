@@ -1,5 +1,6 @@
 import 'package:lincoin_core/lincoin_core.dart';
 
+import '../ui/theme.dart';
 import '../ui/tokens.g.dart';
 import 'user_db.dart';
 
@@ -18,6 +19,9 @@ class AppSettings {
   final bool onlineUpdateCheck;
   final bool reduceMotion;
   final bool autoPlayAudio;
+
+  /// With [autoPlayAudio]: also read the card's example sentence.
+  final bool autoPlayExample;
   final bool haptics;
   final bool controller;
   final bool swapAB;
@@ -26,6 +30,9 @@ class AppSettings {
   /// Vocabulary reviews as self-rated flashcards (Anki/Kaishi style)
   /// instead of quizzes.
   final bool flashcards;
+
+  /// Font pair ([FontPreset] name).
+  final String font;
 
   const AppSettings({
     this.theme = LcTokens.defaultTheme,
@@ -39,11 +46,13 @@ class AppSettings {
     this.onlineUpdateCheck = true,
     this.reduceMotion = false,
     this.autoPlayAudio = false,
+    this.autoPlayExample = true,
     this.haptics = true,
     this.controller = true,
     this.swapAB = false,
     this.quickAnswerButtons = false,
     this.flashcards = true,
+    this.font = 'standard',
   });
 
   /// Animations on (the setting is stored as its opposite, reduce_motion).
@@ -64,11 +73,13 @@ class AppSettings {
     bool? onlineUpdateCheck,
     bool? reduceMotion,
     bool? autoPlayAudio,
+    bool? autoPlayExample,
     bool? haptics,
     bool? controller,
     bool? swapAB,
     bool? quickAnswerButtons,
     bool? flashcards,
+    String? font,
   }) => AppSettings(
     theme: theme ?? this.theme,
     vocabRetention: vocabRetention ?? this.vocabRetention,
@@ -81,11 +92,13 @@ class AppSettings {
     onlineUpdateCheck: onlineUpdateCheck ?? this.onlineUpdateCheck,
     reduceMotion: reduceMotion ?? this.reduceMotion,
     autoPlayAudio: autoPlayAudio ?? this.autoPlayAudio,
+    autoPlayExample: autoPlayExample ?? this.autoPlayExample,
     haptics: haptics ?? this.haptics,
     controller: controller ?? this.controller,
     swapAB: swapAB ?? this.swapAB,
     quickAnswerButtons: quickAnswerButtons ?? this.quickAnswerButtons,
     flashcards: flashcards ?? this.flashcards,
+    font: font ?? this.font,
   );
 
   Map<String, String> toMap() => {
@@ -100,11 +113,13 @@ class AppSettings {
     'update.online_check': '$onlineUpdateCheck',
     'reduce_motion': '$reduceMotion',
     'audio.autoplay': '$autoPlayAudio',
+    'audio.autoplay_example': '$autoPlayExample',
     'input.haptics': '$haptics',
     'input.controller': '$controller',
     'input.swap_ab': '$swapAB',
     'input.quick_answer': '$quickAnswerButtons',
     'vocab.flashcards': '$flashcards',
+    'look.font': font,
   };
 
   /// Unknown or out-of-range values fall back to defaults, so a setting
@@ -163,11 +178,13 @@ class AppSettings {
       onlineUpdateCheck: b('update.online_check', d.onlineUpdateCheck),
       reduceMotion: b('reduce_motion', d.reduceMotion),
       autoPlayAudio: b('audio.autoplay', d.autoPlayAudio),
+      autoPlayExample: b('audio.autoplay_example', d.autoPlayExample),
       haptics: b('input.haptics', d.haptics),
       controller: b('input.controller', d.controller),
       swapAB: b('input.swap_ab', d.swapAB),
       quickAnswerButtons: b('input.quick_answer', d.quickAnswerButtons),
       flashcards: b('vocab.flashcards', d.flashcards),
+      font: FontPreset.byName(m['look.font']).name,
     );
   }
 }

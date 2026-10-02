@@ -1843,13 +1843,13 @@ abstract class AppLocalizations {
   /// No description provided for @autoPlayAudio.
   ///
   /// In th, this message translates to:
-  /// **'อ่านออกเสียงเมื่อพลิกการ์ด'**
+  /// **'อ่านออกเสียงอัตโนมัติเมื่อพลิกการ์ด'**
   String get autoPlayAudio;
 
   /// No description provided for @autoPlayAudioHelp.
   ///
   /// In th, this message translates to:
-  /// **'ใช้เสียงภาษาญี่ปุ่นของเครื่อง'**
+  /// **'พลิกการ์ดแล้วอ่านคำให้ฟังทันที (ใช้เสียงภาษาญี่ปุ่นของเครื่อง)'**
   String get autoPlayAudioHelp;
 
   /// No description provided for @showAnswer.
@@ -2229,6 +2229,126 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'เหลืออีก {n} ใบ'**
   String cardsLeft(int n);
+
+  /// No description provided for @sectionSound.
+  ///
+  /// In th, this message translates to:
+  /// **'เสียง'**
+  String get sectionSound;
+
+  /// No description provided for @autoPlayExample.
+  ///
+  /// In th, this message translates to:
+  /// **'อ่านประโยคตัวอย่างต่อด้วย'**
+  String get autoPlayExample;
+
+  /// No description provided for @autoPlayExampleHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'อ่านคำก่อน แล้วตามด้วยประโยคตัวอย่างบนการ์ด'**
+  String get autoPlayExampleHelp;
+
+  /// No description provided for @testVoice.
+  ///
+  /// In th, this message translates to:
+  /// **'ทดสอบเสียง'**
+  String get testVoice;
+
+  /// No description provided for @testVoiceHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'ถ้าไม่มีเสียง ให้ติดตั้งเสียงภาษาญี่ปุ่นใน ตั้งค่าเครื่อง > การช่วยเหลือพิเศษ > ข้อความเป็นคำพูด'**
+  String get testVoiceHelp;
+
+  /// No description provided for @autoPlayOn.
+  ///
+  /// In th, this message translates to:
+  /// **'เปิดอ่านออกเสียงอัตโนมัติ'**
+  String get autoPlayOn;
+
+  /// No description provided for @autoPlayOff.
+  ///
+  /// In th, this message translates to:
+  /// **'ปิดอ่านออกเสียงอัตโนมัติ'**
+  String get autoPlayOff;
+
+  /// No description provided for @noVoiceHint.
+  ///
+  /// In th, this message translates to:
+  /// **'เครื่องนี้ยังไม่มีเสียงภาษาญี่ปุ่น ติดตั้งได้ใน ตั้งค่าเครื่อง > ข้อความเป็นคำพูด'**
+  String get noVoiceHint;
+
+  /// No description provided for @fontTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'ฟอนต์'**
+  String get fontTitle;
+
+  /// No description provided for @fontHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'เปลี่ยนทั้งตัวอักษรไทยและญี่ปุ่นในแอป'**
+  String get fontHelp;
+
+  /// No description provided for @fontStandard.
+  ///
+  /// In th, this message translates to:
+  /// **'มาตรฐาน'**
+  String get fontStandard;
+
+  /// No description provided for @fontStandardAbout.
+  ///
+  /// In th, this message translates to:
+  /// **'IBM Plex Sans Thai + Zen Maru Gothic อ่านสบายตา'**
+  String get fontStandardAbout;
+
+  /// No description provided for @fontTextbook.
+  ///
+  /// In th, this message translates to:
+  /// **'ลายมือครู'**
+  String get fontTextbook;
+
+  /// No description provided for @fontTextbookAbout.
+  ///
+  /// In th, this message translates to:
+  /// **'Sarabun + Klee One ตัวญี่ปุ่นแบบเขียนมือ เห็นเส้นขีดชัด เหมาะหัดเขียน'**
+  String get fontTextbookAbout;
+
+  /// No description provided for @fontClassic.
+  ///
+  /// In th, this message translates to:
+  /// **'หนังสือ'**
+  String get fontClassic;
+
+  /// No description provided for @fontClassicAbout.
+  ///
+  /// In th, this message translates to:
+  /// **'Trirong + Shippori Mincho แบบมีเชิง เหมือนหนังสือพิมพ์ญี่ปุ่น'**
+  String get fontClassicAbout;
+
+  /// No description provided for @fontRounded.
+  ///
+  /// In th, this message translates to:
+  /// **'โค้งมน'**
+  String get fontRounded;
+
+  /// No description provided for @fontRoundedAbout.
+  ///
+  /// In th, this message translates to:
+  /// **'Mitr + M PLUS Rounded 1c ตัวกลมหนา อ่านง่ายบนจอเล็ก'**
+  String get fontRoundedAbout;
+
+  /// No description provided for @fontModern.
+  ///
+  /// In th, this message translates to:
+  /// **'ทันสมัย'**
+  String get fontModern;
+
+  /// No description provided for @fontModernAbout.
+  ///
+  /// In th, this message translates to:
+  /// **'Kanit + M PLUS 1p เส้นตรงคมชัด แบบป้ายและแอปญี่ปุ่น'**
+  String get fontModernAbout;
 }
 
 class _AppLocalizationsDelegate

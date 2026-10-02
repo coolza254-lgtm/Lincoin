@@ -25,6 +25,7 @@ class LincoinApp extends ConsumerWidget {
     final s = ref.watch(settingsProvider);
     final palette =
         LcTokens.themes[s.theme] ?? LcTokens.themes[LcTokens.defaultTheme]!;
+    AppFonts.current = FontPreset.byName(s.font);
     Feel.haptics = s.haptics;
     Pad.enabled = s.controller;
     Pad.swapAB = s.swapAB;

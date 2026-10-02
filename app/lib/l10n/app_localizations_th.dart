@@ -1008,10 +1008,11 @@ class AppLocalizationsTh extends AppLocalizations {
       'เห็นคำ นึกความหมาย แล้วพลิกการ์ดให้คะแนนตัวเอง (อีกครั้ง/ยาก/ดี/ง่าย) แบบ Anki ปิดเพื่อทวนแบบตอบคำถาม';
 
   @override
-  String get autoPlayAudio => 'อ่านออกเสียงเมื่อพลิกการ์ด';
+  String get autoPlayAudio => 'อ่านออกเสียงอัตโนมัติเมื่อพลิกการ์ด';
 
   @override
-  String get autoPlayAudioHelp => 'ใช้เสียงภาษาญี่ปุ่นของเครื่อง';
+  String get autoPlayAudioHelp =>
+      'พลิกการ์ดแล้วอ่านคำให้ฟังทันที (ใช้เสียงภาษาญี่ปุ่นของเครื่อง)';
 
   @override
   String get showAnswer => 'แสดงคำตอบ';
@@ -1239,4 +1240,72 @@ class AppLocalizationsTh extends AppLocalizations {
   String cardsLeft(int n) {
     return 'เหลืออีก $n ใบ';
   }
+
+  @override
+  String get sectionSound => 'เสียง';
+
+  @override
+  String get autoPlayExample => 'อ่านประโยคตัวอย่างต่อด้วย';
+
+  @override
+  String get autoPlayExampleHelp =>
+      'อ่านคำก่อน แล้วตามด้วยประโยคตัวอย่างบนการ์ด';
+
+  @override
+  String get testVoice => 'ทดสอบเสียง';
+
+  @override
+  String get testVoiceHelp =>
+      'ถ้าไม่มีเสียง ให้ติดตั้งเสียงภาษาญี่ปุ่นใน ตั้งค่าเครื่อง > การช่วยเหลือพิเศษ > ข้อความเป็นคำพูด';
+
+  @override
+  String get autoPlayOn => 'เปิดอ่านออกเสียงอัตโนมัติ';
+
+  @override
+  String get autoPlayOff => 'ปิดอ่านออกเสียงอัตโนมัติ';
+
+  @override
+  String get noVoiceHint =>
+      'เครื่องนี้ยังไม่มีเสียงภาษาญี่ปุ่น ติดตั้งได้ใน ตั้งค่าเครื่อง > ข้อความเป็นคำพูด';
+
+  @override
+  String get fontTitle => 'ฟอนต์';
+
+  @override
+  String get fontHelp => 'เปลี่ยนทั้งตัวอักษรไทยและญี่ปุ่นในแอป';
+
+  @override
+  String get fontStandard => 'มาตรฐาน';
+
+  @override
+  String get fontStandardAbout =>
+      'IBM Plex Sans Thai + Zen Maru Gothic อ่านสบายตา';
+
+  @override
+  String get fontTextbook => 'ลายมือครู';
+
+  @override
+  String get fontTextbookAbout =>
+      'Sarabun + Klee One ตัวญี่ปุ่นแบบเขียนมือ เห็นเส้นขีดชัด เหมาะหัดเขียน';
+
+  @override
+  String get fontClassic => 'หนังสือ';
+
+  @override
+  String get fontClassicAbout =>
+      'Trirong + Shippori Mincho แบบมีเชิง เหมือนหนังสือพิมพ์ญี่ปุ่น';
+
+  @override
+  String get fontRounded => 'โค้งมน';
+
+  @override
+  String get fontRoundedAbout =>
+      'Mitr + M PLUS Rounded 1c ตัวกลมหนา อ่านง่ายบนจอเล็ก';
+
+  @override
+  String get fontModern => 'ทันสมัย';
+
+  @override
+  String get fontModernAbout =>
+      'Kanit + M PLUS 1p เส้นตรงคมชัด แบบป้ายและแอปญี่ปุ่น';
 }

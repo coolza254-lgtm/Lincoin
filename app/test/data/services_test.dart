@@ -11,6 +11,7 @@ import 'package:lincoin/data/shop_repo.dart';
 import 'package:lincoin/data/study_repo.dart';
 import 'package:lincoin/data/user_db.dart';
 import 'package:lincoin/data/settings_repo.dart';
+import 'package:lincoin/ui/theme.dart';
 import 'package:lincoin/services/backup_service.dart';
 import 'package:lincoin/services/content_pack.dart';
 import 'package:lincoin/services/content_store.dart';
@@ -289,6 +290,23 @@ void main() {
     expect(back.swapAB, isTrue);
     expect(back.quickAnswerButtons, isTrue);
     expect(AppSettings.fromMap(const {}).controller, isTrue);
+  });
+
+  test('settings: font and audio options round-trip', () {
+    const s = AppSettings(
+      font: 'textbook',
+      autoPlayAudio: true,
+      autoPlayExample: false,
+    );
+    final back = AppSettings.fromMap(s.toMap());
+    expect(back.font, 'textbook');
+    expect(back.autoPlayAudio, isTrue);
+    expect(back.autoPlayExample, isFalse);
+    // An unknown font name falls back to the standard pair.
+    expect(AppSettings.fromMap(const {'look.font': 'comic'}).font, 'standard');
+    for (final f in FontPreset.values) {
+      expect(FontPreset.byName(f.name), f);
+    }
   });
 
   test('migration from an empty file and version guard', () {

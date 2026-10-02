@@ -33,6 +33,37 @@ class Tts {
     }
   }
 
+  int _run = 0;
+
+  /// Speaks [texts] one after another (word, then example). A newer call
+  /// cancels the rest of an older one. False when there is no Japanese
+  /// voice.
+  Future<bool> speakAll(List<String> texts) async {
+    if (!await available()) return false;
+    final run = ++_run;
+    try {
+      await _tts.stop();
+      await _tts.awaitSpeakCompletion(true);
+      for (final (i, t) in texts.indexed) {
+        if (run != _run) break;
+        if (i > 0) {
+          await Future<void>.delayed(const Duration(milliseconds: 350));
+        }
+        if (run != _run) break;
+        await _tts.speak(t);
+      }
+      return true;
+    } on Object {
+      return false;
+    }
+  }
+
+  /// Stops speaking (and any queued text).
+  void stop() {
+    _run++;
+    _tts.stop().ignore();
+  }
+
   void dispose() {
     _tts.stop().ignore();
   }

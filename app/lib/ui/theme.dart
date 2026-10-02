@@ -2,8 +2,30 @@ import 'package:flutter/material.dart';
 
 import 'tokens.g.dart';
 
-const fontThai = 'IBMPlexSansThai';
-const fontJapanese = 'ZenMaruGothic';
+/// A Thai + Japanese font pair the learner can pick in settings.
+enum FontPreset {
+  standard('IBMPlexSansThai', 'ZenMaruGothic'),
+  textbook('Sarabun', 'KleeOne'),
+  classic('Trirong', 'ShipporiMincho'),
+  rounded('Mitr', 'MPLUSRounded1c'),
+  modern('Kanit', 'MPLUS1p');
+
+  const FontPreset(this.thai, this.japanese);
+  final String thai;
+  final String japanese;
+
+  static FontPreset byName(String? name) =>
+      values.where((f) => f.name == name).firstOrNull ?? standard;
+}
+
+/// The fonts in use; set from the settings by [LincoinApp] before the
+/// theme is built, so [jpStyle] (called without a context) follows them.
+class AppFonts {
+  AppFonts._();
+  static FontPreset current = FontPreset.standard;
+  static String get thai => current.thai;
+  static String get japanese => current.japanese;
+}
 
 /// The active palette, reachable from any widget via `context.lc`.
 /// Screens use only these tokens, never literal colours, so a theme is
@@ -66,7 +88,7 @@ FontWeight _w(int w) => FontWeight.values[(w ~/ 100 - 1).clamp(0, 8)];
 
 /// Japanese text style at a token size.
 TextStyle jpStyle(double size, int weight, Color color) => TextStyle(
-  fontFamily: fontJapanese,
+  fontFamily: AppFonts.japanese,
   fontSize: size,
   fontWeight: _w(weight),
   color: color,
@@ -92,8 +114,8 @@ ThemeData buildTheme(LcPalette p, {bool reduceMotion = false}) {
     surfaceContainerHighest: p.track,
   );
   TextStyle t(double size, int weight, [Color? c]) => TextStyle(
-    fontFamily: fontThai,
-    fontFamilyFallback: const [fontJapanese],
+    fontFamily: AppFonts.thai,
+    fontFamilyFallback: [AppFonts.japanese],
     fontSize: size,
     fontWeight: _w(weight),
     color: c ?? p.ink,
@@ -129,8 +151,8 @@ ThemeData buildTheme(LcPalette p, {bool reduceMotion = false}) {
     splashFactory: reduceMotion ? NoSplash.splashFactory : null,
     colorScheme: scheme,
     scaffoldBackgroundColor: p.bg,
-    fontFamily: fontThai,
-    fontFamilyFallback: const [fontJapanese],
+    fontFamily: AppFonts.thai,
+    fontFamilyFallback: [AppFonts.japanese],
     textTheme: text,
     extensions: [LcColors(p, reduceMotion: reduceMotion)],
     appBarTheme: AppBarTheme(

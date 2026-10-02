@@ -4,7 +4,7 @@ publish_to: 'none'
 
 # versionName+versionCode. versionCode must increase with every release
 # (Android refuses downgrades); tools/release checks the tag matches.
-version: 0.10.0+14
+version: 0.11.0+15
 
 environment:
   sdk: ^3.13.0
@@ -55,4 +55,44 @@ flutter:
         - asset: assets/fonts/ZenMaruGothic-Medium.ttf
           weight: 500
         - asset: assets/fonts/ZenMaruGothic-Bold.ttf
+          weight: 700
+    - family: Sarabun
+      fonts:
+        - asset: assets/fonts/Sarabun-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Sarabun-SemiBold.ttf
+          weight: 600
+    - family: KleeOne
+      fonts:
+        - asset: assets/fonts/KleeOne-SemiBold.ttf
+          weight: 600
+    - family: Trirong
+      fonts:
+        - asset: assets/fonts/Trirong-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Trirong-Medium.ttf
+          weight: 600
+    - family: ShipporiMincho
+      fonts:
+        - asset: assets/fonts/ShipporiMincho-Medium.ttf
+          weight: 500
+    - family: Mitr
+      fonts:
+        - asset: assets/fonts/Mitr-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Mitr-Medium.ttf
+          weight: 600
+    - family: MPLUSRounded1c
+      fonts:
+        - asset: assets/fonts/MPLUSRounded1c-Bold.ttf
+          weight: 700
+    - family: Kanit
+      fonts:
+        - asset: assets/fonts/Kanit-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Kanit-Medium.ttf
+          weight: 600
+    - family: MPLUS1p
+      fonts:
+        - asset: assets/fonts/MPLUS1p-Bold.ttf
           weight: 700

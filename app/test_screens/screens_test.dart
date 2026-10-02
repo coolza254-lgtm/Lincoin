@@ -37,6 +37,26 @@ Future<void> loadFonts() async {
     jp.addFont(file('assets/fonts/ZenMaruGothic-$w.ttf'));
   }
   await jp.load();
+  // The other font presets (settings preview and font screenshots).
+  final files = Directory('assets/fonts').listSync().whereType<File>();
+  for (final family in [
+    'Sarabun',
+    'KleeOne',
+    'Trirong',
+    'ShipporiMincho',
+    'Mitr',
+    'MPLUSRounded1c',
+    'Kanit',
+    'MPLUS1p',
+  ]) {
+    final loader = FontLoader(family);
+    for (final f in files.where(
+      (f) => f.uri.pathSegments.last.startsWith('$family-'),
+    )) {
+      loader.addFont(file(f.path));
+    }
+    await loader.load();
+  }
   final flutterRoot = Platform.environment['FLUTTER_ROOT'] ?? '/opt/flutter';
   await (FontLoader('MaterialIcons')..addFont(
         file(
@@ -264,6 +284,11 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('ตั้งค่า'));
     await snap('9-settings');
+    await tester.scrollUntilVisible(find.text('ทันสมัย'), 300);
+    await tester.ensureVisible(find.text('ทันสมัย'));
+    await tester.pumpAndSettle();
+    await tester.drag(find.byType(Scrollable).first, const Offset(0, 620));
+    await snap('9a-settings-font');
     await tester.scrollUntilVisible(find.text('ปุ่มควบคุม'), 300);
     container
         .read(settingsProvider.notifier)

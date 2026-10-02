@@ -38,6 +38,9 @@ class SessionState {
   /// Cards answered earlier today (a resumed session continues the bar).
   final int doneBefore;
 
+  /// Auto-play found no Japanese voice on the phone.
+  final bool noVoice;
+
   /// Flashcard turned over (answer side showing).
   final bool flipped;
 
@@ -64,6 +67,7 @@ class SessionState {
     this.flipped = false,
     this.intervals,
     this.doneBefore = 0,
+    this.noVoice = false,
   });
 
   SessionState copyWith({
@@ -84,6 +88,7 @@ class SessionState {
     SessionBonus? bonus,
     int? laterSteps,
     bool? flipped,
+    bool? noVoice,
     Map<Rating, Duration>? intervals,
     bool clearAnswer = false,
   }) => SessionState(
@@ -104,6 +109,7 @@ class SessionState {
     bonus: bonus ?? this.bonus,
     laterSteps: laterSteps ?? this.laterSteps,
     doneBefore: doneBefore,
+    noVoice: noVoice ?? this.noVoice,
     flipped: flipped ?? (clearAnswer ? false : this.flipped),
     intervals: clearAnswer ? null : (intervals ?? this.intervals),
   );
@@ -229,15 +235,33 @@ class SessionController extends Notifier<SessionState> {
     if (!q.isFlashcard) return;
     Feel.selection();
     state = state.copyWith(flipped: true, intervals: _svc.intervals(q));
-    final say = switch (q.item) {
-      WordStudy(:final word) => word.reading,
-      KanaStudy(:final kana) => kana.char,
-      _ => null,
-    };
-    if (say != null && ref.read(settingsProvider).autoPlayAudio) {
-      ref.read(ttsProvider).speak(say).ignore();
-    }
+    _autoPlay(q);
   }
+
+  /// Reads the word (and its example) aloud when the card turns over, if
+  /// the learner turned that on.
+  void _autoPlay(Question q) {
+    final settings = ref.read(settingsProvider);
+    if (!settings.autoPlayAudio) return;
+    final texts = switch (q.item) {
+      WordStudy(:final word) => [
+        word.reading,
+        if (settings.autoPlayExample)
+          ?_svc.catalog.db.examplesFor(word.id).firstOrNull?.ja,
+      ],
+      KanaStudy(:final kana) => [kana.char],
+      _ => const <String>[],
+    };
+    if (texts.isEmpty) return;
+    ref.read(ttsProvider).speakAll(texts).then((ok) {
+      if (!ok && ref.mounted && !state.noVoice) {
+        state = state.copyWith(noVoice: true);
+      }
+    });
+  }
+
+  /// Stops reading aloud (next card, leaving the session).
+  void stopAudio() => ref.read(ttsProvider).stop();
 
   /// The learner's own rating of a turned-over flashcard; the next card
   /// follows straight away, as in Anki.
@@ -266,6 +290,7 @@ class SessionController extends Notifier<SessionState> {
       _queue.requeue(q.cardId, result.outcome.after.due!);
     }
     ok ? Feel.light() : Feel.medium();
+    stopAudio();
     state = _advance(
       state.copyWith(
         answered: state.answered + 1,

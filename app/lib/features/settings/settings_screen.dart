@@ -119,13 +119,6 @@ class SettingsScreen extends ConsumerWidget {
                 value: s.flashcards,
                 onChanged: (v) => set.update((x) => x.copyWith(flashcards: v)),
               ),
-              SwitchListTile(
-                title: Text(t.autoPlayAudio),
-                subtitle: Text(t.autoPlayAudioHelp),
-                value: s.autoPlayAudio,
-                onChanged: (v) =>
-                    set.update((x) => x.copyWith(autoPlayAudio: v)),
-              ),
               const Divider(indent: 16, endIndent: 16),
               _SliderTile(
                 title: t.targetRetentionGrammar,
@@ -215,12 +208,69 @@ class SettingsScreen extends ConsumerWidget {
                   ],
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  LcTokens.spacingLg,
+                  LcTokens.spacingSm,
+                  LcTokens.spacingLg,
+                  LcTokens.spacingLg,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(t.fontTitle, style: tt.bodyLarge),
+                    Text(t.fontHelp, style: tt.bodySmall),
+                    const SizedBox(height: LcTokens.spacingMd),
+                    for (final f in FontPreset.values)
+                      _FontOption(
+                        preset: f,
+                        selected: f.name == s.font,
+                        onTap: () =>
+                            set.update((x) => x.copyWith(font: f.name)),
+                      ),
+                  ],
+                ),
+              ),
               SwitchListTile(
                 title: Text(t.animations),
                 subtitle: Text(t.animationsHelp),
                 value: s.animations,
                 onChanged: (v) =>
                     set.update((x) => x.copyWith(reduceMotion: !v)),
+              ),
+            ]),
+            SectionLabel(t.sectionSound),
+            card([
+              SwitchListTile(
+                title: Text(t.autoPlayAudio),
+                subtitle: Text(t.autoPlayAudioHelp),
+                value: s.autoPlayAudio,
+                onChanged: (v) =>
+                    set.update((x) => x.copyWith(autoPlayAudio: v)),
+              ),
+              SwitchListTile(
+                title: Text(t.autoPlayExample),
+                subtitle: Text(t.autoPlayExampleHelp),
+                value: s.autoPlayExample,
+                onChanged: s.autoPlayAudio
+                    ? (v) => set.update((x) => x.copyWith(autoPlayExample: v))
+                    : null,
+              ),
+              ListTile(
+                leading: const Icon(Icons.volume_up_rounded),
+                title: Text(t.testVoice),
+                subtitle: Text(t.testVoiceHelp),
+                onTap: () async {
+                  final ok = await ref.read(ttsProvider).speakAll([
+                    'たべる',
+                    '毎朝パンを食べます。',
+                  ]);
+                  if (!ok && context.mounted) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(t.noJapaneseVoice)));
+                  }
+                },
               ),
             ]),
             SectionLabel(t.sectionInput),
@@ -436,6 +486,100 @@ class _ThemeSwatch extends StatelessWidget {
               if (selected)
                 Icon(Icons.check_rounded, size: 16, color: palette.ink),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// One font pair, previewed in its own Thai and Japanese faces.
+class _FontOption extends StatelessWidget {
+  final FontPreset preset;
+  final bool selected;
+  final VoidCallback onTap;
+  const _FontOption({
+    required this.preset,
+    required this.selected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+    final c = context.lc;
+    final (name, about) = switch (preset) {
+      FontPreset.standard => (t.fontStandard, t.fontStandardAbout),
+      FontPreset.textbook => (t.fontTextbook, t.fontTextbookAbout),
+      FontPreset.classic => (t.fontClassic, t.fontClassicAbout),
+      FontPreset.rounded => (t.fontRounded, t.fontRoundedAbout),
+      FontPreset.modern => (t.fontModern, t.fontModernAbout),
+    };
+    return Padding(
+      padding: const EdgeInsets.only(bottom: LcTokens.spacingSm),
+      child: Semantics(
+        selected: selected,
+        button: true,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(LcTokens.radiusControl),
+          child: AnimatedContainer(
+            duration: context.motionFast,
+            padding: const EdgeInsets.all(LcTokens.spacingMd),
+            decoration: BoxDecoration(
+              color: selected ? c.accentSoft : null,
+              borderRadius: BorderRadius.circular(LcTokens.radiusControl),
+              border: Border.all(
+                color: selected ? c.accent : c.line,
+                width: selected ? 2 : 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                          fontFamily: preset.thai,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: c.ink,
+                        ),
+                      ),
+                      Text(
+                        about,
+                        style: TextStyle(
+                          fontFamily: preset.thai,
+                          fontSize: 13,
+                          color: c.muted,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        '日本語を勉強する',
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontFamily: preset.japanese,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
+                          color: c.ink,
+                          height: 1.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  selected
+                      ? Icons.radio_button_checked_rounded
+                      : Icons.radio_button_off_rounded,
+                  color: selected ? c.accent : c.muted,
+                ),
+              ],
+            ),
           ),
         ),
       ),

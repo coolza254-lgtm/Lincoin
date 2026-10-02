@@ -642,8 +642,8 @@
   "controllerMapKeysDo": "ตอบตัวเลือกที่ 1–4",
   "flashcards": "ทวนศัพท์แบบแฟลชการ์ด",
   "flashcardsHelp": "เห็นคำ นึกความหมาย แล้วพลิกการ์ดให้คะแนนตัวเอง (อีกครั้ง/ยาก/ดี/ง่าย) แบบ Anki ปิดเพื่อทวนแบบตอบคำถาม",
-  "autoPlayAudio": "อ่านออกเสียงเมื่อพลิกการ์ด",
-  "autoPlayAudioHelp": "ใช้เสียงภาษาญี่ปุ่นของเครื่อง",
+  "autoPlayAudio": "อ่านออกเสียงอัตโนมัติเมื่อพลิกการ์ด",
+  "autoPlayAudioHelp": "พลิกการ์ดแล้วอ่านคำให้ฟังทันที (ใช้เสียงภาษาญี่ปุ่นของเครื่อง)",
   "showAnswer": "แสดงคำตอบ",
   "flashFrontHint": "นึกความหมายในใจ แล้วแตะการ์ดเพื่อพลิก",
   "rateAgain": "อีกครั้ง",
@@ -834,5 +834,25 @@
         "type": "int"
       }
     }
-  }
+  },
+  "sectionSound": "เสียง",
+  "autoPlayExample": "อ่านประโยคตัวอย่างต่อด้วย",
+  "autoPlayExampleHelp": "อ่านคำก่อน แล้วตามด้วยประโยคตัวอย่างบนการ์ด",
+  "testVoice": "ทดสอบเสียง",
+  "testVoiceHelp": "ถ้าไม่มีเสียง ให้ติดตั้งเสียงภาษาญี่ปุ่นใน ตั้งค่าเครื่อง > การช่วยเหลือพิเศษ > ข้อความเป็นคำพูด",
+  "autoPlayOn": "เปิดอ่านออกเสียงอัตโนมัติ",
+  "autoPlayOff": "ปิดอ่านออกเสียงอัตโนมัติ",
+  "noVoiceHint": "เครื่องนี้ยังไม่มีเสียงภาษาญี่ปุ่น ติดตั้งได้ใน ตั้งค่าเครื่อง > ข้อความเป็นคำพูด",
+  "fontTitle": "ฟอนต์",
+  "fontHelp": "เปลี่ยนทั้งตัวอักษรไทยและญี่ปุ่นในแอป",
+  "fontStandard": "มาตรฐาน",
+  "fontStandardAbout": "IBM Plex Sans Thai + Zen Maru Gothic อ่านสบายตา",
+  "fontTextbook": "ลายมือครู",
+  "fontTextbookAbout": "Sarabun + Klee One ตัวญี่ปุ่นแบบเขียนมือ เห็นเส้นขีดชัด เหมาะหัดเขียน",
+  "fontClassic": "หนังสือ",
+  "fontClassicAbout": "Trirong + Shippori Mincho แบบมีเชิง เหมือนหนังสือพิมพ์ญี่ปุ่น",
+  "fontRounded": "โค้งมน",
+  "fontRoundedAbout": "Mitr + M PLUS Rounded 1c ตัวกลมหนา อ่านง่ายบนจอเล็ก",
+  "fontModern": "ทันสมัย",
+  "fontModernAbout": "Kanit + M PLUS 1p เส้นตรงคมชัด แบบป้ายและแอปญี่ปุ่น"
 }

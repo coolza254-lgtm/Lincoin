@@ -17,6 +17,7 @@ import 'package:lincoin/features/settings/settings_screen.dart';
 import 'package:lincoin/services/content_store.dart';
 import 'package:lincoin/services/files.dart';
 import 'package:lincoin/state/providers.dart';
+import 'package:lincoin/ui/theme.dart';
 import 'package:lincoin/ui/tokens.g.dart';
 
 import '../support/fixture.dart';
@@ -208,6 +209,37 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('ความคืบหน้าของคำ'), findsOneWidget);
     expect(find.text('ยังไม่เริ่ม'), findsOneWidget);
+  });
+
+  testWidgets('settings: pick a font; speaker toggles auto-play', (
+    tester,
+  ) async {
+    final c = await start(
+      tester,
+      settings: const AppSettings(includeKana: false),
+    );
+    await tester.tap(find.byTooltip('ตั้งค่า'));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text('ลายมือครู'), 300);
+    await tester.ensureVisible(find.text('ลายมือครู'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('ลายมือครู'));
+    await tester.pumpAndSettle();
+    expect(c.read(settingsProvider).font, 'textbook');
+    expect(AppFonts.japanese, 'KleeOne');
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('เริ่มเรียน').first);
+    await tester.pumpAndSettle();
+    expect(c.read(settingsProvider).autoPlayAudio, isFalse);
+    await tester.tap(find.byTooltip('เปิดอ่านออกเสียงอัตโนมัติ'));
+    await tester.pumpAndSettle();
+    expect(c.read(settingsProvider).autoPlayAudio, isTrue);
+    // Flipping with auto-play on still works without a voice installed.
+    await tester.tap(find.text('แสดงคำตอบ'));
+    await tester.pumpAndSettle();
+    expect(find.text('ดี'), findsOneWidget);
+    AppFonts.current = FontPreset.standard;
   });
 
   testWidgets('a full study session records reviews', (tester) async {

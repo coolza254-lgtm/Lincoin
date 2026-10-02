@@ -68,6 +68,18 @@ class FlashcardView extends ConsumerWidget {
                 back: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    if (s.noVoice)
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: LcTokens.spacingSm,
+                        ),
+                        child: LcPill(
+                          t.noVoiceHint,
+                          icon: Icons.volume_off_rounded,
+                          bg: context.lc.warnSoft,
+                          fg: context.lc.warn,
+                        ),
+                      ),
                     LcCard(large: true, child: ItemDetails(item: q.item)),
                     Align(
                       alignment: Alignment.centerRight,
