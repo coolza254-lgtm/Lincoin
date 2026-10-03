@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/catalog.dart';
 import '../../data/content_db.dart';
+import '../../data/settings_repo.dart';
 import '../grammar/grammar_lesson.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/pos_th.dart';
@@ -22,12 +23,16 @@ class ItemDetails extends ConsumerWidget {
 
   /// Leave out the big headword (the question above already shows it).
   final bool hideHeadword;
+
+  /// Flashcard back: parts the learner switched off are left out.
+  final Set<FlashPart> hidden;
   const ItemDetails({
     super.key,
     required this.item,
     this.showFurigana = true,
     this.example,
     this.hideHeadword = false,
+    this.hidden = const {},
   });
 
   @override
@@ -66,7 +71,7 @@ class ItemDetails extends ConsumerWidget {
             child: Furigana(
               w.headwordFurigana,
               size: LcTokens.jpAnswerSize,
-              showReading: showFurigana,
+              showReading: showFurigana && !hidden.contains(FlashPart.furigana),
             ),
           ),
           const SizedBox(height: LcTokens.spacingXs),
@@ -79,19 +84,24 @@ class ItemDetails extends ConsumerWidget {
             SpeakButton(text: w.reading),
           ],
         ),
-        const SizedBox(height: LcTokens.spacingMd),
-        Wrap(
-          alignment: WrapAlignment.center,
-          spacing: LcTokens.spacingSm,
-          runSpacing: LcTokens.spacingSm,
-          children: [
-            LcPill('N${w.level}'),
-            for (final p in posLabels(w.pos))
-              LcPill(p, bg: c.track, fg: c.muted),
-          ],
-        ),
+        if (!hidden.contains(FlashPart.partOfSpeech)) ...[
+          const SizedBox(height: LcTokens.spacingMd),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: LcTokens.spacingSm,
+            runSpacing: LcTokens.spacingSm,
+            children: [
+              LcPill('N${w.level}'),
+              for (final p in posLabels(w.pos))
+                LcPill(p, bg: c.track, fg: c.muted),
+            ],
+          ),
+        ],
         const SizedBox(height: LcTokens.spacingLg),
-        for (final (n, s) in w.senses.take(4).indexed)
+        for (final (n, s)
+            in w.senses
+                .take(hidden.contains(FlashPart.moreMeanings) ? 1 : 4)
+                .indexed)
           Padding(
             padding: const EdgeInsets.only(bottom: LcTokens.spacingSm),
             child: Row(
@@ -122,9 +132,11 @@ class ItemDetails extends ConsumerWidget {
               ],
             ),
           ),
-        if (w.senses.length > 4)
+        if (w.senses.length > 4 && !hidden.contains(FlashPart.moreMeanings))
           Text(t.moreMeanings(w.senses.length - 4), style: tt.bodySmall),
-        for (final e in examples.take(1)) ...[
+        for (final e in examples.take(
+          hidden.contains(FlashPart.example) ? 0 : 1,
+        )) ...[
           const SizedBox(height: LcTokens.spacingMd),
           Container(
             padding: const EdgeInsets.all(LcTokens.spacingLg),
@@ -152,7 +164,9 @@ class ItemDetails extends ConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: LcTokens.spacingXs),
-                if (e.th != null) Text(e.th!, style: tt.bodyMedium),
+                if (e.th != null &&
+                    !hidden.contains(FlashPart.exampleTranslation))
+                  Text(e.th!, style: tt.bodyMedium),
                 const SizedBox(height: LcTokens.spacingSm),
                 Text(
                   t.exampleCredit(e.sourceNumber, e.jaAuthor, e.jaLicense),

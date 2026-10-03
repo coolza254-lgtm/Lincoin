@@ -325,4 +325,44 @@ void main() {
     expect(e.recall, isNotNull);
     expect(lib.history('w:3#recog').single.rating, Rating.good);
   });
+
+  test('undo: a new card goes back to never seen, a review to its state', () {
+    final s = service(const AppSettings(includeKana: false));
+    final id = s.plan().queue.newCards.first.cardId;
+    final newBefore = s.plan().newCount;
+    final q = s.question(id);
+    final before = s.repo.cardRow(id);
+    expect(before, isNull);
+    s.introduce(q);
+    final r = s.answer(
+      q,
+      const AnswerEvent(isCorrect: true, responseMs: 3000),
+      selfRating: Rating.again,
+    );
+    expect(s.repo.reviewRecords(cardId: id), hasLength(1));
+    s.undo(id, r, before);
+    expect(s.stored(id), isNull);
+    expect(s.repo.reviewRecords(cardId: id), isEmpty);
+    expect(s.plan().newCount, newBefore, reason: 'the new card counts again');
+
+    // A card with history returns to exactly its earlier state.
+    s.introduce(q);
+    s.answer(
+      q,
+      const AnswerEvent(isCorrect: true, responseMs: 3000),
+      selfRating: Rating.good,
+    );
+    final mid = s.repo.cardRow(id);
+    final stateMid = s.stored(id)!.state;
+    now = now.add(const Duration(minutes: 30));
+    final r2 = s.answer(
+      q,
+      const AnswerEvent(isCorrect: true, responseMs: 3000),
+      selfRating: Rating.easy,
+    );
+    expect(s.stored(id)!.state, isNot(stateMid));
+    s.undo(id, r2, mid);
+    expect(s.stored(id)!.state, stateMid);
+    expect(s.repo.reviewRecords(cardId: id), hasLength(1));
+  });
 }

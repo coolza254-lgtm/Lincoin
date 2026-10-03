@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/catalog.dart';
@@ -10,6 +11,7 @@ import '../../state/providers.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
+import 'flash_look.dart';
 import 'flashcard.dart';
 import 'item_details.dart';
 import 'question_body.dart';
@@ -26,81 +28,198 @@ class StudyScreen extends ConsumerWidget {
     final s = ref.watch(sessionProvider(deck));
     final ctl = ref.read(sessionProvider(deck).notifier);
     final t = AppLocalizations.of(context);
-    return PopScope(
-      onPopInvokedWithResult: (didPop, _) {
-        if (!didPop) return;
-        ctl.stopAudio();
-        ctl.quit();
-        final data = ref.read(dataVersionProvider.notifier);
-        Future.microtask(data.bump);
-      },
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4, 4, 16, 0),
-                child: Row(
-                  children: [
-                    IconButton(
-                      tooltip: t.close,
-                      icon: const Icon(Icons.close_rounded),
-                      onPressed: () => Navigator.of(context).maybePop(),
-                    ),
-                    Expanded(child: LcProgressBar(s.progress)),
-                    if (s.question?.isFlashcard ?? false)
-                      _AutoPlayToggle()
-                    else
-                      const SizedBox(width: LcTokens.spacingMd),
-                    // Cards left in this session.
-                    if (s.phase != SessionPhase.done)
-                      Semantics(
-                        label: t.cardsLeft(s.remaining),
-                        excludeSemantics: true,
-                        child: LcPill(
-                          '${s.remaining}',
-                          icon: Icons.style_rounded,
-                          bg: context.lc.track,
-                          fg: context.lc.muted,
+    final look = ref.watch(settingsProvider);
+    final flash = ref.read(deckServiceProvider(deck))?.flashcards ?? false;
+    return _Immersive(
+      on: flash && look.flashFullscreen,
+      child: _UndoKeys(
+        enabled: s.canUndo,
+        onUndo: ctl.undo,
+        child: PopScope(
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop) return;
+            ctl.stopAudio();
+            ctl.quit();
+            final data = ref.read(dataVersionProvider.notifier);
+            Future.microtask(data.bump);
+          },
+          child: Scaffold(
+            body: SafeArea(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 4, 16, 0),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          tooltip: t.close,
+                          icon: const Icon(Icons.close_rounded),
+                          onPressed: () => Navigator.of(context).maybePop(),
                         ),
-                      ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: AnimatedSwitcher(
-                  duration: context.motionNormal,
-                  switchInCurve: Curves.easeOutCubic,
-                  switchOutCurve: Curves.easeInCubic,
-                  transitionBuilder: _slideFade,
-                  child: KeyedSubtree(
-                    // A question and its feedback share one subtree: the
-                    // answer is revealed in place, not on a new page.
-                    key: ValueKey(switch (s.phase) {
-                      SessionPhase.intro => 'intro-${s.question?.cardId}',
-                      SessionPhase.done => 'done',
-                      _ =>
-                        'q-${s.question?.cardId}-'
-                            '${s.answered - (s.phase == SessionPhase.feedback ? 1 : 0)}',
-                    }),
-                    child: switch (s.phase) {
-                      SessionPhase.intro => _Intro(s, deck),
-                      SessionPhase.question
-                          when s.question?.isFlashcard ?? false =>
-                        FlashcardView(s, deck),
-                      SessionPhase.question ||
-                      SessionPhase.feedback => _QuestionView(s, deck),
-                      SessionPhase.done => _Done(s, deck),
-                    },
+                        Expanded(
+                          child: !flash || look.shows(FlashPart.progressBar)
+                              ? LcProgressBar(s.progress)
+                              : const SizedBox.shrink(),
+                        ),
+                        if (s.canUndo)
+                          IconButton(
+                            tooltip: t.undoLast,
+                            icon: const Icon(Icons.undo_rounded),
+                            color: context.lc.muted,
+                            onPressed: ctl.undo,
+                          ),
+                        if (flash) ...[
+                          _AutoPlayToggle(),
+                          IconButton(
+                            tooltip: t.flashLook,
+                            icon: const Icon(Icons.tune_rounded),
+                            color: context.lc.muted,
+                            onPressed: () => showFlashLook(context),
+                          ),
+                        ] else
+                          const SizedBox(width: LcTokens.spacingMd),
+                        // Cards left in this session.
+                        if (s.phase != SessionPhase.done &&
+                            (!flash || look.shows(FlashPart.cardsLeft)))
+                          Semantics(
+                            label: t.cardsLeft(s.remaining),
+                            excludeSemantics: true,
+                            child: LcPill(
+                              '${s.remaining}',
+                              icon: Icons.style_rounded,
+                              bg: context.lc.track,
+                              fg: context.lc.muted,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
+                  Expanded(
+                    child: AnimatedSwitcher(
+                      duration: context.motionNormal,
+                      switchInCurve: Curves.easeOutCubic,
+                      switchOutCurve: Curves.easeInCubic,
+                      transitionBuilder: _slideFade,
+                      child: KeyedSubtree(
+                        // A question and its feedback share one subtree: the
+                        // answer is revealed in place, not on a new page.
+                        key: ValueKey(switch (s.phase) {
+                          SessionPhase.intro => 'intro-${s.question?.cardId}',
+                          SessionPhase.done => 'done',
+                          _ =>
+                            'q-${s.question?.cardId}-'
+                                '${s.answered - (s.phase == SessionPhase.feedback ? 1 : 0)}',
+                        }),
+                        child: switch (s.phase) {
+                          SessionPhase.intro => _Intro(s, deck),
+                          SessionPhase.question
+                              when s.question?.isFlashcard ?? false =>
+                            FlashcardView(s, deck),
+                          SessionPhase.question ||
+                          SessionPhase.feedback => _QuestionView(s, deck),
+                          SessionPhase.done => _Done(s, deck),
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+/// Z, Backspace or a controller's Select take back the last rating. A
+/// keyboard handler, so it works wherever focus is (only flashcard
+/// sessions can undo, and they have no text field).
+class _UndoKeys extends StatefulWidget {
+  final bool enabled;
+  final VoidCallback onUndo;
+  final Widget child;
+  const _UndoKeys({
+    required this.enabled,
+    required this.onUndo,
+    required this.child,
+  });
+
+  @override
+  State<_UndoKeys> createState() => _UndoKeysState();
+}
+
+class _UndoKeysState extends State<_UndoKeys> {
+  static final _keys = {
+    LogicalKeyboardKey.keyZ,
+    LogicalKeyboardKey.backspace,
+    LogicalKeyboardKey.gameButtonSelect,
+  };
+
+  bool _onKey(KeyEvent e) {
+    if (e is! KeyDownEvent ||
+        !widget.enabled ||
+        !_keys.contains(e.logicalKey)) {
+      return false;
+    }
+    // Not while a sheet or dialog is open over the session.
+    if (!(ModalRoute.of(context)?.isCurrent ?? false)) return false;
+    widget.onUndo();
+    return true;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    HardwareKeyboard.instance.addHandler(_onKey);
+  }
+
+  @override
+  void dispose() {
+    HardwareKeyboard.instance.removeHandler(_onKey);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
+}
+
+/// Hides the phone's status and navigation bars while [on] (full-screen
+/// flashcards); they come back when the session ends.
+class _Immersive extends StatefulWidget {
+  final bool on;
+  final Widget child;
+  const _Immersive({required this.on, required this.child});
+
+  @override
+  State<_Immersive> createState() => _ImmersiveState();
+}
+
+class _ImmersiveState extends State<_Immersive> {
+  void _apply(bool on) => SystemChrome.setEnabledSystemUIMode(
+    on ? SystemUiMode.immersiveSticky : SystemUiMode.edgeToEdge,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.on) _apply(true);
+  }
+
+  @override
+  void didUpdateWidget(_Immersive old) {
+    super.didUpdateWidget(old);
+    if (old.on != widget.on) _apply(widget.on);
+  }
+
+  @override
+  void dispose() {
+    if (widget.on) _apply(false);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }
 
 /// Speaker in the top bar: turns reading aloud on flip on or off.

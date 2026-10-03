@@ -112,6 +112,8 @@ enum QuestionForm {
 enum AnswerCheck { correct, wrong, synonym }
 
 class AnswerResult {
+  /// review_log row written for this answer (needed to undo it).
+  final String logId;
   final Rating rating;
   final ReviewOutcome outcome;
   final List<LedgerEntry> coins;
@@ -120,6 +122,7 @@ class AnswerResult {
   final bool leech;
 
   const AnswerResult(
+    this.logId,
     this.rating,
     this.outcome,
     this.coins, {
@@ -546,6 +549,7 @@ class StudyService {
     );
     times.add(q.type, e, maxResponseMs: config.grader.maxResponseMs);
     return AnswerResult(
+      logId,
       rating,
       outcome,
       paid,
@@ -554,6 +558,19 @@ class StudyService {
       leech: leech,
     );
   }
+
+  /// Takes back [result] for [cardId]; [cardBefore] is the card row read
+  /// before answering ([StudyRepo.cardRow]).
+  void undo(
+    String cardId,
+    AnswerResult result,
+    Map<String, Object?>? cardBefore,
+  ) => repo.undoReview(
+    logId: result.logId,
+    cardId: cardId,
+    before: cardBefore,
+    ledgerKeys: [for (final c in result.coins) c.idempotencyKey],
+  );
 
   /// Daily-clear and coverage bonuses, paid once each (idempotent).
   SessionBonus finishSession({required bool answeredAny}) {

@@ -295,6 +295,41 @@ class StudyRepo {
     });
   }
 
+  /// Every column of a card row, kept so an answer can be undone exactly;
+  /// null when the card was never introduced.
+  Map<String, Object?>? cardRow(String id) {
+    final rows = u.db.select('SELECT * FROM cards WHERE id = ?', [id]);
+    if (rows.isEmpty) return null;
+    final r = rows.first;
+    return {for (final c in r.keys) c: r[c]};
+  }
+
+  /// Takes back an answer: its log row and Lincoin entries go, and the
+  /// card returns to [before] (or to never introduced when null).
+  void undoReview({
+    required String logId,
+    required String cardId,
+    required Map<String, Object?>? before,
+    required List<String> ledgerKeys,
+  }) {
+    u.tx(() {
+      u.db.execute('DELETE FROM review_log WHERE id = ?', [logId]);
+      for (final k in ledgerKeys) {
+        u.db.execute('DELETE FROM coin_ledger WHERE idempotency_key = ?', [k]);
+      }
+      if (before == null) {
+        u.db.execute('DELETE FROM cards WHERE id = ?', [cardId]);
+      } else {
+        final cols = before.keys.toList();
+        u.db.execute(
+          'INSERT OR REPLACE INTO cards(${cols.join(', ')}) '
+          'VALUES (${List.filled(cols.length, '?').join(', ')})',
+          [for (final c in cols) before[c]],
+        );
+      }
+    });
+  }
+
   /// Review history for metrics (oldest first).
   List<ReviewRecord> reviewRecords({
     String? deck,

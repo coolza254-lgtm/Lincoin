@@ -309,6 +309,22 @@ void main() {
     }
   });
 
+  test('settings: flashcard parts and full screen round-trip', () {
+    final s = const AppSettings()
+        .withPart(FlashPart.intervals, false)
+        .withPart(FlashPart.example, false)
+        .copyWith(flashFullscreen: true);
+    final back = AppSettings.fromMap(s.toMap());
+    expect(back.flashHidden, {FlashPart.intervals, FlashPart.example});
+    expect(back.shows(FlashPart.intervals), isFalse);
+    expect(back.shows(FlashPart.progressBar), isTrue);
+    expect(back.flashFullscreen, isTrue);
+    expect(back.withPart(FlashPart.example, true).flashHidden, {
+      FlashPart.intervals,
+    });
+    expect(AppSettings.fromMap(const {}).flashHidden, isEmpty);
+  });
+
   test('migration from an empty file and version guard', () {
     final path = '${tmp.path}/m.db';
     var called = false;

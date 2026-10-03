@@ -1308,4 +1308,69 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get fontModernAbout =>
       'Kanit + M PLUS 1p เส้นตรงคมชัด แบบป้ายและแอปญี่ปุ่น';
+
+  @override
+  String get undoLast => 'เลิกทำการ์ดล่าสุด (กดผิด)';
+
+  @override
+  String get undoDone => 'ย้อนการ์ดแล้ว ให้คะแนนใหม่ได้เลย';
+
+  @override
+  String get flashLook => 'หน้าการ์ด';
+
+  @override
+  String get flashLookHelp => 'เลือกส่วนที่จะแสดงบนหน้าการ์ด และโหมดเต็มหน้าจอ';
+
+  @override
+  String get flashShow => 'แสดงบนหน้าการ์ด';
+
+  @override
+  String get flashShowAll => 'แสดงทั้งหมด';
+
+  @override
+  String get flashFullscreen => 'โหมดเต็มหน้าจอ';
+
+  @override
+  String get flashFullscreenHelp =>
+      'ซ่อนแถบสถานะและปุ่มนำทางของเครื่องตอนเล่นการ์ด (ปัดขอบจอเพื่อเรียกกลับชั่วคราว)';
+
+  @override
+  String get partProgressBar => 'แถบความคืบหน้า';
+
+  @override
+  String get partCardsLeft => 'จำนวนการ์ดที่เหลือ';
+
+  @override
+  String get partLevelTag => 'ป้ายระดับ / คำใหม่ (ด้านหน้า)';
+
+  @override
+  String get partFrontHint => 'คำแนะนำใต้คำ (ด้านหน้า)';
+
+  @override
+  String get partFurigana => 'ฟุริงานะบนคำ (ด้านหลัง)';
+
+  @override
+  String get partPartOfSpeech => 'ระดับและชนิดคำ';
+
+  @override
+  String get partMoreMeanings => 'ความหมายอื่นๆ (นอกจากความหมายแรก)';
+
+  @override
+  String get partExample => 'ประโยคตัวอย่าง';
+
+  @override
+  String get partExampleTranslation => 'คำแปลประโยคตัวอย่าง';
+
+  @override
+  String get partRatingHelp => 'ข้อความ \"จำได้แค่ไหน?\"';
+
+  @override
+  String get partIntervals => 'เวลาบนปุ่มให้คะแนน';
+
+  @override
+  String get partProgressLink => 'ปุ่มดูความคืบหน้าของคำ';
+
+  @override
+  String get controllerMapUndoDo =>
+      'เลิกทำการ์ดล่าสุด (คีย์บอร์ด Z หรือ Backspace)';
 }

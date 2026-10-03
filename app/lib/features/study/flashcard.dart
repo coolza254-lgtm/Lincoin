@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lincoin_core/lincoin_core.dart';
 
 import '../../data/catalog.dart';
+import '../../data/settings_repo.dart';
 import '../../l10n/app_localizations.dart';
 import '../../services/study_service.dart';
 import '../../state/providers.dart';
@@ -38,9 +39,11 @@ class FlashcardView extends ConsumerWidget {
     final q = s.question!;
     final ctl = ref.read(sessionProvider(deck).notifier);
     final isNew = ref.read(deckServiceProvider(deck))?.stored(q.cardId) == null;
+    final look = ref.watch(settingsProvider);
     return Focus(
       onKeyEvent: (_, e) {
         if (e is! KeyDownEvent) return KeyEventResult.ignored;
+
         if (!s.flipped && e.logicalKey == LogicalKeyboardKey.space) {
           ctl.flip();
           return KeyEventResult.handled;
@@ -64,7 +67,13 @@ class FlashcardView extends ConsumerWidget {
               ),
               child: _Flip(
                 flipped: s.flipped,
-                front: _Front(q: q, isNew: isNew, onTap: ctl.flip),
+                front: _Front(
+                  q: q,
+                  isNew: isNew,
+                  onTap: ctl.flip,
+                  showTag: look.shows(FlashPart.levelTag),
+                  showHint: look.shows(FlashPart.frontHint),
+                ),
                 back: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -80,20 +89,27 @@ class FlashcardView extends ConsumerWidget {
                           fg: context.lc.warn,
                         ),
                       ),
-                    LcCard(large: true, child: ItemDetails(item: q.item)),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton.icon(
-                        icon: const Icon(Icons.insights_rounded, size: 18),
-                        label: Text(t.wordProgressOpen),
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                WordProgressScreen(itemId: q.item.id),
+                    LcCard(
+                      large: true,
+                      child: ItemDetails(
+                        item: q.item,
+                        hidden: look.flashHidden,
+                      ),
+                    ),
+                    if (look.shows(FlashPart.progressLink))
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton.icon(
+                          icon: const Icon(Icons.insights_rounded, size: 18),
+                          label: Text(t.wordProgressOpen),
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  WordProgressScreen(itemId: q.item.id),
+                            ),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -110,8 +126,10 @@ class FlashcardView extends ConsumerWidget {
                 ? Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(t.rateHelp, style: tt.bodySmall),
-                      const SizedBox(height: LcTokens.spacingSm),
+                      if (look.shows(FlashPart.ratingHelp)) ...[
+                        Text(t.rateHelp, style: tt.bodySmall),
+                        const SizedBox(height: LcTokens.spacingSm),
+                      ],
                       Row(
                         children: [
                           for (final r in Rating.values) ...[
@@ -120,7 +138,9 @@ class FlashcardView extends ConsumerWidget {
                             Expanded(
                               child: _RateButton(
                                 rating: r,
-                                interval: s.intervals?[r],
+                                interval: look.shows(FlashPart.intervals)
+                                    ? (s.intervals?[r])
+                                    : null,
                                 onPressed: () => ctl.rate(r),
                               ),
                             ),
@@ -148,7 +168,15 @@ class _Front extends StatelessWidget {
   final Question q;
   final bool isNew;
   final VoidCallback onTap;
-  const _Front({required this.q, required this.isNew, required this.onTap});
+  final bool showTag;
+  final bool showHint;
+  const _Front({
+    required this.q,
+    required this.isNew,
+    required this.onTap,
+    this.showTag = true,
+    this.showHint = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -187,17 +215,21 @@ class _Front extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (isNew)
-                LcPill(
-                  kana ? t.newKana : t.newWord,
-                  icon: Icons.auto_awesome_rounded,
-                )
-              else
-                LcPill(level, bg: c.track, fg: c.muted),
-              const SizedBox(height: LcTokens.spacingXxl),
+              if (showTag) ...[
+                if (isNew)
+                  LcPill(
+                    kana ? t.newKana : t.newWord,
+                    icon: Icons.auto_awesome_rounded,
+                  )
+                else
+                  LcPill(level, bg: c.track, fg: c.muted),
+                const SizedBox(height: LcTokens.spacingXxl),
+              ],
               face,
-              const SizedBox(height: LcTokens.spacingXxl),
-              Text(hint, style: tt.bodySmall, textAlign: TextAlign.center),
+              if (showHint) ...[
+                const SizedBox(height: LcTokens.spacingXxl),
+                Text(hint, style: tt.bodySmall, textAlign: TextAlign.center),
+              ],
             ],
           ),
         ),

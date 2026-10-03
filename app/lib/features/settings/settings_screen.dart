@@ -8,6 +8,7 @@ import '../../state/update_controller.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
+import '../study/flash_look.dart';
 import 'backup_screen.dart';
 import 'credits_screen.dart';
 import 'updates_screen.dart';
@@ -26,6 +27,7 @@ void _showControllerMap(BuildContext context, AppSettings s) {
       (s.swapAB ? 'B A X Y' : 'A B X Y', t.controllerMapQuickDo),
     (t.controllerMapKeys, t.controllerMapKeysDo),
     (t.controllerMapKeys, t.controllerMapFlashDo),
+    ('Select', t.controllerMapUndoDo),
   ];
   showDialog<void>(
     context: context,
@@ -118,6 +120,13 @@ class SettingsScreen extends ConsumerWidget {
                 subtitle: Text(t.flashcardsHelp),
                 value: s.flashcards,
                 onChanged: (v) => set.update((x) => x.copyWith(flashcards: v)),
+              ),
+              ListTile(
+                leading: const Icon(Icons.tune_rounded),
+                title: Text(t.flashLook),
+                subtitle: Text(t.flashLookHelp),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => showFlashLook(context),
               ),
               const Divider(indent: 16, endIndent: 16),
               _SliderTile(

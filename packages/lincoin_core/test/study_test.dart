@@ -109,4 +109,16 @@ void main() {
     expect(readingMatches('ビール', ['びいる']), isTrue);
     expect(readingMatches('kohi', ['コーヒー']), isFalse);
   });
+
+  test('SessionQueue.copy rewinds independently', () {
+    final now = DateTime.utc(2026, 10, 1);
+    final q = SessionQueue(initial: ['a', 'b', 'c']);
+    expect(q.next(now), 'a');
+    final saved = q.copy();
+    expect(q.next(now), 'b');
+    q.requeue('b', now);
+    expect(saved.length, 2);
+    expect(saved.next(now), 'b');
+    expect(q.length, 2);
+  });
 }

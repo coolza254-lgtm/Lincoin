@@ -23,6 +23,17 @@ class SessionQueue {
     _fresh.addAll(initial);
   }
 
+  SessionQueue._copy(SessionQueue o)
+      : introGap = o.introGap,
+        learnAhead = o.learnAhead,
+        _counter = o._counter {
+    _waiting.addAll(o._waiting);
+    _fresh.addAll(o._fresh);
+  }
+
+  /// An independent copy, kept to rewind the queue when an answer is undone.
+  SessionQueue copy() => SessionQueue._copy(this);
+
   bool get isEmpty => _fresh.isEmpty && _waiting.isEmpty;
   int get length => _fresh.length + _waiting.length;
 

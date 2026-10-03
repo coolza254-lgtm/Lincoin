@@ -38,6 +38,9 @@ class SessionState {
   /// Cards answered earlier today (a resumed session continues the bar).
   final int doneBefore;
 
+  /// The last rating can be taken back.
+  final bool canUndo;
+
   /// Auto-play found no Japanese voice on the phone.
   final bool noVoice;
 
@@ -68,6 +71,7 @@ class SessionState {
     this.intervals,
     this.doneBefore = 0,
     this.noVoice = false,
+    this.canUndo = false,
   });
 
   SessionState copyWith({
@@ -89,6 +93,7 @@ class SessionState {
     int? laterSteps,
     bool? flipped,
     bool? noVoice,
+    bool? canUndo,
     Map<Rating, Duration>? intervals,
     bool clearAnswer = false,
   }) => SessionState(
@@ -110,6 +115,7 @@ class SessionState {
     laterSteps: laterSteps ?? this.laterSteps,
     doneBefore: doneBefore,
     noVoice: noVoice ?? this.noVoice,
+    canUndo: canUndo ?? this.canUndo,
     flipped: flipped ?? (clearAnswer ? false : this.flipped),
     intervals: clearAnswer ? null : (intervals ?? this.intervals),
   );
@@ -137,6 +143,10 @@ class SessionController extends Notifier<SessionState> {
 
   /// Answered earlier today: a resumed session's progress bar continues.
   int _doneBefore = 0;
+
+  /// Ratings that can be taken back, newest last.
+  final List<_Undo> _undo = [];
+  static const _undoDepth = 20;
 
   /// Response time counts at most this much toward "active" study time.
   static const _activeCapMs = 60000;
@@ -273,7 +283,12 @@ class SessionController extends Notifier<SessionState> {
         !state.flipped) {
       return;
     }
-    final isNew = _svc.stored(q.cardId) == null;
+    final before = (
+      state: state,
+      queue: _queue.copy(),
+      row: _svc.repo.cardRow(q.cardId),
+    );
+    final isNew = before.row == null;
     if (isNew) _svc.introduce(q);
     _answerTimer.stop();
     final ms = _answerTimer.elapsedMilliseconds;
@@ -289,16 +304,40 @@ class SessionController extends Notifier<SessionState> {
     if (result.outcome.after.inSteps) {
       _queue.requeue(q.cardId, result.outcome.after.due!);
     }
+    _undo.add(_Undo(q, result, before.row, before.state, before.queue));
+    if (_undo.length > _undoDepth) _undo.removeAt(0);
     ok ? Feel.light() : Feel.medium();
     stopAudio();
     state = _advance(
       state.copyWith(
+        canUndo: true,
         answered: state.answered + 1,
         fresh: state.fresh + (isNew ? 1 : 0),
         correctCount: state.correctCount + (ok ? 1 : 0),
         coins: state.coins + result.coinTotal,
         result: result,
       ),
+    );
+  }
+
+  /// Takes back the last rating (a mis-tap): the answer is erased from the
+  /// history, the card goes back to how it was, and it is shown again
+  /// turned over so it can be rated again.
+  void undo() {
+    if (_undo.isEmpty) return;
+    final u = _undo.removeLast();
+    _svc.undo(u.question.cardId, u.result, u.cardRow);
+    _queue = u.queue;
+    stopAudio();
+    Feel.selection();
+    _answerTimer
+      ..reset()
+      ..start();
+    state = u.state.copyWith(
+      phase: SessionPhase.question,
+      flipped: true,
+      intervals: _svc.intervals(u.question),
+      canUndo: _undo.isNotEmpty,
     );
   }
 
@@ -388,3 +427,13 @@ class SessionController extends Notifier<SessionState> {
 
 final sessionProvider = NotifierProvider.autoDispose
     .family<SessionController, SessionState, String>(SessionController.new);
+
+/// What is needed to take back one rating.
+class _Undo {
+  final Question question;
+  final AnswerResult result;
+  final Map<String, Object?>? cardRow;
+  final SessionState state;
+  final SessionQueue queue;
+  _Undo(this.question, this.result, this.cardRow, this.state, this.queue);
+}

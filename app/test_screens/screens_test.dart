@@ -209,6 +209,37 @@ void main() {
     await snap('5g-flashcard-back');
     await tester.tap(find.text('ดี'));
     await tester.pumpAndSettle();
+    // Next card, with the undo button in the top bar; the look sheet.
+    await snap('5h-flashcard-undo');
+    await tester.tap(find.byTooltip('หน้าการ์ด'));
+    await snap('5i-flash-look');
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+    // A pared-down card: only the word, meaning and the rating buttons.
+    container
+        .read(settingsProvider.notifier)
+        .update(
+          (x) => x.copyWith(
+            flashHidden: {
+              FlashPart.progressBar,
+              FlashPart.cardsLeft,
+              FlashPart.levelTag,
+              FlashPart.frontHint,
+              FlashPart.partOfSpeech,
+              FlashPart.moreMeanings,
+              FlashPart.example,
+              FlashPart.ratingHelp,
+              FlashPart.intervals,
+              FlashPart.progressLink,
+            },
+          ),
+        );
+    await tester.tap(find.text('แสดงคำตอบ'));
+    await snap('5j-flashcard-minimal');
+    container
+        .read(settingsProvider.notifier)
+        .update((x) => x.copyWith(flashHidden: const {}));
+    await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('ปิด'));
     await tester.pumpAndSettle();
     container

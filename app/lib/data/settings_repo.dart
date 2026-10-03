@@ -6,6 +6,22 @@ import 'user_db.dart';
 
 enum FuriganaMode { always, hideMastered, never }
 
+/// Parts of the flashcard screen the learner can hide.
+enum FlashPart {
+  progressBar,
+  cardsLeft,
+  levelTag,
+  frontHint,
+  furigana,
+  partOfSpeech,
+  moreMeanings,
+  example,
+  exampleTranslation,
+  ratingHelp,
+  intervals,
+  progressLink,
+}
+
 /// All user settings with defaults and valid ranges (docs/03-database.md).
 class AppSettings {
   final String theme;
@@ -31,6 +47,12 @@ class AppSettings {
   /// instead of quizzes.
   final bool flashcards;
 
+  /// Flashcard parts switched off.
+  final Set<FlashPart> flashHidden;
+
+  /// Flashcard sessions hide the phone's status and navigation bars.
+  final bool flashFullscreen;
+
   /// Font pair ([FontPreset] name).
   final String font;
 
@@ -53,7 +75,11 @@ class AppSettings {
     this.quickAnswerButtons = false,
     this.flashcards = true,
     this.font = 'standard',
+    this.flashHidden = const {},
+    this.flashFullscreen = false,
   });
+
+  bool shows(FlashPart p) => !flashHidden.contains(p);
 
   /// Animations on (the setting is stored as its opposite, reduce_motion).
   bool get animations => !reduceMotion;
@@ -80,6 +106,8 @@ class AppSettings {
     bool? quickAnswerButtons,
     bool? flashcards,
     String? font,
+    Set<FlashPart>? flashHidden,
+    bool? flashFullscreen,
   }) => AppSettings(
     theme: theme ?? this.theme,
     vocabRetention: vocabRetention ?? this.vocabRetention,
@@ -99,6 +127,13 @@ class AppSettings {
     quickAnswerButtons: quickAnswerButtons ?? this.quickAnswerButtons,
     flashcards: flashcards ?? this.flashcards,
     font: font ?? this.font,
+    flashHidden: flashHidden ?? this.flashHidden,
+    flashFullscreen: flashFullscreen ?? this.flashFullscreen,
+  );
+
+  /// [flashHidden] with [p] shown ([show]) or hidden.
+  AppSettings withPart(FlashPart p, bool show) => copyWith(
+    flashHidden: show ? ({...flashHidden}..remove(p)) : {...flashHidden, p},
   );
 
   Map<String, String> toMap() => {
@@ -120,6 +155,8 @@ class AppSettings {
     'input.quick_answer': '$quickAnswerButtons',
     'vocab.flashcards': '$flashcards',
     'look.font': font,
+    'flash.hidden': flashHidden.map((p) => p.name).join(','),
+    'flash.fullscreen': '$flashFullscreen',
   };
 
   /// Unknown or out-of-range values fall back to defaults, so a setting
@@ -185,6 +222,11 @@ class AppSettings {
       quickAnswerButtons: b('input.quick_answer', d.quickAnswerButtons),
       flashcards: b('vocab.flashcards', d.flashcards),
       font: FontPreset.byName(m['look.font']).name,
+      flashHidden: {
+        for (final n in (m['flash.hidden'] ?? '').split(','))
+          ...FlashPart.values.where((p) => p.name == n),
+      },
+      flashFullscreen: b('flash.fullscreen', d.flashFullscreen),
     );
   }
 }

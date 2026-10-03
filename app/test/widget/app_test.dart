@@ -242,6 +242,74 @@ void main() {
     AppFonts.current = FontPreset.standard;
   });
 
+  testWidgets('undo a mis-tap: the card comes back to rate again', (
+    tester,
+  ) async {
+    final c = await start(
+      tester,
+      settings: const AppSettings(includeKana: false, vocabNewPerDay: 3),
+    );
+    String current() => c.read(sessionProvider(vocabDeck)).question!.cardId;
+    await tester.tap(find.text('เริ่มเรียน').first);
+    await tester.pumpAndSettle();
+    final first = current();
+    expect(find.byTooltip('เลิกทำการ์ดล่าสุด (กดผิด)'), findsNothing);
+    await tester.tap(find.text('แสดงคำตอบ'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('อีกครั้ง'));
+    await tester.pumpAndSettle();
+    expect(current(), isNot(first));
+    await tester.tap(find.byTooltip('เลิกทำการ์ดล่าสุด (กดผิด)'));
+    await tester.pumpAndSettle();
+    // Back on the same card, already turned over.
+    expect(current(), first);
+    expect(find.text('ดี'), findsOneWidget);
+    expect(c.read(sessionProvider(vocabDeck)).answered, 0);
+    await tester.tap(find.text('ดี'));
+    await tester.pumpAndSettle();
+    final log = StudyRepo(c.read(userDbProvider)).reviewRecords();
+    expect(log.single.rating, Rating.good);
+    // Keyboard Z undoes too.
+    await tester.sendKeyEvent(LogicalKeyboardKey.keyZ);
+    await tester.pumpAndSettle();
+    expect(StudyRepo(c.read(userDbProvider)).reviewRecords(), isEmpty);
+  });
+
+  testWidgets('flashcard look: hide parts from the in-session sheet', (
+    tester,
+  ) async {
+    final c = await start(
+      tester,
+      settings: const AppSettings(includeKana: false),
+    );
+    await tester.tap(find.text('เริ่มเรียน').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('แสดงคำตอบ'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('นาที'), findsWidgets);
+    await tester.tap(find.byTooltip('หน้าการ์ด'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('โหมดเต็มหน้าจอ'));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('เวลาบนปุ่มให้คะแนน'),
+      200,
+      scrollable: find
+          .descendant(
+            of: find.byType(BottomSheet),
+            matching: find.byType(Scrollable),
+          )
+          .first,
+    );
+    await tester.tap(find.text('เวลาบนปุ่มให้คะแนน'));
+    await tester.pumpAndSettle();
+    expect(c.read(settingsProvider).shows(FlashPart.intervals), isFalse);
+    expect(c.read(settingsProvider).flashFullscreen, isTrue);
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('นาที'), findsNothing);
+  });
+
   testWidgets('a full study session records reviews', (tester) async {
     final c = await start(
       tester,

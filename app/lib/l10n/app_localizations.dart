@@ -2349,6 +2349,132 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'Kanit + M PLUS 1p เส้นตรงคมชัด แบบป้ายและแอปญี่ปุ่น'**
   String get fontModernAbout;
+
+  /// No description provided for @undoLast.
+  ///
+  /// In th, this message translates to:
+  /// **'เลิกทำการ์ดล่าสุด (กดผิด)'**
+  String get undoLast;
+
+  /// No description provided for @undoDone.
+  ///
+  /// In th, this message translates to:
+  /// **'ย้อนการ์ดแล้ว ให้คะแนนใหม่ได้เลย'**
+  String get undoDone;
+
+  /// No description provided for @flashLook.
+  ///
+  /// In th, this message translates to:
+  /// **'หน้าการ์ด'**
+  String get flashLook;
+
+  /// No description provided for @flashLookHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'เลือกส่วนที่จะแสดงบนหน้าการ์ด และโหมดเต็มหน้าจอ'**
+  String get flashLookHelp;
+
+  /// No description provided for @flashShow.
+  ///
+  /// In th, this message translates to:
+  /// **'แสดงบนหน้าการ์ด'**
+  String get flashShow;
+
+  /// No description provided for @flashShowAll.
+  ///
+  /// In th, this message translates to:
+  /// **'แสดงทั้งหมด'**
+  String get flashShowAll;
+
+  /// No description provided for @flashFullscreen.
+  ///
+  /// In th, this message translates to:
+  /// **'โหมดเต็มหน้าจอ'**
+  String get flashFullscreen;
+
+  /// No description provided for @flashFullscreenHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'ซ่อนแถบสถานะและปุ่มนำทางของเครื่องตอนเล่นการ์ด (ปัดขอบจอเพื่อเรียกกลับชั่วคราว)'**
+  String get flashFullscreenHelp;
+
+  /// No description provided for @partProgressBar.
+  ///
+  /// In th, this message translates to:
+  /// **'แถบความคืบหน้า'**
+  String get partProgressBar;
+
+  /// No description provided for @partCardsLeft.
+  ///
+  /// In th, this message translates to:
+  /// **'จำนวนการ์ดที่เหลือ'**
+  String get partCardsLeft;
+
+  /// No description provided for @partLevelTag.
+  ///
+  /// In th, this message translates to:
+  /// **'ป้ายระดับ / คำใหม่ (ด้านหน้า)'**
+  String get partLevelTag;
+
+  /// No description provided for @partFrontHint.
+  ///
+  /// In th, this message translates to:
+  /// **'คำแนะนำใต้คำ (ด้านหน้า)'**
+  String get partFrontHint;
+
+  /// No description provided for @partFurigana.
+  ///
+  /// In th, this message translates to:
+  /// **'ฟุริงานะบนคำ (ด้านหลัง)'**
+  String get partFurigana;
+
+  /// No description provided for @partPartOfSpeech.
+  ///
+  /// In th, this message translates to:
+  /// **'ระดับและชนิดคำ'**
+  String get partPartOfSpeech;
+
+  /// No description provided for @partMoreMeanings.
+  ///
+  /// In th, this message translates to:
+  /// **'ความหมายอื่นๆ (นอกจากความหมายแรก)'**
+  String get partMoreMeanings;
+
+  /// No description provided for @partExample.
+  ///
+  /// In th, this message translates to:
+  /// **'ประโยคตัวอย่าง'**
+  String get partExample;
+
+  /// No description provided for @partExampleTranslation.
+  ///
+  /// In th, this message translates to:
+  /// **'คำแปลประโยคตัวอย่าง'**
+  String get partExampleTranslation;
+
+  /// No description provided for @partRatingHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'ข้อความ \"จำได้แค่ไหน?\"'**
+  String get partRatingHelp;
+
+  /// No description provided for @partIntervals.
+  ///
+  /// In th, this message translates to:
+  /// **'เวลาบนปุ่มให้คะแนน'**
+  String get partIntervals;
+
+  /// No description provided for @partProgressLink.
+  ///
+  /// In th, this message translates to:
+  /// **'ปุ่มดูความคืบหน้าของคำ'**
+  String get partProgressLink;
+
+  /// No description provided for @controllerMapUndoDo.
+  ///
+  /// In th, this message translates to:
+  /// **'เลิกทำการ์ดล่าสุด (คีย์บอร์ด Z หรือ Backspace)'**
+  String get controllerMapUndoDo;
 }
 
 class _AppLocalizationsDelegate
