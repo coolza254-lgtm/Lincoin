@@ -2475,6 +2475,318 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'เลิกทำการ์ดล่าสุด (คีย์บอร์ด Z หรือ Backspace)'**
   String get controllerMapUndoDo;
+
+  /// No description provided for @tabSongs.
+  ///
+  /// In th, this message translates to:
+  /// **'เพลง'**
+  String get tabSongs;
+
+  /// No description provided for @songsTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'สมุดเพลง'**
+  String get songsTitle;
+
+  /// No description provided for @songsEmptyTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'ยังไม่มีเพลงในสมุด'**
+  String get songsEmptyTitle;
+
+  /// No description provided for @songsEmptyBody.
+  ///
+  /// In th, this message translates to:
+  /// **'วางเนื้อเพลงญี่ปุ่นที่ชอบ แตะคำไหนก็ได้เพื่อดูความหมาย แล้วฝึกแปลทีละบรรทัด คำที่ยังไม่รู้เพิ่มเข้าการ์ดได้ในแตะเดียว'**
+  String get songsEmptyBody;
+
+  /// No description provided for @songAdd.
+  ///
+  /// In th, this message translates to:
+  /// **'เพิ่มเพลง'**
+  String get songAdd;
+
+  /// No description provided for @songEdit.
+  ///
+  /// In th, this message translates to:
+  /// **'แก้ไขเพลง'**
+  String get songEdit;
+
+  /// No description provided for @songTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'ชื่อเพลง'**
+  String get songTitle;
+
+  /// No description provided for @songArtist.
+  ///
+  /// In th, this message translates to:
+  /// **'ศิลปิน (ไม่ใส่ก็ได้)'**
+  String get songArtist;
+
+  /// No description provided for @songLyrics.
+  ///
+  /// In th, this message translates to:
+  /// **'เนื้อเพลงภาษาญี่ปุ่น'**
+  String get songLyrics;
+
+  /// No description provided for @songLyricsHint.
+  ///
+  /// In th, this message translates to:
+  /// **'วางเนื้อเพลงที่นี่ บรรทัดละท่อน'**
+  String get songLyricsHint;
+
+  /// No description provided for @songPrivate.
+  ///
+  /// In th, this message translates to:
+  /// **'เนื้อเพลงเก็บในเครื่องนี้เท่านั้น (และในไฟล์สำรองของคุณ)'**
+  String get songPrivate;
+
+  /// No description provided for @songSave.
+  ///
+  /// In th, this message translates to:
+  /// **'บันทึก'**
+  String get songSave;
+
+  /// No description provided for @songDelete.
+  ///
+  /// In th, this message translates to:
+  /// **'ลบเพลง'**
+  String get songDelete;
+
+  /// No description provided for @songDeleteConfirm.
+  ///
+  /// In th, this message translates to:
+  /// **'ลบเพลงนี้และคำแปลทั้งหมดของมัน?'**
+  String get songDeleteConfirm;
+
+  /// No description provided for @songStats.
+  ///
+  /// In th, this message translates to:
+  /// **'แปลแล้ว {done}/{lines} บรรทัด · รู้จัก {known}% ของคำ'**
+  String songStats(int done, int lines, int known);
+
+  /// No description provided for @songNewWords.
+  ///
+  /// In th, this message translates to:
+  /// **'เรียนคำใหม่จากเพลงนี้ ({n} คำ)'**
+  String songNewWords(int n);
+
+  /// No description provided for @songNewWordsAdded.
+  ///
+  /// In th, this message translates to:
+  /// **'เพิ่ม {n} คำเข้าการ์ดแล้ว จะขึ้นเป็นคำใหม่ลำดับแรกๆ'**
+  String songNewWordsAdded(int n);
+
+  /// No description provided for @songNoNewWords.
+  ///
+  /// In th, this message translates to:
+  /// **'คำในคลังจากเพลงนี้อยู่ในการ์ดครบแล้ว'**
+  String get songNoNewWords;
+
+  /// No description provided for @songFurigana.
+  ///
+  /// In th, this message translates to:
+  /// **'ฟุริงานะ'**
+  String get songFurigana;
+
+  /// No description provided for @songHideMine.
+  ///
+  /// In th, this message translates to:
+  /// **'ซ่อนคำแปลของฉัน (ฝึกแปลจากความจำ)'**
+  String get songHideMine;
+
+  /// No description provided for @songShowMine.
+  ///
+  /// In th, this message translates to:
+  /// **'แสดงคำแปลของฉัน'**
+  String get songShowMine;
+
+  /// No description provided for @songTranslateHint.
+  ///
+  /// In th, this message translates to:
+  /// **'แปลบรรทัดนี้…'**
+  String get songTranslateHint;
+
+  /// No description provided for @songTapToReveal.
+  ///
+  /// In th, this message translates to:
+  /// **'แตะเพื่อดูคำแปลของฉัน'**
+  String get songTapToReveal;
+
+  /// No description provided for @songNoTranslation.
+  ///
+  /// In th, this message translates to:
+  /// **'ยังไม่ได้แปลบรรทัดนี้'**
+  String get songNoTranslation;
+
+  /// No description provided for @songReadLine.
+  ///
+  /// In th, this message translates to:
+  /// **'อ่านบรรทัดนี้'**
+  String get songReadLine;
+
+  /// No description provided for @songLegendNew.
+  ///
+  /// In th, this message translates to:
+  /// **'ยังไม่เรียน'**
+  String get songLegendNew;
+
+  /// No description provided for @songLegendLearning.
+  ///
+  /// In th, this message translates to:
+  /// **'กำลังเรียน'**
+  String get songLegendLearning;
+
+  /// No description provided for @songLegendKnown.
+  ///
+  /// In th, this message translates to:
+  /// **'จำได้แล้ว (ไม่มีเส้น)'**
+  String get songLegendKnown;
+
+  /// No description provided for @songLegendOutside.
+  ///
+  /// In th, this message translates to:
+  /// **'นอกคลัง'**
+  String get songLegendOutside;
+
+  /// No description provided for @wordDictForm.
+  ///
+  /// In th, this message translates to:
+  /// **'รูปพจนานุกรม: {base}'**
+  String wordDictForm(String base);
+
+  /// No description provided for @wordAddToCards.
+  ///
+  /// In th, this message translates to:
+  /// **'เพิ่มเข้าการ์ด'**
+  String get wordAddToCards;
+
+  /// No description provided for @wordQueued.
+  ///
+  /// In th, this message translates to:
+  /// **'อยู่ในคิวการ์ดแล้ว'**
+  String get wordQueued;
+
+  /// No description provided for @wordAddedToCards.
+  ///
+  /// In th, this message translates to:
+  /// **'เพิ่มเข้าการ์ดแล้ว จะขึ้นเป็นคำใหม่ลำดับแรกๆ'**
+  String get wordAddedToCards;
+
+  /// No description provided for @wordGrammar.
+  ///
+  /// In th, this message translates to:
+  /// **'คำช่วย / ไวยากรณ์'**
+  String get wordGrammar;
+
+  /// No description provided for @wordOutside.
+  ///
+  /// In th, this message translates to:
+  /// **'ไม่พบในคลังคำ (ตอนนี้มี N5–N3)'**
+  String get wordOutside;
+
+  /// No description provided for @wordMyMeaning.
+  ///
+  /// In th, this message translates to:
+  /// **'ความหมายที่ฉันจดไว้'**
+  String get wordMyMeaning;
+
+  /// No description provided for @wordMyReading.
+  ///
+  /// In th, this message translates to:
+  /// **'คำอ่าน (ถ้ารู้)'**
+  String get wordMyReading;
+
+  /// No description provided for @wordMyMeaningHint.
+  ///
+  /// In th, this message translates to:
+  /// **'เช่น ท้องฟ้ายามค่ำคืน'**
+  String get wordMyMeaningHint;
+
+  /// No description provided for @wordMySave.
+  ///
+  /// In th, this message translates to:
+  /// **'จดความหมาย'**
+  String get wordMySave;
+
+  /// No description provided for @infPolite.
+  ///
+  /// In th, this message translates to:
+  /// **'สุภาพ (〜ます)'**
+  String get infPolite;
+
+  /// No description provided for @infPast.
+  ///
+  /// In th, this message translates to:
+  /// **'อดีต'**
+  String get infPast;
+
+  /// No description provided for @infTe.
+  ///
+  /// In th, this message translates to:
+  /// **'รูป 〜て'**
+  String get infTe;
+
+  /// No description provided for @infNegative.
+  ///
+  /// In th, this message translates to:
+  /// **'ปฏิเสธ'**
+  String get infNegative;
+
+  /// No description provided for @infWant.
+  ///
+  /// In th, this message translates to:
+  /// **'อยาก (〜たい)'**
+  String get infWant;
+
+  /// No description provided for @infPassive.
+  ///
+  /// In th, this message translates to:
+  /// **'ถูกกระทำ'**
+  String get infPassive;
+
+  /// No description provided for @infCausative.
+  ///
+  /// In th, this message translates to:
+  /// **'ให้ทำ'**
+  String get infCausative;
+
+  /// No description provided for @infPotential.
+  ///
+  /// In th, this message translates to:
+  /// **'ทำได้'**
+  String get infPotential;
+
+  /// No description provided for @infVolitional.
+  ///
+  /// In th, this message translates to:
+  /// **'ชวน / ตั้งใจ (〜よう)'**
+  String get infVolitional;
+
+  /// No description provided for @infConditional.
+  ///
+  /// In th, this message translates to:
+  /// **'ถ้า (〜ば)'**
+  String get infConditional;
+
+  /// No description provided for @infImperative.
+  ///
+  /// In th, this message translates to:
+  /// **'คำสั่ง'**
+  String get infImperative;
+
+  /// No description provided for @infAdverb.
+  ///
+  /// In th, this message translates to:
+  /// **'รูป 〜く'**
+  String get infAdverb;
+
+  /// No description provided for @infContinuing.
+  ///
+  /// In th, this message translates to:
+  /// **'ขณะที่ (〜ながら)'**
+  String get infContinuing;
 }
 
 class _AppLocalizationsDelegate

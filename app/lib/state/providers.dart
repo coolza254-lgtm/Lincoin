@@ -5,11 +5,13 @@ import '../data/catalog.dart';
 import '../data/content_db.dart';
 import '../data/settings_repo.dart';
 import '../data/shop_repo.dart';
+import '../data/song_repo.dart';
 import '../data/study_repo.dart';
 import '../data/user_db.dart';
 import '../services/backup_service.dart';
 import '../services/challenge_service.dart';
 import '../services/library_service.dart';
+import '../services/lyrics.dart';
 import '../services/practice_service.dart';
 import '../services/content_store.dart';
 import '../services/files.dart';
@@ -198,6 +200,14 @@ final levelProgressProvider = Provider<Map<String, ({int learned, int total})>>(
     };
   },
 );
+
+final songRepoProvider = Provider((ref) => SongRepo(ref.watch(userDbProvider)));
+
+/// Splits lyrics into words; built once per content version.
+final lyricsTokenizerProvider = Provider<LyricsTokenizer?>((ref) {
+  final c = ref.watch(catalogProvider);
+  return c == null ? null : LyricsTokenizer(c);
+});
 
 /// The word library (search and per-word progress).
 final libraryProvider = Provider<LibraryService?>((ref) {

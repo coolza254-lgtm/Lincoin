@@ -1373,4 +1373,170 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get controllerMapUndoDo =>
       'เลิกทำการ์ดล่าสุด (คีย์บอร์ด Z หรือ Backspace)';
+
+  @override
+  String get tabSongs => 'เพลง';
+
+  @override
+  String get songsTitle => 'สมุดเพลง';
+
+  @override
+  String get songsEmptyTitle => 'ยังไม่มีเพลงในสมุด';
+
+  @override
+  String get songsEmptyBody =>
+      'วางเนื้อเพลงญี่ปุ่นที่ชอบ แตะคำไหนก็ได้เพื่อดูความหมาย แล้วฝึกแปลทีละบรรทัด คำที่ยังไม่รู้เพิ่มเข้าการ์ดได้ในแตะเดียว';
+
+  @override
+  String get songAdd => 'เพิ่มเพลง';
+
+  @override
+  String get songEdit => 'แก้ไขเพลง';
+
+  @override
+  String get songTitle => 'ชื่อเพลง';
+
+  @override
+  String get songArtist => 'ศิลปิน (ไม่ใส่ก็ได้)';
+
+  @override
+  String get songLyrics => 'เนื้อเพลงภาษาญี่ปุ่น';
+
+  @override
+  String get songLyricsHint => 'วางเนื้อเพลงที่นี่ บรรทัดละท่อน';
+
+  @override
+  String get songPrivate =>
+      'เนื้อเพลงเก็บในเครื่องนี้เท่านั้น (และในไฟล์สำรองของคุณ)';
+
+  @override
+  String get songSave => 'บันทึก';
+
+  @override
+  String get songDelete => 'ลบเพลง';
+
+  @override
+  String get songDeleteConfirm => 'ลบเพลงนี้และคำแปลทั้งหมดของมัน?';
+
+  @override
+  String songStats(int done, int lines, int known) {
+    return 'แปลแล้ว $done/$lines บรรทัด · รู้จัก $known% ของคำ';
+  }
+
+  @override
+  String songNewWords(int n) {
+    return 'เรียนคำใหม่จากเพลงนี้ ($n คำ)';
+  }
+
+  @override
+  String songNewWordsAdded(int n) {
+    return 'เพิ่ม $n คำเข้าการ์ดแล้ว จะขึ้นเป็นคำใหม่ลำดับแรกๆ';
+  }
+
+  @override
+  String get songNoNewWords => 'คำในคลังจากเพลงนี้อยู่ในการ์ดครบแล้ว';
+
+  @override
+  String get songFurigana => 'ฟุริงานะ';
+
+  @override
+  String get songHideMine => 'ซ่อนคำแปลของฉัน (ฝึกแปลจากความจำ)';
+
+  @override
+  String get songShowMine => 'แสดงคำแปลของฉัน';
+
+  @override
+  String get songTranslateHint => 'แปลบรรทัดนี้…';
+
+  @override
+  String get songTapToReveal => 'แตะเพื่อดูคำแปลของฉัน';
+
+  @override
+  String get songNoTranslation => 'ยังไม่ได้แปลบรรทัดนี้';
+
+  @override
+  String get songReadLine => 'อ่านบรรทัดนี้';
+
+  @override
+  String get songLegendNew => 'ยังไม่เรียน';
+
+  @override
+  String get songLegendLearning => 'กำลังเรียน';
+
+  @override
+  String get songLegendKnown => 'จำได้แล้ว (ไม่มีเส้น)';
+
+  @override
+  String get songLegendOutside => 'นอกคลัง';
+
+  @override
+  String wordDictForm(String base) {
+    return 'รูปพจนานุกรม: $base';
+  }
+
+  @override
+  String get wordAddToCards => 'เพิ่มเข้าการ์ด';
+
+  @override
+  String get wordQueued => 'อยู่ในคิวการ์ดแล้ว';
+
+  @override
+  String get wordAddedToCards => 'เพิ่มเข้าการ์ดแล้ว จะขึ้นเป็นคำใหม่ลำดับแรกๆ';
+
+  @override
+  String get wordGrammar => 'คำช่วย / ไวยากรณ์';
+
+  @override
+  String get wordOutside => 'ไม่พบในคลังคำ (ตอนนี้มี N5–N3)';
+
+  @override
+  String get wordMyMeaning => 'ความหมายที่ฉันจดไว้';
+
+  @override
+  String get wordMyReading => 'คำอ่าน (ถ้ารู้)';
+
+  @override
+  String get wordMyMeaningHint => 'เช่น ท้องฟ้ายามค่ำคืน';
+
+  @override
+  String get wordMySave => 'จดความหมาย';
+
+  @override
+  String get infPolite => 'สุภาพ (〜ます)';
+
+  @override
+  String get infPast => 'อดีต';
+
+  @override
+  String get infTe => 'รูป 〜て';
+
+  @override
+  String get infNegative => 'ปฏิเสธ';
+
+  @override
+  String get infWant => 'อยาก (〜たい)';
+
+  @override
+  String get infPassive => 'ถูกกระทำ';
+
+  @override
+  String get infCausative => 'ให้ทำ';
+
+  @override
+  String get infPotential => 'ทำได้';
+
+  @override
+  String get infVolitional => 'ชวน / ตั้งใจ (〜よう)';
+
+  @override
+  String get infConditional => 'ถ้า (〜ば)';
+
+  @override
+  String get infImperative => 'คำสั่ง';
+
+  @override
+  String get infAdverb => 'รูป 〜く';
+
+  @override
+  String get infContinuing => 'ขณะที่ (〜ながら)';
 }

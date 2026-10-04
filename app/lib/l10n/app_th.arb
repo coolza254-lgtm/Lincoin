@@ -875,5 +875,91 @@
   "partRatingHelp": "ข้อความ \"จำได้แค่ไหน?\"",
   "partIntervals": "เวลาบนปุ่มให้คะแนน",
   "partProgressLink": "ปุ่มดูความคืบหน้าของคำ",
-  "controllerMapUndoDo": "เลิกทำการ์ดล่าสุด (คีย์บอร์ด Z หรือ Backspace)"
+  "controllerMapUndoDo": "เลิกทำการ์ดล่าสุด (คีย์บอร์ด Z หรือ Backspace)",
+  "tabSongs": "เพลง",
+  "songsTitle": "สมุดเพลง",
+  "songsEmptyTitle": "ยังไม่มีเพลงในสมุด",
+  "songsEmptyBody": "วางเนื้อเพลงญี่ปุ่นที่ชอบ แตะคำไหนก็ได้เพื่อดูความหมาย แล้วฝึกแปลทีละบรรทัด คำที่ยังไม่รู้เพิ่มเข้าการ์ดได้ในแตะเดียว",
+  "songAdd": "เพิ่มเพลง",
+  "songEdit": "แก้ไขเพลง",
+  "songTitle": "ชื่อเพลง",
+  "songArtist": "ศิลปิน (ไม่ใส่ก็ได้)",
+  "songLyrics": "เนื้อเพลงภาษาญี่ปุ่น",
+  "songLyricsHint": "วางเนื้อเพลงที่นี่ บรรทัดละท่อน",
+  "songPrivate": "เนื้อเพลงเก็บในเครื่องนี้เท่านั้น (และในไฟล์สำรองของคุณ)",
+  "songSave": "บันทึก",
+  "songDelete": "ลบเพลง",
+  "songDeleteConfirm": "ลบเพลงนี้และคำแปลทั้งหมดของมัน?",
+  "songStats": "แปลแล้ว {done}/{lines} บรรทัด · รู้จัก {known}% ของคำ",
+  "@songStats": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "lines": {
+        "type": "int"
+      },
+      "known": {
+        "type": "int"
+      }
+    }
+  },
+  "songNewWords": "เรียนคำใหม่จากเพลงนี้ ({n} คำ)",
+  "@songNewWords": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "songNewWordsAdded": "เพิ่ม {n} คำเข้าการ์ดแล้ว จะขึ้นเป็นคำใหม่ลำดับแรกๆ",
+  "@songNewWordsAdded": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "songNoNewWords": "คำในคลังจากเพลงนี้อยู่ในการ์ดครบแล้ว",
+  "songFurigana": "ฟุริงานะ",
+  "songHideMine": "ซ่อนคำแปลของฉัน (ฝึกแปลจากความจำ)",
+  "songShowMine": "แสดงคำแปลของฉัน",
+  "songTranslateHint": "แปลบรรทัดนี้…",
+  "songTapToReveal": "แตะเพื่อดูคำแปลของฉัน",
+  "songNoTranslation": "ยังไม่ได้แปลบรรทัดนี้",
+  "songReadLine": "อ่านบรรทัดนี้",
+  "songLegendNew": "ยังไม่เรียน",
+  "songLegendLearning": "กำลังเรียน",
+  "songLegendKnown": "จำได้แล้ว (ไม่มีเส้น)",
+  "songLegendOutside": "นอกคลัง",
+  "wordDictForm": "รูปพจนานุกรม: {base}",
+  "@wordDictForm": {
+    "placeholders": {
+      "base": {
+        "type": "String"
+      }
+    }
+  },
+  "wordAddToCards": "เพิ่มเข้าการ์ด",
+  "wordQueued": "อยู่ในคิวการ์ดแล้ว",
+  "wordAddedToCards": "เพิ่มเข้าการ์ดแล้ว จะขึ้นเป็นคำใหม่ลำดับแรกๆ",
+  "wordGrammar": "คำช่วย / ไวยากรณ์",
+  "wordOutside": "ไม่พบในคลังคำ (ตอนนี้มี N5–N3)",
+  "wordMyMeaning": "ความหมายที่ฉันจดไว้",
+  "wordMyReading": "คำอ่าน (ถ้ารู้)",
+  "wordMyMeaningHint": "เช่น ท้องฟ้ายามค่ำคืน",
+  "wordMySave": "จดความหมาย",
+  "infPolite": "สุภาพ (〜ます)",
+  "infPast": "อดีต",
+  "infTe": "รูป 〜て",
+  "infNegative": "ปฏิเสธ",
+  "infWant": "อยาก (〜たい)",
+  "infPassive": "ถูกกระทำ",
+  "infCausative": "ให้ทำ",
+  "infPotential": "ทำได้",
+  "infVolitional": "ชวน / ตั้งใจ (〜よう)",
+  "infConditional": "ถ้า (〜ば)",
+  "infImperative": "คำสั่ง",
+  "infAdverb": "รูป 〜く",
+  "infContinuing": "ขณะที่ (〜ながら)"
 }

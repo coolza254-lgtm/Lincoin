@@ -3,6 +3,7 @@ import 'package:lincoin_core/lincoin_core.dart';
 import '../data/catalog.dart';
 import '../data/content_db.dart';
 import '../data/settings_repo.dart';
+import '../data/song_repo.dart';
 import '../data/study_repo.dart';
 import '../data/user_db.dart';
 
@@ -207,7 +208,17 @@ class StudyService {
     // buried (nothing of theirs was seen), so the first newPerDay of them
     // are all the queue can use; the rest of the path is skipped.
     var freshLeft = _newPerDay;
-    for (final item in catalog.itemsOf(deck)) {
+    // Words the learner asked for (e.g. from a song) come first.
+    final priority = {
+      for (final (i, id) in SongRepo(db).priorityItems().indexed) id: i,
+    };
+    final items = catalog.itemsOf(deck);
+    final ordered = [
+      ...items.where((i) => priority.containsKey(i.id)).toList()
+        ..sort((a, b) => priority[a.id]!.compareTo(priority[b.id]!)),
+      ...items.where((i) => !priority.containsKey(i.id)),
+    ];
+    for (final item in ordered) {
       if (level != null && item.level != level) continue;
       final ids = item.cardIds;
       // Choosing the kana level studies kana even with the setting off.
@@ -228,7 +239,8 @@ class StudyService {
         if (flashcards && facet == Facet.recall) continue;
         final id = ids[f];
         final s = stored[id];
-        final order = item.pathOrder * 4 + f;
+        final p = priority[item.id];
+        final order = p != null ? -1000000 + p * 4 + f : item.pathOrder * 4 + f;
         if (s != null) {
           out.add(_fromStored(s, item, order));
         } else if (facet == Facet.recall &&

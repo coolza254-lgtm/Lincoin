@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:lincoin/data/catalog.dart';
 import 'package:lincoin/data/content_db.dart';
 import 'package:lincoin/data/settings_repo.dart';
+import 'package:lincoin/data/song_repo.dart';
 import 'package:lincoin/data/study_repo.dart';
 import 'package:lincoin/data/user_db.dart';
 import 'package:lincoin/services/library_service.dart';
@@ -364,5 +365,46 @@ void main() {
     s.undo(id, r2, mid);
     expect(s.stored(id)!.state, stateMid);
     expect(s.repo.reviewRecords(cardId: id), hasLength(1));
+  });
+
+  test('words asked for (e.g. from a song) are the next new cards', () {
+    final s = service(const AppSettings(includeKana: false, vocabNewPerDay: 2));
+    expect(s.plan().queue.newCards.first.cardId, 'w:1#recog');
+    SongRepo(db).addPriority(['w:7', 'w:4'], 'song:x', now);
+    expect(s.plan().queue.newCards.map((c) => c.cardId), [
+      'w:7#recog',
+      'w:4#recog',
+    ]);
+    // Per-level sessions keep the request too.
+    final n5 = StudyService(
+      db: db,
+      catalog: catalog,
+      settings: const AppSettings(includeKana: false, vocabNewPerDay: 1),
+      clock: Clock(() => now, () => tz),
+      level: 'n5',
+    );
+    expect(n5.plan().queue.newCards.single.cardId, 'w:7#recog');
+  });
+
+  test('song notebook: songs, line translations, my words', () {
+    final r = SongRepo(db);
+    // Text written for the test (not a real song).
+    final id = r.save(
+      title: 'テストの歌',
+      lyrics: '私はコーヒーを飲みました\n\n私はコーヒーを飲みました\n夜空',
+      now: now,
+    );
+    final song = r.song(id)!;
+    expect(song.lines, hasLength(3));
+    r.setTranslation(id, song.lines.first, 'ฉันดื่มกาแฟแล้ว', now);
+    // The repeated line shares the translation.
+    expect(r.translations(id).length, 1);
+    expect(r.translations(id)[song.lines[1]], 'ฉันดื่มกาแฟแล้ว');
+    r.setMyWord('夜空', 'よぞら', 'ท้องฟ้ายามค่ำคืน', now);
+    expect(r.myWords()['夜空']!.reading, 'よぞら');
+    r.setTranslation(id, song.lines.first, ' ', now);
+    expect(r.translations(id), isEmpty);
+    r.delete(id);
+    expect(r.songs(), isEmpty);
   });
 }

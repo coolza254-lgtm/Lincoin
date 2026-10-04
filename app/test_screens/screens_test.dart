@@ -16,6 +16,7 @@ import 'package:lincoin/app.dart';
 import 'package:lincoin/data/catalog.dart';
 import 'package:lincoin/data/content_db.dart';
 import 'package:lincoin/data/settings_repo.dart';
+import 'package:lincoin/data/song_repo.dart';
 import 'package:lincoin/data/user_db.dart';
 import 'package:lincoin/features/library/library_screen.dart';
 import 'package:lincoin/services/content_store.dart';
@@ -120,6 +121,19 @@ void main() {
       svc.finishSession(answeredAny: true);
       t = DateTime.utc(t.year, t.month, t.day + 1, 5);
     }
+    // A sample song written for the screenshots (not real lyrics).
+    final songs = SongRepo(db);
+    final songId = songs.save(
+      title: '朝の電車',
+      artist: 'ตัวอย่าง',
+      lyrics:
+          '朝の電車で 音楽を聞く\n'
+          '窓の外は 雨が降っている\n'
+          '今日も 一人で 歩いて行こう\n'
+          '明日は きっと 晴れるから',
+      now: now,
+    );
+    songs.setTranslation(songId, '朝の電車で 音楽を聞く', 'ฟังเพลงบนรถไฟตอนเช้า', now);
     content.close();
     db.close();
   }
@@ -182,6 +196,17 @@ void main() {
     await tester.enterText(find.byType(TextField), 'taberu');
     await snap('1e-library-search');
     await tester.tap(find.text('หน้าหลัก').last);
+    await tester.pumpAndSettle();
+    // Song notebook: list, a song, a tapped word.
+    await tester.tap(find.text('เพลง').last);
+    await snap('3a-songs');
+    await tester.tap(find.text('朝の電車'));
+    await snap('3b-song');
+    await tester.tap(find.text('降').first);
+    await snap('3c-song-word');
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
     for (final (tab, name) in [('สถิติ', '2-stats'), ('ฝึก', '4-practice')]) {
       await tester.tap(find.text(tab).last);
@@ -332,7 +357,9 @@ void main() {
     // A drill question driven by a controller: focus ring and A/B/X/Y.
     await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonB);
     await tester.pumpAndSettle();
-    // R1 twice: home → library → practice.
+    // R1 three times: home → library → songs → practice.
+    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonRight1);
+    await tester.pumpAndSettle();
     await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonRight1);
     await tester.pumpAndSettle();
     await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonRight1);

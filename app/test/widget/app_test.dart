@@ -310,6 +310,46 @@ void main() {
     expect(find.textContaining('นาที'), findsNothing);
   });
 
+  testWidgets('song notebook: paste, tap a word, translate, learn it', (
+    tester,
+  ) async {
+    final c = await start(
+      tester,
+      settings: const AppSettings(includeKana: false, vocabNewPerDay: 1),
+    );
+    await tester.tap(find.text('เพลง').last);
+    await tester.pumpAndSettle();
+    expect(find.text('ยังไม่มีเพลงในสมุด'), findsOneWidget);
+    await tester.tap(find.text('เพิ่มเพลง'));
+    await tester.pumpAndSettle();
+    // Lines written for the test (not a real song).
+    await tester.enterText(find.byType(TextField).at(0), 'テストの歌');
+    await tester.enterText(find.byType(TextField).at(2), '私はコーヒーを飲みました\n夜空');
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('บันทึก'));
+    await tester.pumpAndSettle();
+    expect(find.text('テストの歌'), findsWidgets);
+    // Tap the conjugated verb: dictionary form and how it was conjugated.
+    await tester.tap(find.text('飲'));
+    await tester.pumpAndSettle();
+    expect(find.text('รูปพจนานุกรม: 飲む'), findsOneWidget);
+    expect(find.text('อดีต'), findsOneWidget);
+    await tester.tap(find.text('เพิ่มเข้าการ์ด'));
+    await tester.pumpAndSettle();
+    expect(find.text('อยู่ในคิวการ์ดแล้ว'), findsOneWidget);
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+    // Translate the first line.
+    await tester.enterText(find.byType(TextField).first, 'ฉันดื่มกาแฟแล้ว');
+    await tester.pumpAndSettle();
+    final repo = c.read(songRepoProvider);
+    final id = repo.songs().single.id;
+    expect(repo.translations(id)['私はコーヒーを飲みました'], 'ฉันดื่มกาแฟแล้ว');
+    // The word asked for is the next new flashcard.
+    final plan = c.read(deckServiceProvider(vocabDeck))!.plan();
+    expect(plan.queue.newCards.single.cardId, 'w:4#recog');
+  });
+
   testWidgets('a full study session records reviews', (tester) async {
     final c = await start(
       tester,
@@ -379,7 +419,7 @@ void main() {
   testWidgets('every theme renders all tabs', (tester) async {
     for (final theme in LcTokens.themes.keys) {
       await start(tester, settings: AppSettings(theme: theme));
-      for (final tab in ['คลังคำ', 'ฝึก', 'สถิติ', 'หน้าหลัก']) {
+      for (final tab in ['คลังคำ', 'เพลง', 'ฝึก', 'สถิติ', 'หน้าหลัก']) {
         await tester.tap(find.text(tab).last);
         await tester.pumpAndSettle();
       }

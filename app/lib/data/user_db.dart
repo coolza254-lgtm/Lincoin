@@ -13,7 +13,7 @@ class UserDb {
 
   UserDb._(this.db, this.path);
 
-  static const int schemaVersion = 2;
+  static const int schemaVersion = 3;
   static const _uuid = Uuid();
 
   static String newId() => _uuid.v4();
@@ -236,6 +236,26 @@ class UserDb {
       'CREATE INDEX idx_review_type_ts ON review_log(question_type, ts_utc)',
       'CREATE INDEX idx_practice_day ON practice_log(study_day)',
       'CREATE INDEX idx_sessions_day ON sessions(study_day)',
+    ],
+    // 2 → 3: song notebook (the learner's own lyrics and translations),
+    // their own meanings for words outside the content, and words they
+    // asked to learn first.
+    [
+      '''CREATE TABLE songs (
+        id TEXT PRIMARY KEY, title TEXT NOT NULL, artist TEXT,
+        lyrics TEXT NOT NULL, created_at INTEGER NOT NULL,
+        updated_at INTEGER NOT NULL)''',
+      // Keyed by the line's text, so a repeated chorus shares one
+      // translation and editing other lines keeps it.
+      '''CREATE TABLE song_lines (
+        song_id TEXT NOT NULL REFERENCES songs(id) ON DELETE CASCADE,
+        line TEXT NOT NULL, translation TEXT NOT NULL,
+        updated_at INTEGER NOT NULL, PRIMARY KEY (song_id, line))''',
+      '''CREATE TABLE my_words (
+        surface TEXT PRIMARY KEY, reading TEXT, meaning TEXT NOT NULL,
+        updated_at INTEGER NOT NULL)''',
+      '''CREATE TABLE priority_items (
+        item_id TEXT PRIMARY KEY, added_at INTEGER NOT NULL, source TEXT)''',
     ],
   ];
 }
