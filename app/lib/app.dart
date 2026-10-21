@@ -6,8 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'features/home/home_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'features/library/library_screen.dart';
-import 'features/practice/practice_screen.dart';
-import 'features/songs/songs_screen.dart';
 import 'features/stats/stats_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'state/providers.dart';
@@ -163,7 +161,7 @@ class _AppShellState extends ConsumerState<AppShell> {
       }
       return KeyEventResult.ignored;
     }
-    _select((_tab + step) % 5);
+    _select((_tab + step) % 3);
     return KeyEventResult.handled;
   }
 
@@ -196,9 +194,7 @@ class _AppShellState extends ConsumerState<AppShell> {
               key: ValueKey(_tab),
               child: switch (_tab) {
                 1 => const LibraryScreen(),
-                2 => const SongsScreen(),
-                3 => const PracticeScreen(),
-                4 => const StatsScreen(),
+                2 => const StatsScreen(),
                 _ => const HomeScreen(),
               },
             ),
@@ -216,16 +212,6 @@ class _AppShellState extends ConsumerState<AppShell> {
                 icon: const Icon(Icons.search_rounded),
                 selectedIcon: const Icon(Icons.manage_search_rounded),
                 label: t.tabLibrary,
-              ),
-              NavigationDestination(
-                icon: const Icon(Icons.library_music_outlined),
-                selectedIcon: const Icon(Icons.library_music_rounded),
-                label: t.tabSongs,
-              ),
-              NavigationDestination(
-                icon: const Icon(Icons.bolt_outlined),
-                selectedIcon: const Icon(Icons.bolt_rounded),
-                label: t.tabPractice,
               ),
               NavigationDestination(
                 icon: const Icon(Icons.insights_outlined),

@@ -23,9 +23,6 @@ void _showControllerMap(BuildContext context, AppSettings s) {
     (confirm, t.controllerMapConfirmDo),
     (back, t.controllerMapBackDo),
     (t.controllerMapShoulder, t.controllerMapShoulderDo),
-    if (s.quickAnswerButtons)
-      (s.swapAB ? 'B A X Y' : 'A B X Y', t.controllerMapQuickDo),
-    (t.controllerMapKeys, t.controllerMapKeysDo),
     (t.controllerMapKeys, t.controllerMapFlashDo),
     ('Select', t.controllerMapUndoDo),
   ];
@@ -115,43 +112,12 @@ class SettingsScreen extends ConsumerWidget {
                     set.update((x) => x.copyWith(vocabNewPerDay: v.round())),
               ),
               const Divider(indent: 16, endIndent: 16),
-              SwitchListTile(
-                title: Text(t.flashcards),
-                subtitle: Text(t.flashcardsHelp),
-                value: s.flashcards,
-                onChanged: (v) => set.update((x) => x.copyWith(flashcards: v)),
-              ),
               ListTile(
                 leading: const Icon(Icons.tune_rounded),
                 title: Text(t.flashLook),
                 subtitle: Text(t.flashLookHelp),
                 trailing: const Icon(Icons.chevron_right_rounded),
                 onTap: () => showFlashLook(context),
-              ),
-              const Divider(indent: 16, endIndent: 16),
-              _SliderTile(
-                title: t.targetRetentionGrammar,
-                help: t.targetRetentionHelp,
-                value: s.grammarRetention,
-                min: 0.80,
-                max: 0.95,
-                divisions: 15,
-                label: '${(s.grammarRetention * 100).round()}%',
-                onChanged: (v) => set.update(
-                  (x) => x.copyWith(grammarRetention: (v * 100).round() / 100),
-                ),
-              ),
-              const Divider(indent: 16, endIndent: 16),
-              _SliderTile(
-                title: t.newPerDayGrammar,
-                help: t.newPerDayGrammarHelp,
-                value: s.grammarNewPerDay.toDouble(),
-                min: 0,
-                max: AppSettings.grammarNewPerDayMax.toDouble(),
-                divisions: AppSettings.grammarNewPerDayMax,
-                label: '${s.grammarNewPerDay}',
-                onChanged: (v) =>
-                    set.update((x) => x.copyWith(grammarNewPerDay: v.round())),
               ),
               const Divider(indent: 16, endIndent: 16),
               SwitchListTile(
@@ -301,13 +267,6 @@ class SettingsScreen extends ConsumerWidget {
                   subtitle: Text(t.swapABHelp),
                   value: s.swapAB,
                   onChanged: (v) => set.update((x) => x.copyWith(swapAB: v)),
-                ),
-                SwitchListTile(
-                  title: Text(t.quickAnswer),
-                  subtitle: Text(t.quickAnswerHelp),
-                  value: s.quickAnswerButtons,
-                  onChanged: (v) =>
-                      set.update((x) => x.copyWith(quickAnswerButtons: v)),
                 ),
                 ListTile(
                   leading: const Icon(Icons.sports_esports_rounded),

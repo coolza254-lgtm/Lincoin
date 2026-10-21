@@ -21,7 +21,7 @@ class StatsScreen extends ConsumerStatefulWidget {
 }
 
 class _StatsScreenState extends ConsumerState<StatsScreen> {
-  String _deck = vocabDeck;
+  static const _deck = vocabDeck;
 
   @override
   Widget build(BuildContext context) {
@@ -50,19 +50,6 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
         ),
         children: [
           Text(t.tabStats, style: tt.headlineMedium),
-          const SizedBox(height: LcTokens.spacingLg),
-          SegmentedButton<String>(
-            segments: [
-              ButtonSegment(value: vocabDeck, label: Text(t.deckVocabShort)),
-              ButtonSegment(
-                value: grammarDeck,
-                label: Text(t.deckGrammarShort),
-              ),
-            ],
-            selected: {_deck},
-            onSelectionChanged: (v) => setState(() => _deck = v.first),
-            showSelectedIcon: false,
-          ),
           const SizedBox(height: LcTokens.spacingLg),
           LcCard(
             large: true,
@@ -137,12 +124,7 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
                       children: [
                         Row(
                           children: [
-                            Text(
-                              _deck == grammarDeck
-                                  ? t.grammarLevel(l.level.toUpperCase())
-                                  : levelName(t, l.level),
-                              style: tt.labelLarge,
-                            ),
+                            Text(levelName(t, l.level), style: tt.labelLarge),
                             const SizedBox(width: LcTokens.spacingSm),
                             Expanded(
                               child: Text(

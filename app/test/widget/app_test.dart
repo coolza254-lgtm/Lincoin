@@ -161,12 +161,6 @@ void main() {
     final log = StudyRepo(c.read(userDbProvider)).reviewRecords();
     // N5 starts with words even though the whole path begins with kana.
     expect(log.single.cardId, 'w:1#recog');
-    // Practice no longer shows challenges.
-    await tester.tap(find.byTooltip('ปิด'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('ฝึก').last);
-    await tester.pumpAndSettle();
-    expect(find.text('ท้าทาย'), findsNothing);
   });
 
   testWidgets('quit midway, come back: carry on where you left off', (
@@ -310,116 +304,10 @@ void main() {
     expect(find.textContaining('นาที'), findsNothing);
   });
 
-  testWidgets('song notebook: paste, tap a word, translate, learn it', (
-    tester,
-  ) async {
-    final c = await start(
-      tester,
-      settings: const AppSettings(includeKana: false, vocabNewPerDay: 1),
-    );
-    await tester.tap(find.text('เพลง').last);
-    await tester.pumpAndSettle();
-    expect(find.text('ยังไม่มีเพลงในสมุด'), findsOneWidget);
-    await tester.tap(find.text('เพิ่มเพลง'));
-    await tester.pumpAndSettle();
-    // Lines written for the test (not a real song).
-    await tester.enterText(find.byType(TextField).at(0), 'テストの歌');
-    await tester.enterText(find.byType(TextField).at(2), '私はコーヒーを飲みました\n夜空');
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('บันทึก'));
-    await tester.pumpAndSettle();
-    expect(find.text('テストの歌'), findsWidgets);
-    // Tap the conjugated verb: dictionary form and how it was conjugated.
-    await tester.tap(find.text('飲'));
-    await tester.pumpAndSettle();
-    expect(find.text('รูปพจนานุกรม: 飲む'), findsOneWidget);
-    expect(find.text('อดีต'), findsOneWidget);
-    await tester.tap(find.text('เพิ่มเข้าการ์ด'));
-    await tester.pumpAndSettle();
-    expect(find.text('อยู่ในคิวการ์ดแล้ว'), findsOneWidget);
-    await tester.tapAt(const Offset(10, 10));
-    await tester.pumpAndSettle();
-    // Translate the first line.
-    await tester.enterText(find.byType(TextField).first, 'ฉันดื่มกาแฟแล้ว');
-    await tester.pumpAndSettle();
-    final repo = c.read(songRepoProvider);
-    final id = repo.songs().single.id;
-    expect(repo.translations(id)['私はコーヒーを飲みました'], 'ฉันดื่มกาแฟแล้ว');
-    // The word asked for is the next new flashcard.
-    final plan = c.read(deckServiceProvider(vocabDeck))!.plan();
-    expect(plan.queue.newCards.single.cardId, 'w:4#recog');
-  });
-
-  testWidgets('a full study session records reviews', (tester) async {
-    final c = await start(
-      tester,
-      settings: const AppSettings(
-        flashcards: false,
-        includeKana: false,
-        vocabNewPerDay: 3,
-      ),
-    );
-    expect(find.text('ท่องศัพท์'), findsOneWidget);
-    await tester.tap(find.text('เริ่มเรียน').first);
-    await tester.pumpAndSettle();
-
-    var intros = 0, questions = 0;
-    for (var i = 0; i < 80; i++) {
-      if (find.text('กลับหน้าหลัก').evaluate().isNotEmpty) break;
-      if (find.text('จำแล้ว ไปต่อ').evaluate().isNotEmpty) {
-        intros++;
-        await tester.tap(find.text('จำแล้ว ไปต่อ'));
-      } else if (find.text('ต่อไป').evaluate().isNotEmpty) {
-        await tester.tap(find.text('ต่อไป'));
-      } else if (find.text('ความหมายคืออะไร').evaluate().isNotEmpty ||
-          find.text('เติมคำในช่องว่าง').evaluate().isNotEmpty) {
-        questions++;
-        await tester.tap(find.byType(OutlinedButton).first);
-      } else {
-        fail('unexpected screen at step $i');
-      }
-      await tester.pumpAndSettle();
-    }
-    expect(intros, 3);
-    expect(questions, greaterThanOrEqualTo(3));
-    expect(find.text('กลับหน้าหลัก'), findsOneWidget);
-    final log = StudyRepo(c.read(userDbProvider)).reviewRecords();
-    expect(log.length, questions);
-    await tester.tap(find.text('กลับหน้าหลัก'));
-    await tester.pumpAndSettle();
-    expect(find.text('ท่องศัพท์'), findsOneWidget);
-  });
-
-  testWidgets('a grammar session: lesson, cloze, feedback', (tester) async {
-    final c = await start(
-      tester,
-      settings: const AppSettings(includeKana: false, grammarNewPerDay: 1),
-    );
-    // The grammar deck sits below the level list.
-    await tester.scrollUntilVisible(find.text('ไวยากรณ์'), 300);
-    await tester.drag(find.byType(Scrollable).first, const Offset(0, -200));
-    await tester.pumpAndSettle();
-    expect(find.text('ไวยากรณ์'), findsWidgets);
-    await tester.tap(find.text('เริ่มเรียน').last);
-    await tester.pumpAndSettle();
-    expect(find.text('ไวยากรณ์ใหม่'), findsOneWidget);
-    expect(find.text('วิธีใช้'), findsWidgets);
-    await tester.tap(find.text('จำแล้ว ไปต่อ'));
-    await tester.pumpAndSettle();
-    expect(find.text('เติมคำในช่องว่าง'), findsOneWidget);
-    expect(find.text('ดื่มน้ำแล้ว'), findsOneWidget); // Thai cue
-    await tester.tap(find.widgetWithText(OutlinedButton, 'を'));
-    await tester.pumpAndSettle();
-    expect(find.text('ถูกต้อง'), findsOneWidget);
-    final log = StudyRepo(c.read(userDbProvider))
-        .reviewRecords(deck: 'grammar');
-    expect(log, hasLength(1));
-  });
-
   testWidgets('every theme renders all tabs', (tester) async {
     for (final theme in LcTokens.themes.keys) {
       await start(tester, settings: AppSettings(theme: theme));
-      for (final tab in ['คลังคำ', 'เพลง', 'ฝึก', 'สถิติ', 'หน้าหลัก']) {
+      for (final tab in ['คลังคำ', 'สถิติ', 'หน้าหลัก']) {
         await tester.tap(find.text(tab).last);
         await tester.pumpAndSettle();
       }
@@ -446,53 +334,13 @@ void main() {
     expect(find.text('Source jlpt'), findsOneWidget);
   });
 
-  testWidgets('focus mode with a controller: answer with buttons', (
-    tester,
-  ) async {
-    final c = await start(
-      tester,
-      settings: const AppSettings(
-        flashcards: false,
-        includeKana: false,
-        vocabNewPerDay: 3,
-        reduceMotion: true,
-        quickAnswerButtons: true,
-      ),
-    );
-    await tester.tap(find.text('เริ่มเรียน').first);
-    await tester.pumpAndSettle();
-    var questions = 0;
-    for (var i = 0; i < 80; i++) {
-      if (find.text('กลับหน้าหลัก').evaluate().isNotEmpty) break;
-      if (find.text('จำแล้ว ไปต่อ').evaluate().isNotEmpty) {
-        await tester.tap(find.text('จำแล้ว ไปต่อ'));
-      } else if (find.text('ต่อไป').evaluate().isNotEmpty) {
-        // "Next" takes focus, so the confirm button moves on.
-        await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonA);
-      } else if (find.text('X').evaluate().isNotEmpty) {
-        // Quick-answer badges are shown; X picks the third answer.
-        questions++;
-        await tester.sendKeyEvent(
-          questions.isEven
-              ? LogicalKeyboardKey.gameButtonX
-              : LogicalKeyboardKey.digit1,
-        );
-      } else {
-        fail('unexpected screen at step $i');
-      }
-      await tester.pumpAndSettle();
-    }
-    expect(questions, greaterThanOrEqualTo(3));
-    expect(StudyRepo(c.read(userDbProvider)).reviewRecords().length, questions);
-  });
-
   testWidgets('controller: B goes back, shoulder buttons switch tabs', (
     tester,
   ) async {
     await start(tester);
     await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonRight1);
     await tester.pumpAndSettle();
-    expect(find.text('ฝึก'), findsWidgets);
+    expect(find.text('ค้นหา: คันจิ, คานะ, โรมาจิ หรือคำแปล'), findsOneWidget);
     await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonLeft1);
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('ตั้งค่า'));

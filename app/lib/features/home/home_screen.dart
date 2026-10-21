@@ -8,7 +8,6 @@ import '../../state/update_controller.dart';
 import '../../ui/theme.dart';
 import '../../ui/tokens.g.dart';
 import '../../ui/widgets.dart';
-import '../grammar/grammar_lesson.dart';
 import '../library/library_screen.dart';
 import '../settings/settings_screen.dart';
 import '../settings/updates_screen.dart';
@@ -28,7 +27,6 @@ class HomeScreen extends ConsumerWidget {
     final c = context.lc;
     final catalog = ref.watch(catalogProvider);
     final vocabCov = ref.watch(coverageProvider(vocabDeck));
-    final grammarCov = ref.watch(coverageProvider(grammarDeck));
     final updateDot = ref.watch(updateControllerProvider).hasUpdate;
 
     Widget covRow(String label, double v) => Padding(
@@ -109,16 +107,12 @@ class HomeScreen extends ConsumerWidget {
             const _TodayStrip(),
             const _DeckCard(deck: vocabDeck, large: true),
             const _LevelList(),
-            const SizedBox(height: LcTokens.spacingLg),
-            const _DeckCard(deck: grammarDeck),
             SectionLabel(t.coverageTitle),
             LcCard(
               child: Column(
                 children: [
                   for (final e in vocabCov.entries)
                     covRow(levelName(t, e.key), e.value),
-                  for (final e in grammarCov.entries)
-                    covRow(t.grammarLevel(e.key.toUpperCase()), e.value),
                   const SizedBox(height: LcTokens.spacingSm),
                   Text(t.coverageHelp, style: tt.bodySmall),
                 ],
@@ -143,9 +137,6 @@ class _DeckCard extends ConsumerWidget {
     final tt = Theme.of(context).textTheme;
     final c = context.lc;
     final plan = ref.watch(todayPlanProvider(deck));
-    final grammar = deck == grammarDeck;
-    final hasItems =
-        ref.watch(catalogProvider)?.itemsOf(deck).isNotEmpty ?? false;
     return LcCard(
       large: large,
       child: Column(
@@ -153,34 +144,12 @@ class _DeckCard extends ConsumerWidget {
         children: [
           Row(
             children: [
-              Icon(
-                grammar ? Icons.menu_book_rounded : Icons.style_rounded,
-                color: c.accent,
-              ),
+              Icon(Icons.style_rounded, color: c.accent),
               const SizedBox(width: LcTokens.spacingSm),
-              Expanded(
-                child: Text(
-                  grammar ? t.grammarDeck : t.vocabDeck,
-                  style: tt.titleLarge,
-                ),
-              ),
-              if (grammar && hasItems)
-                TextButton(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const GrammarListScreen(),
-                    ),
-                  ),
-                  child: Text(t.seeAllGrammar),
-                ),
+              Expanded(child: Text(t.vocabDeck, style: tt.titleLarge)),
             ],
           ),
-          if (!hasItems)
-            Padding(
-              padding: const EdgeInsets.only(top: LcTokens.spacingSm),
-              child: Text(t.noGrammarYet, style: tt.bodySmall),
-            )
-          else if (plan != null) ...[
+          if (plan != null) ...[
             const SizedBox(height: LcTokens.spacingLg),
             if (large)
               _TodayRing(

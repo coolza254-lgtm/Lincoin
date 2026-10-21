@@ -184,8 +184,8 @@ class StudyService {
              grammar: SrsConfig(desiredRetention: settings.grammarRetention),
            );
 
-  /// Words and kana are reviewed as self-rated flashcards.
-  bool get flashcards => deck == vocabDeck && settings.flashcards;
+  /// Words and kana are always reviewed as self-rated flashcards.
+  bool get flashcards => deck == vocabDeck;
 
   int get _newPerDay =>
       deck == grammarDeck ? settings.grammarNewPerDay : settings.vocabNewPerDay;

@@ -49,7 +49,6 @@ void main() {
   test('new-card limit counts introductions today', () {
     final s = service(const AppSettings(flashcards: false, vocabNewPerDay: 2));
     final q = s.question(s.plan().queue.newCards.first.cardId);
-    expect(q.needsIntro, isTrue);
     s.introduce(q);
     expect(s.plan().newCount, 1);
   });
@@ -57,9 +56,13 @@ void main() {
   test('answering records log, state and Lincoin atomically', () {
     final s = service(const AppSettings(flashcards: false, includeKana: false));
     final q = s.question('w:1#recog');
-    expect(q.choices!.options[q.choices!.correctIndex], 'ฤดูใบไม้ร่วง');
+    expect(q.isFlashcard, isTrue);
     s.introduce(q);
-    final r = s.answer(q, const AnswerEvent(isCorrect: true, responseMs: 5000));
+    final r = s.answer(
+      q,
+      const AnswerEvent(isCorrect: true, responseMs: 5000),
+      selfRating: Rating.good,
+    );
     expect(r.rating, Rating.good);
     expect(r.outcome.after.status, CardStatus.learning);
     final stored = StudyRepo(db).card('w:1#recog')!;
@@ -67,33 +70,6 @@ void main() {
     expect(StudyRepo(db).reviewRecords(), hasLength(1));
     // New card in learning earns nothing yet.
     expect(LedgerRepo(db).balance(), 0);
-  });
-
-  test('graduating pays "learned" once; recall unlocks next day', () {
-    final s = service(const AppSettings(flashcards: false, includeKana: false));
-    final q = s.question('w:1#recog');
-    s.introduce(q);
-    for (var i = 0; i < 2; i++) {
-      s.answer(q, const AnswerEvent(isCorrect: true, responseMs: 5000));
-      now = now.add(const Duration(minutes: 15));
-    }
-    final card = StudyRepo(db).card('w:1#recog')!;
-    expect(card.state.status, CardStatus.review);
-    expect(LedgerRepo(db).balance(), 5);
-    // Sibling recall card is buried today, offered as new tomorrow.
-    expect(
-      s.plan().queue.newCards.map((c) => c.cardId),
-      isNot(contains('w:1#recall')),
-    );
-    now = now.add(const Duration(days: 1));
-    expect(
-      service(const AppSettings(flashcards: false, includeKana: false))
-          .plan()
-          .queue
-          .newCards
-          .map((c) => c.cardId),
-      contains('w:1#recall'),
-    );
   });
 
   test('typed answers: romaji, katakana long vowel, synonym', () {

@@ -16,7 +16,6 @@ import 'package:lincoin/app.dart';
 import 'package:lincoin/data/catalog.dart';
 import 'package:lincoin/data/content_db.dart';
 import 'package:lincoin/data/settings_repo.dart';
-import 'package:lincoin/data/song_repo.dart';
 import 'package:lincoin/data/user_db.dart';
 import 'package:lincoin/features/library/library_screen.dart';
 import 'package:lincoin/services/content_store.dart';
@@ -82,11 +81,7 @@ void main() {
   /// Three weeks of simulated study so stats and home have data.
   void seedHistory(String theme) {
     final db = UserDb.open(paths.userDb);
-    final settings = AppSettings(
-      theme: theme,
-      includeKana: false,
-      grammarNewPerDay: 2,
-    );
+    final settings = AppSettings(theme: theme, includeKana: false);
     SettingsRepo(db).save(settings, now);
     db.setMeta('onboarded', '1');
     final content = ContentDb.openFile('${paths.content.path}/content.db');
@@ -121,19 +116,6 @@ void main() {
       svc.finishSession(answeredAny: true);
       t = DateTime.utc(t.year, t.month, t.day + 1, 5);
     }
-    // A sample song written for the screenshots (not real lyrics).
-    final songs = SongRepo(db);
-    final songId = songs.save(
-      title: '朝の電車',
-      artist: 'ตัวอย่าง',
-      lyrics:
-          '朝の電車で 音楽を聞く\n'
-          '窓の外は 雨が降っている\n'
-          '今日も 一人で 歩いて行こう\n'
-          '明日は きっと 晴れるから',
-      now: now,
-    );
-    songs.setTranslation(songId, '朝の電車で 音楽を聞く', 'ฟังเพลงบนรถไฟตอนเช้า', now);
     content.close();
     db.close();
   }
@@ -197,36 +179,14 @@ void main() {
     await snap('1e-library-search');
     await tester.tap(find.text('หน้าหลัก').last);
     await tester.pumpAndSettle();
-    // Song notebook: list, a song, a tapped word.
-    await tester.tap(find.text('เพลง').last);
-    await snap('3a-songs');
-    await tester.tap(find.text('朝の電車'));
-    await snap('3b-song');
-    await tester.tap(find.text('降').first);
-    await snap('3c-song-word');
-    await tester.tapAt(const Offset(10, 10));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byType(BackButton));
-    await tester.pumpAndSettle();
-    for (final (tab, name) in [('สถิติ', '2-stats'), ('ฝึก', '4-practice')]) {
+    for (final (tab, name) in [('สถิติ', '2-stats')]) {
       await tester.tap(find.text(tab).last);
       await snap(name);
     }
     if (theme != 'matcha') return;
-    // A practice round.
-    await tester.tap(find.text('เริ่มฝึก 10 ข้อ'));
-    await tester.pumpAndSettle();
-    await snap('4d-drill');
-    final opt = find.byType(OutlinedButton);
-    if (opt.evaluate().isNotEmpty) {
-      await tester.tap(opt.first);
-      await snap('4e-drill-feedback');
-    }
-    await tester.tap(find.byTooltip('ปิด'));
-    await tester.pumpAndSettle();
     await tester.tap(find.text('หน้าหลัก').last);
     await tester.pumpAndSettle();
-    // Flashcards (the default): front, then the turned-over back.
+    // Flashcards: front, then the turned-over back.
     await tester.tap(find.text('เริ่มเรียน').first);
     await tester.pumpAndSettle();
     await snap('5f-flashcard-front');
@@ -267,75 +227,6 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('ปิด'));
     await tester.pumpAndSettle();
-    container
-        .read(settingsProvider.notifier)
-        .update((x) => x.copyWith(flashcards: false));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('เริ่มเรียน').first);
-    await tester.pumpAndSettle();
-    var intro = false, choice = false, typed = false, feedback = false;
-    var typedFeedback = false;
-    for (
-      var i = 0;
-      i < 80 && !(intro && choice && typed && feedback && typedFeedback);
-      i++
-    ) {
-      if (find.text('ต่อไป').evaluate().isNotEmpty) {
-        final isTyped = find.text('พิมพ์คำอ่าน').evaluate().isNotEmpty;
-        if (isTyped && !typedFeedback) {
-          await snap('7b-typed-feedback');
-          typedFeedback = true;
-        } else if (!isTyped && !feedback) {
-          await snap('8-feedback');
-          feedback = true;
-        }
-        await tester.tap(find.text('ต่อไป'));
-      } else if (find.text('จำแล้ว ไปต่อ').evaluate().isNotEmpty) {
-        if (!intro) await snap('5-intro');
-        intro = true;
-        await tester.tap(find.text('จำแล้ว ไปต่อ'));
-      } else if (find.text('ความหมายคืออะไร').evaluate().isNotEmpty) {
-        if (!choice) await snap('6-question');
-        choice = true;
-        await tester.tap(find.byType(OutlinedButton).at(1));
-      } else if (find.text('พิมพ์คำอ่าน').evaluate().isNotEmpty) {
-        await tester.enterText(find.byType(TextField), 'tabe');
-        if (!typed) await snap('7-typed');
-        typed = true;
-        await tester.testTextInput.receiveAction(TextInputAction.done);
-      } else {
-        break;
-      }
-      await tester.pumpAndSettle();
-    }
-    await tester.tap(find.byTooltip('ปิด'));
-    await tester.pumpAndSettle();
-    // Grammar: lesson, cloze, feedback (below the level list).
-    await tester.scrollUntilVisible(find.text('ดูทั้งหมด'), 300);
-    await tester.drag(find.byType(Scrollable).first, const Offset(0, -200));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('เริ่มเรียน').last);
-    await tester.pumpAndSettle();
-    await snap('10-grammar-lesson');
-    await tester.tap(find.text('จำแล้ว ไปต่อ'));
-    await tester.pumpAndSettle();
-    for (
-      var i = 0;
-      i < 6 && find.text('เติมคำในช่องว่าง').evaluate().isEmpty;
-      i++
-    ) {
-      if (find.text('ต่อไป').evaluate().isNotEmpty) {
-        await tester.tap(find.text('ต่อไป'));
-      } else if (find.text('จำแล้ว ไปต่อ').evaluate().isNotEmpty) {
-        await tester.tap(find.text('จำแล้ว ไปต่อ'));
-      }
-      await tester.pumpAndSettle();
-    }
-    await snap('11-grammar-cloze');
-    await tester.tap(find.byType(OutlinedButton).first);
-    await snap('12-grammar-feedback');
-    await tester.tap(find.byTooltip('ปิด'));
-    await tester.pumpAndSettle();
     await tester.drag(find.byType(Scrollable).first, const Offset(0, 3000));
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('ตั้งค่า'));
@@ -346,29 +237,11 @@ void main() {
     await tester.drag(find.byType(Scrollable).first, const Offset(0, 620));
     await snap('9a-settings-font');
     await tester.scrollUntilVisible(find.text('ปุ่มควบคุม'), 300);
-    container
-        .read(settingsProvider.notifier)
-        .update((x) => x.copyWith(quickAnswerButtons: true));
     await snap('9b-settings-input');
     await tester.tap(find.text('ปุ่มควบคุม'));
     await snap('9c-controller-map');
     await tester.tap(find.text('ปิด').last);
     await tester.pumpAndSettle();
-    // A drill question driven by a controller: focus ring and A/B/X/Y.
-    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonB);
-    await tester.pumpAndSettle();
-    // R1 three times: home → library → songs → practice.
-    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonRight1);
-    await tester.pumpAndSettle();
-    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonRight1);
-    await tester.pumpAndSettle();
-    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonRight1);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('เริ่มฝึก 10 ข้อ'));
-    await tester.pumpAndSettle();
-    // Any controller key switches the app to showing focus rings.
-    await tester.sendKeyEvent(LogicalKeyboardKey.gameButtonSelect);
-    await snap('4f-drill-controller');
   }
 
   for (final theme in ['matcha', 'sakura', 'mono', 'dark']) {
