@@ -44,6 +44,14 @@ class StatsData {
 
   /// Reviews due on each of the next 7 study days (index 0 = today).
   final List<int> forecast7;
+
+  /// Reviews due on each of the next 30 study days (index 0 = today,
+  /// overdue cards included).
+  final List<int> forecast30;
+
+  /// Started cards by memory strength (stability): under 1 day, 1–7,
+  /// 7–30, 30–90, 90–365 days, over a year.
+  final List<int> strength;
   final List<CalibrationBin> calibration;
   final int calibrationSample;
   final double? logLoss;
@@ -61,6 +69,8 @@ class StatsData {
     required this.last14Days,
     required this.activeMsTotal7,
     required this.forecast7,
+    required this.forecast30,
+    required this.strength,
     required this.calibration,
     required this.calibrationSample,
     required this.logLoss,
@@ -68,6 +78,9 @@ class StatsData {
     required this.totalReviews,
   });
 }
+
+/// Day thresholds between the memory-strength buckets.
+const strengthBounds = [1, 7, 30, 90, 365];
 
 class StatsService {
   final StudyService s;
@@ -113,6 +126,8 @@ class StatsService {
     final active7 = days.skip(7).fold(0, (a, d) => a + d.activeMs);
 
     final forecast = List.filled(7, 0);
+    final forecast30 = List.filled(30, 0);
+    final strength = List.filled(strengthBounds.length + 1, 0);
     final cards = s.repo.cards(deck: s.deck).values;
     var leeches = 0;
     for (final c in cards) {
@@ -121,6 +136,9 @@ class StatsService {
       if (c.suspended || c.state.isNew || due == null) continue;
       final d = s.studyDay(due) - today;
       forecast[d < 0 ? 0 : d.clamp(0, 6)] += d > 6 ? 0 : 1;
+      if (d < 30) forecast30[d < 0 ? 0 : d]++;
+      final st = c.state.stability ?? 0;
+      strength[strengthBounds.where((b) => st >= b).length]++;
     }
 
     return StatsData(
@@ -136,6 +154,8 @@ class StatsService {
       last14Days: days,
       activeMsTotal7: active7,
       forecast7: forecast,
+      forecast30: forecast30,
+      strength: strength,
       calibration: log.calibration,
       calibrationSample: log.calibration.fold(0, (a, b) => a + b.count),
       logLoss: log.logLoss,

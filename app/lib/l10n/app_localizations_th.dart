@@ -1539,4 +1539,85 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get infContinuing => 'ขณะที่ (〜ながら)';
+
+  @override
+  String get modelTitle => 'อัลกอริทึมความจำ';
+
+  @override
+  String get modelPersonal => 'FSRS-6 · ปรับให้เข้ากับความจำของคุณแล้ว';
+
+  @override
+  String get modelDefault => 'FSRS-6 · ใช้ค่ามาตรฐาน';
+
+  @override
+  String get modelWhy =>
+      'แอปเรียนรู้จากการตอบของคุณเอง ว่าลืมเร็วหรือช้าแค่ไหน แล้วตั้งเวลาทบทวนของแต่ละคำให้พอดีกับความจำของคุณ';
+
+  @override
+  String modelNeed(int n) {
+    return 'ต้องทบทวนข้ามวันอีก $n ครั้ง แอปจึงจะปรับโมเดลให้เป็นของคุณเอง';
+  }
+
+  @override
+  String modelError(String before, String after) {
+    return 'ความคลาดเคลื่อนการทำนาย $before% → $after%';
+  }
+
+  @override
+  String get modelErrorHelp =>
+      'ทำนายว่าคุณจะจำได้กี่ % เทียบกับที่จำได้จริง ยิ่งต่ำยิ่งแม่น';
+
+  @override
+  String modelFittedOn(String date, int n, int every) {
+    return 'ปรับล่าสุด $date จากการทบทวน $n ครั้ง · ปรับใหม่อัตโนมัติทุก $every ครั้ง';
+  }
+
+  @override
+  String get modelKeptOld =>
+      'ครั้งล่าสุดโมเดลใหม่ยังไม่แม่นกว่าเดิม จึงใช้ค่าเดิมต่อ';
+
+  @override
+  String get modelFitNow => 'ปรับโมเดลตอนนี้';
+
+  @override
+  String get modelFitting => 'กำลังปรับโมเดล…';
+
+  @override
+  String modelFitDone(String before, String after) {
+    return 'ปรับแล้ว: ทำนายแม่นขึ้น $before% → $after%';
+  }
+
+  @override
+  String get modelFitSame =>
+      'ลองปรับแล้ว แต่ค่าเดิมยังแม่นกว่า จึงใช้ค่าเดิมต่อ';
+
+  @override
+  String retentionBest(int pct) {
+    return 'เป้าความจำที่คุ้มที่สุดสำหรับคุณ: $pct%';
+  }
+
+  @override
+  String retentionBestHelp(int now, int nowMin, int bestMin) {
+    return 'จำคำได้มากที่สุดต่อเวลาที่ใช้ (ตั้งไว้ตอนนี้ $now%: ราว $nowMin นาที/วัน · ที่แนะนำ: ราว $bestMin นาที/วัน)';
+  }
+
+  @override
+  String retentionApply(int pct) {
+    return 'ใช้ $pct%';
+  }
+
+  @override
+  String retentionApplied(int pct) {
+    return 'ตั้งเป้าความจำเป็น $pct% แล้ว';
+  }
+
+  @override
+  String get strengthTitle => 'ความแข็งแรงของความจำ';
+
+  @override
+  String get strengthHelp =>
+      'จำนวนคำตามความจำคงทน (เวลาที่โอกาสจำได้จะลดเหลือ 90%) ยิ่งไปทางขวายิ่งจำแน่น';
+
+  @override
+  String get forecast30 => 'ต้องทบทวนใน 30 วันข้างหน้า';
 }

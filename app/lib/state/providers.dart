@@ -1,8 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:lincoin_core/lincoin_core.dart'
+    show EngineConfig, RetentionAdvisor, RetentionPoint, SrsConfig;
 
 import '../data/catalog.dart';
 import '../data/content_db.dart';
+import '../data/params_repo.dart';
 import '../data/settings_repo.dart';
 import '../data/shop_repo.dart';
 import '../data/song_repo.dart';
@@ -11,6 +14,7 @@ import '../data/user_db.dart';
 import '../services/backup_service.dart';
 import '../services/challenge_service.dart';
 import '../services/library_service.dart';
+import '../services/model_trainer.dart';
 import '../services/lyrics.dart';
 import '../services/practice_service.dart';
 import '../services/content_store.dart';
@@ -153,8 +157,19 @@ final deckServiceProvider = Provider.family<StudyService?, String>((ref, key) {
   final catalog = ref.watch(catalogProvider);
   if (catalog == null) return null;
   final (deck, level) = parseStudyKey(key);
+  final settings = ref.watch(settingsProvider);
+  // The learner's own fitted memory model, when one beat the defaults.
+  final fitted = ref.watch(activeParamsProvider);
   return StudyService(
     level: level,
+    config: EngineConfig(
+      vocab: SrsConfig(
+        desiredRetention: settings.vocabRetention,
+        parameters: fitted?.weights ?? SrsConfig().parameters,
+        paramsVersion: fitted?.version ?? 0,
+      ),
+      grammar: SrsConfig(desiredRetention: settings.grammarRetention),
+    ),
     db: ref.watch(userDbProvider),
     catalog: catalog,
     settings: ref.watch(settingsProvider),
@@ -200,6 +215,46 @@ final levelProgressProvider = Provider<Map<String, ({int learned, int total})>>(
     };
   },
 );
+
+final paramsRepoProvider = Provider(
+  (ref) => ParamsRepo(ref.watch(userDbProvider)),
+);
+
+final modelTrainerProvider = Provider(
+  (ref) => ModelTrainer(ref.watch(paramsRepoProvider)),
+);
+
+/// Bumped after a new fit so the scheduler picks up new parameters.
+class ParamsVersion extends Notifier<int> {
+  @override
+  int build() => 0;
+  void bump() => state++;
+}
+
+final paramsVersionProvider = NotifierProvider<ParamsVersion, int>(
+  ParamsVersion.new,
+);
+
+/// The fitted parameters in use for vocabulary, or null for the defaults.
+final activeParamsProvider = Provider<FittedParams?>((ref) {
+  ref.watch(paramsVersionProvider);
+  return ref.watch(paramsRepoProvider).active(vocabDeck);
+});
+
+/// How much study time each desired retention costs for this learner, and
+/// the one that keeps the most words per minute.
+final retentionAdviceProvider =
+    Provider<({List<RetentionPoint> curve, double recommended})>((ref) {
+      final fitted = ref.watch(activeParamsProvider);
+      final perDay = ref.watch(
+        settingsProvider.select((s) => s.vocabNewPerDay),
+      );
+      final curve = RetentionAdvisor.curve(
+        parameters: fitted?.weights ?? SrsConfig().parameters,
+        newPerDay: perDay == 0 ? 10 : perDay,
+      );
+      return (curve: curve, recommended: RetentionAdvisor.recommend(curve));
+    });
 
 final songRepoProvider = Provider((ref) => SongRepo(ref.watch(userDbProvider)));
 

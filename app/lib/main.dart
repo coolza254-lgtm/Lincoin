@@ -40,6 +40,12 @@ Future<void> main() async {
         child: const LincoinApp(),
       ),
     );
+    // Fit the memory model to the learner's answers in the background when
+    // enough new ones have arrived; the scheduler switches over when done.
+    Future(() async {
+      final fitted = await container.read(modelTrainerProvider).maybeTrain();
+      if (fitted != null) container.read(paramsVersionProvider.notifier).bump();
+    }).catchError((Object e) => debugPrint('model fit failed: $e'));
   } on Object catch (e, st) {
     debugPrint('startup failed: $e\n$st');
     runApp(StartupError(message: '$e'));

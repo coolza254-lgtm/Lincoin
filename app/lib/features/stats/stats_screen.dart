@@ -3,7 +3,10 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lincoin_core/lincoin_core.dart' show FsrsOptimizer;
+
 import '../../data/catalog.dart';
+import '../../services/model_trainer.dart';
 import '../../l10n/app_localizations.dart';
 import '../../state/providers.dart';
 import '../../ui/theme.dart';
@@ -78,6 +81,8 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
               ],
             ),
           ),
+          SectionLabel(t.modelTitle),
+          const _ModelCard(),
           SectionLabel(t.retentionTitle),
           LcCard(
             child: Column(
@@ -155,12 +160,31 @@ class _StatsScreenState extends ConsumerState<StatsScreen> {
               caption: t.activityHelp,
             ),
           ),
-          SectionLabel(t.forecast7),
+          SectionLabel(t.forecast30),
           LcCard(
             child: _Bars(
-              values: s.forecast7,
-              labels: [t.today, for (var i = 1; i < 7; i++) '+$i'],
+              values: s.forecast30,
+              showValues: false,
+              labels: [
+                for (var i = 0; i < 30; i++)
+                  i == 0 ? t.today : (i % 7 == 0 ? '+$i' : ''),
+              ],
               caption: t.forecastHelp,
+            ),
+          ),
+          SectionLabel(t.strengthTitle),
+          LcCard(
+            child: _Bars(
+              values: s.strength,
+              labels: const [
+                '<1 วัน',
+                '1–7 วัน',
+                '1–4 สป.',
+                '1–3 ด.',
+                '3–12 ด.',
+                '>1 ปี',
+              ],
+              caption: t.strengthHelp,
             ),
           ),
           if (s.calibrationSample >= 100) ...[
@@ -224,11 +248,15 @@ class _Bars extends StatelessWidget {
   final List<int>? highlight;
   final List<String>? labels;
   final String caption;
+
+  /// Numbers above the bars (off when there are too many bars for them).
+  final bool showValues;
   const _Bars({
     required this.values,
     this.highlight,
     this.labels,
     required this.caption,
+    this.showValues = true,
   });
 
   @override
@@ -253,7 +281,7 @@ class _Bars extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          if (values[i] > 0)
+                          if (showValues && values[i] > 0)
                             Text(
                               '${values[i]}',
                               style: tt.bodySmall?.copyWith(fontSize: 10),
@@ -295,7 +323,12 @@ class _Bars extends StatelessWidget {
                   child: Text(
                     l,
                     textAlign: TextAlign.center,
-                    style: tt.bodySmall,
+                    maxLines: 1,
+                    softWrap: false,
+                    overflow: TextOverflow.visible,
+                    style: tt.bodySmall?.copyWith(
+                      fontSize: values.length > 14 ? 10 : null,
+                    ),
                   ),
                 ),
             ],
@@ -303,6 +336,167 @@ class _Bars extends StatelessWidget {
         const SizedBox(height: LcTokens.spacingSm),
         Text(caption, style: tt.bodySmall),
       ],
+    );
+  }
+}
+
+/// The memory model: personal or default parameters, how well it predicts
+/// this learner, refitting, and the most efficient retention target.
+class _ModelCard extends ConsumerStatefulWidget {
+  const _ModelCard();
+
+  @override
+  ConsumerState<_ModelCard> createState() => _ModelCardState();
+}
+
+class _ModelCardState extends ConsumerState<_ModelCard> {
+  bool _busy = false;
+
+  static String _pct(double x) => (x * 100).toStringAsFixed(1);
+
+  Future<void> _fit() async {
+    final t = AppLocalizations.of(context);
+    final m = ScaffoldMessenger.of(context);
+    setState(() => _busy = true);
+    try {
+      final r = await ref.read(modelTrainerProvider).train();
+      ref.read(paramsVersionProvider.notifier).bump();
+      ref.read(dataVersionProvider.notifier).bump();
+      if (r != null) {
+        m.showSnackBar(
+          SnackBar(
+            content: Text(
+              r.active
+                  ? t.modelFitDone(_pct(r.rmseBefore), _pct(r.rmseAfter))
+                  : t.modelFitSame,
+            ),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+    final tt = Theme.of(context).textTheme;
+    final c = context.lc;
+    ref.watch(dataVersionProvider);
+    final active = ref.watch(activeParamsProvider);
+    final repo = ref.watch(paramsRepoProvider);
+    final latest = repo.latest(vocabDeck);
+    final progress = ref.watch(modelTrainerProvider).progress();
+    const need = FsrsOptimizer.minReviews;
+    final advice = ref.watch(retentionAdviceProvider);
+    final settings = ref.watch(settingsProvider);
+    final now = settings.vocabRetention;
+    double minutesAt(double r) => advice.curve
+        .reduce(
+          (a, b) => (a.retention - r).abs() < (b.retention - r).abs() ? a : b,
+        )
+        .minutesPerDay;
+    final best = advice.recommended;
+    String date(DateTime d) {
+      final l = d.toLocal();
+      return '${l.day}/${l.month}/${l.year}';
+    }
+
+    return LcCard(
+      large: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                active != null
+                    ? Icons.psychology_rounded
+                    : Icons.psychology_outlined,
+                color: active != null ? c.good : c.accent,
+              ),
+              const SizedBox(width: LcTokens.spacingSm),
+              Expanded(
+                child: Text(
+                  active != null ? t.modelPersonal : t.modelDefault,
+                  style: tt.titleMedium,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: LcTokens.spacingXs),
+          Text(t.modelWhy, style: tt.bodySmall),
+          const SizedBox(height: LcTokens.spacingMd),
+          if (active != null) ...[
+            Text(
+              t.modelError(_pct(active.rmseBefore), _pct(active.rmseAfter)),
+              style: tt.bodyLarge,
+            ),
+            Text(t.modelErrorHelp, style: tt.bodySmall),
+            const SizedBox(height: LcTokens.spacingXs),
+            Text(
+              t.modelFittedOn(
+                date(active.createdAt),
+                active.reviews,
+                ModelTrainer.refitEvery,
+              ),
+              style: tt.bodySmall,
+            ),
+          ] else if (progress.now < need) ...[
+            LcProgressBar(progress.now / need, height: 6),
+            const SizedBox(height: 4),
+            Text(t.modelNeed(need - progress.now), style: tt.bodySmall),
+          ],
+          if (latest != null && !latest.active && latest != active)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(t.modelKeptOld, style: tt.bodySmall),
+            ),
+          if (progress.now >= need)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: _busy ? null : _fit,
+                icon: _busy
+                    ? const SizedBox.square(
+                        dimension: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.auto_fix_high_rounded, size: 18),
+                label: Text(_busy ? t.modelFitting : t.modelFitNow),
+              ),
+            ),
+          const Divider(height: LcTokens.spacingXl),
+          Text(t.retentionBest((best * 100).round()), style: tt.titleMedium),
+          const SizedBox(height: 4),
+          Text(
+            t.retentionBestHelp(
+              (now * 100).round(),
+              minutesAt(now).round(),
+              minutesAt(best).round(),
+            ),
+            style: tt.bodySmall,
+          ),
+          if ((best - now).abs() >= 0.005)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton(
+                onPressed: () {
+                  ref
+                      .read(settingsProvider.notifier)
+                      .update((x) => x.copyWith(vocabRetention: best));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(t.retentionApplied((best * 100).round())),
+                    ),
+                  );
+                },
+                child: Text(t.retentionApply((best * 100).round())),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

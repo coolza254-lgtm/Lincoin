@@ -961,5 +961,99 @@
   "infConditional": "ถ้า (〜ば)",
   "infImperative": "คำสั่ง",
   "infAdverb": "รูป 〜く",
-  "infContinuing": "ขณะที่ (〜ながら)"
+  "infContinuing": "ขณะที่ (〜ながら)",
+  "modelTitle": "อัลกอริทึมความจำ",
+  "modelPersonal": "FSRS-6 · ปรับให้เข้ากับความจำของคุณแล้ว",
+  "modelDefault": "FSRS-6 · ใช้ค่ามาตรฐาน",
+  "modelWhy": "แอปเรียนรู้จากการตอบของคุณเอง ว่าลืมเร็วหรือช้าแค่ไหน แล้วตั้งเวลาทบทวนของแต่ละคำให้พอดีกับความจำของคุณ",
+  "modelNeed": "ต้องทบทวนข้ามวันอีก {n} ครั้ง แอปจึงจะปรับโมเดลให้เป็นของคุณเอง",
+  "@modelNeed": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "modelError": "ความคลาดเคลื่อนการทำนาย {before}% → {after}%",
+  "@modelError": {
+    "placeholders": {
+      "before": {
+        "type": "String"
+      },
+      "after": {
+        "type": "String"
+      }
+    }
+  },
+  "modelErrorHelp": "ทำนายว่าคุณจะจำได้กี่ % เทียบกับที่จำได้จริง ยิ่งต่ำยิ่งแม่น",
+  "modelFittedOn": "ปรับล่าสุด {date} จากการทบทวน {n} ครั้ง · ปรับใหม่อัตโนมัติทุก {every} ครั้ง",
+  "@modelFittedOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "n": {
+        "type": "int"
+      },
+      "every": {
+        "type": "int"
+      }
+    }
+  },
+  "modelKeptOld": "ครั้งล่าสุดโมเดลใหม่ยังไม่แม่นกว่าเดิม จึงใช้ค่าเดิมต่อ",
+  "modelFitNow": "ปรับโมเดลตอนนี้",
+  "modelFitting": "กำลังปรับโมเดล…",
+  "modelFitDone": "ปรับแล้ว: ทำนายแม่นขึ้น {before}% → {after}%",
+  "@modelFitDone": {
+    "placeholders": {
+      "before": {
+        "type": "String"
+      },
+      "after": {
+        "type": "String"
+      }
+    }
+  },
+  "modelFitSame": "ลองปรับแล้ว แต่ค่าเดิมยังแม่นกว่า จึงใช้ค่าเดิมต่อ",
+  "retentionBest": "เป้าความจำที่คุ้มที่สุดสำหรับคุณ: {pct}%",
+  "@retentionBest": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "retentionBestHelp": "จำคำได้มากที่สุดต่อเวลาที่ใช้ (ตั้งไว้ตอนนี้ {now}%: ราว {nowMin} นาที/วัน · ที่แนะนำ: ราว {bestMin} นาที/วัน)",
+  "@retentionBestHelp": {
+    "placeholders": {
+      "now": {
+        "type": "int"
+      },
+      "nowMin": {
+        "type": "int"
+      },
+      "bestMin": {
+        "type": "int"
+      }
+    }
+  },
+  "retentionApply": "ใช้ {pct}%",
+  "@retentionApply": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "retentionApplied": "ตั้งเป้าความจำเป็น {pct}% แล้ว",
+  "@retentionApplied": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      }
+    }
+  },
+  "strengthTitle": "ความแข็งแรงของความจำ",
+  "strengthHelp": "จำนวนคำตามความจำคงทน (เวลาที่โอกาสจำได้จะลดเหลือ 90%) ยิ่งไปทางขวายิ่งจำแน่น",
+  "forecast30": "ต้องทบทวนใน 30 วันข้างหน้า"
 }

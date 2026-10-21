@@ -2787,6 +2787,126 @@ abstract class AppLocalizations {
   /// In th, this message translates to:
   /// **'ขณะที่ (〜ながら)'**
   String get infContinuing;
+
+  /// No description provided for @modelTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'อัลกอริทึมความจำ'**
+  String get modelTitle;
+
+  /// No description provided for @modelPersonal.
+  ///
+  /// In th, this message translates to:
+  /// **'FSRS-6 · ปรับให้เข้ากับความจำของคุณแล้ว'**
+  String get modelPersonal;
+
+  /// No description provided for @modelDefault.
+  ///
+  /// In th, this message translates to:
+  /// **'FSRS-6 · ใช้ค่ามาตรฐาน'**
+  String get modelDefault;
+
+  /// No description provided for @modelWhy.
+  ///
+  /// In th, this message translates to:
+  /// **'แอปเรียนรู้จากการตอบของคุณเอง ว่าลืมเร็วหรือช้าแค่ไหน แล้วตั้งเวลาทบทวนของแต่ละคำให้พอดีกับความจำของคุณ'**
+  String get modelWhy;
+
+  /// No description provided for @modelNeed.
+  ///
+  /// In th, this message translates to:
+  /// **'ต้องทบทวนข้ามวันอีก {n} ครั้ง แอปจึงจะปรับโมเดลให้เป็นของคุณเอง'**
+  String modelNeed(int n);
+
+  /// No description provided for @modelError.
+  ///
+  /// In th, this message translates to:
+  /// **'ความคลาดเคลื่อนการทำนาย {before}% → {after}%'**
+  String modelError(String before, String after);
+
+  /// No description provided for @modelErrorHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'ทำนายว่าคุณจะจำได้กี่ % เทียบกับที่จำได้จริง ยิ่งต่ำยิ่งแม่น'**
+  String get modelErrorHelp;
+
+  /// No description provided for @modelFittedOn.
+  ///
+  /// In th, this message translates to:
+  /// **'ปรับล่าสุด {date} จากการทบทวน {n} ครั้ง · ปรับใหม่อัตโนมัติทุก {every} ครั้ง'**
+  String modelFittedOn(String date, int n, int every);
+
+  /// No description provided for @modelKeptOld.
+  ///
+  /// In th, this message translates to:
+  /// **'ครั้งล่าสุดโมเดลใหม่ยังไม่แม่นกว่าเดิม จึงใช้ค่าเดิมต่อ'**
+  String get modelKeptOld;
+
+  /// No description provided for @modelFitNow.
+  ///
+  /// In th, this message translates to:
+  /// **'ปรับโมเดลตอนนี้'**
+  String get modelFitNow;
+
+  /// No description provided for @modelFitting.
+  ///
+  /// In th, this message translates to:
+  /// **'กำลังปรับโมเดล…'**
+  String get modelFitting;
+
+  /// No description provided for @modelFitDone.
+  ///
+  /// In th, this message translates to:
+  /// **'ปรับแล้ว: ทำนายแม่นขึ้น {before}% → {after}%'**
+  String modelFitDone(String before, String after);
+
+  /// No description provided for @modelFitSame.
+  ///
+  /// In th, this message translates to:
+  /// **'ลองปรับแล้ว แต่ค่าเดิมยังแม่นกว่า จึงใช้ค่าเดิมต่อ'**
+  String get modelFitSame;
+
+  /// No description provided for @retentionBest.
+  ///
+  /// In th, this message translates to:
+  /// **'เป้าความจำที่คุ้มที่สุดสำหรับคุณ: {pct}%'**
+  String retentionBest(int pct);
+
+  /// No description provided for @retentionBestHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'จำคำได้มากที่สุดต่อเวลาที่ใช้ (ตั้งไว้ตอนนี้ {now}%: ราว {nowMin} นาที/วัน · ที่แนะนำ: ราว {bestMin} นาที/วัน)'**
+  String retentionBestHelp(int now, int nowMin, int bestMin);
+
+  /// No description provided for @retentionApply.
+  ///
+  /// In th, this message translates to:
+  /// **'ใช้ {pct}%'**
+  String retentionApply(int pct);
+
+  /// No description provided for @retentionApplied.
+  ///
+  /// In th, this message translates to:
+  /// **'ตั้งเป้าความจำเป็น {pct}% แล้ว'**
+  String retentionApplied(int pct);
+
+  /// No description provided for @strengthTitle.
+  ///
+  /// In th, this message translates to:
+  /// **'ความแข็งแรงของความจำ'**
+  String get strengthTitle;
+
+  /// No description provided for @strengthHelp.
+  ///
+  /// In th, this message translates to:
+  /// **'จำนวนคำตามความจำคงทน (เวลาที่โอกาสจำได้จะลดเหลือ 90%) ยิ่งไปทางขวายิ่งจำแน่น'**
+  String get strengthHelp;
+
+  /// No description provided for @forecast30.
+  ///
+  /// In th, this message translates to:
+  /// **'ต้องทบทวนใน 30 วันข้างหน้า'**
+  String get forecast30;
 }
 
 class _AppLocalizationsDelegate

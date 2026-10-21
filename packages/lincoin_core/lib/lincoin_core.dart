@@ -11,6 +11,7 @@ export 'src/grading/kana.dart';
 export 'src/metrics/metrics.dart';
 export 'src/srs/card_state.dart';
 export 'src/srs/mastery.dart';
+export 'src/srs/optimizer.dart';
 export 'src/srs/queue_builder.dart';
 export 'src/srs/scheduler.dart';
 export 'src/srs/simulator.dart';
